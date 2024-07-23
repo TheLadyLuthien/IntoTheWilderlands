@@ -7,7 +7,7 @@
             "type": "minecraft:multi_noise",
             "biomes": [
                 {
-                    "biome": "minecraft:cherry_grove",
+                    "biome": "wilderlands:astral_shardlands",
                     "parameters": {
                         "temperature": [
                             -1,

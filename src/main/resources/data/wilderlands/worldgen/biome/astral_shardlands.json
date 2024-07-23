@@ -1,0 +1,48 @@
+{
+    "temperature": 0.5,
+    "downfall": 0.5,
+    "has_precipitation": false,
+    "effects": {
+        "sky_color": 0,
+        "fog_color": 10518688,
+        "water_color": 12440575,
+        "water_fog_color": 3816088,
+        "grass_color": 13107167,
+        "foliage_color": 10741431
+    },
+    "spawners": {
+        "ambient": [],
+        "axolotls": [],
+        "creature": [],
+        "misc": [],
+        "monster": [
+            {
+                "type": "minecraft:enderman",
+                "weight": 10,
+                "minCount": 4,
+                "maxCount": 4
+            }
+        ],
+        "underground_water_creature": [],
+        "water_ambient": [],
+        "water_creature": []
+    },
+    "spawn_costs": {},
+    "carvers": {},
+    "features": [
+        [],
+        [],
+        [],
+        [],
+        [
+            "minecraft:spring_open"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [
+            "minecraft:chorus_plant"
+        ]
+    ]
+}

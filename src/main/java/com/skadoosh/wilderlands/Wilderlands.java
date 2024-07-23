@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.components.ModComponents;
+import com.skadoosh.wilderlands.events.ModEvents;
 import com.skadoosh.wilderlands.items.ModItems;
 
 import net.minecraft.util.Identifier;
@@ -24,7 +25,7 @@ public class Wilderlands implements ModInitializer
         ModItems.init();
         ModComponents.init();
         ModBlockEntities.init();
-
+        ModEvents.register();
 
         LOGGER.info("Hello Quilt world from {}! Stay fresh!", mod.metadata().name());
     }
