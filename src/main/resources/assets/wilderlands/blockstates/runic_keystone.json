@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "wilderlands:block/runic_keystone"
+        }
+    }
+}

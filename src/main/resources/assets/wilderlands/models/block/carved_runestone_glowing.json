@@ -1,0 +1,6 @@
+{
+    "parent": "wilderlands:block/carved_runestone",
+    "textures": {
+        "1": "wilderlands:block/carved_runestone_glowing_a"
+    }
+}

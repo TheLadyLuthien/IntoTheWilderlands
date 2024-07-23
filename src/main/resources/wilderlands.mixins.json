@@ -1,0 +1,15 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.skadoosh.wilderlands.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [],
+    "client": [
+        "DimensionVisiualEffectsMixin",
+        "WorldRendererMixin",
+        "WorldRendererAccessor"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

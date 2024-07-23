@@ -1,0 +1,36 @@
+{
+    "variants": {
+        "runestone_rotation=x,runestone_glowing=false": {
+            "model": "wilderlands:block/carved_runestone",
+            "y": 0
+        },
+        "runestone_rotation=xy,runestone_glowing=false": {
+            "model": "wilderlands:block/carved_runestone_rotated",
+            "y": 0
+        },
+        "runestone_rotation=y,runestone_glowing=false": {
+            "model": "wilderlands:block/carved_runestone",
+            "y": 90
+        },
+        "runestone_rotation=yx,runestone_glowing=false": {
+            "model": "wilderlands:block/carved_runestone_rotated",
+            "y": 90
+        },
+        "runestone_rotation=x,runestone_glowing=true": {
+            "model": "wilderlands:block/carved_runestone_glowing",
+            "y": 0
+        },
+        "runestone_rotation=xy,runestone_glowing=true": {
+            "model": "wilderlands:block/carved_runestone_rotated_glowing",
+            "y": 0
+        },
+        "runestone_rotation=y,runestone_glowing=true": {
+            "model": "wilderlands:block/carved_runestone_glowing",
+            "y": 90
+        },
+        "runestone_rotation=yx,runestone_glowing=true": {
+            "model": "wilderlands:block/carved_runestone_rotated_glowing",
+            "y": 90
+        }
+    }
+}
