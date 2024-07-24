@@ -1,0 +1,26 @@
+{
+    "variants": {
+        "facing=down": {
+            "model": "wilderlands:block/destroyer_vertical",
+            "x": 180
+        },
+        "facing=east": {
+            "model": "wilderlands:block/destroyer",
+            "y": 90
+        },
+        "facing=north": {
+            "model": "wilderlands:block/destroyer"
+        },
+        "facing=south": {
+            "model": "wilderlands:block/destroyer",
+            "y": 180
+        },
+        "facing=up": {
+            "model": "wilderlands:block/destroyer_vertical"
+        },
+        "facing=west": {
+            "model": "wilderlands:block/destroyer",
+            "y": 270
+        }
+    }
+}

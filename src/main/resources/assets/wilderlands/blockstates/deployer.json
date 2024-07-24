@@ -1,0 +1,26 @@
+{
+    "variants": {
+        "facing=down": {
+            "model": "wilderlands:block/deployer_vertical",
+            "x": 180
+        },
+        "facing=east": {
+            "model": "wilderlands:block/deployer",
+            "y": 90
+        },
+        "facing=north": {
+            "model": "wilderlands:block/deployer"
+        },
+        "facing=south": {
+            "model": "wilderlands:block/deployer",
+            "y": 180
+        },
+        "facing=up": {
+            "model": "wilderlands:block/deployer_vertical"
+        },
+        "facing=west": {
+            "model": "wilderlands:block/deployer",
+            "y": 270
+        }
+    }
+}

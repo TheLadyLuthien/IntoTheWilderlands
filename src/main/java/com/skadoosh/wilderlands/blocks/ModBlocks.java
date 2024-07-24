@@ -18,6 +18,8 @@ public final class ModBlocks
     public static final Block CARVED_RUNESTONE = register("carved_runestone", new CarvedRunestoneBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).offsetType(AbstractBlock.OffsetType.XZ).dynamicBounds()), true);
     
     public static final Block RUNIC_KEYSTONE = register("runic_keystone", new RunicKeystoneBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)), true);
+    
+    public static final Block DEPLOYER = register("deployer", new DeployerBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER)), true);
 
     private static Block register(String name, Block block, boolean shouldMakeItem)
     {
