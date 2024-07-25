@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier;
 
 public final class ModBlocks
 {
-    public static final Block CARVED_RUNESTONE = register("carved_runestone", new CarvedRunestoneBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).offsetType(AbstractBlock.OffsetType.XZ).dynamicBounds()), true);
+    public static final Block CARVED_RUNESTONE = register("carved_runestone", new CarvedRunestoneBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noCollision().offsetType(AbstractBlock.OffsetType.XZ)), true);
     
     public static final Block RUNIC_KEYSTONE = register("runic_keystone", new RunicKeystoneBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)), true);
     

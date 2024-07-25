@@ -1,0 +1,221 @@
+package com.skadoosh.wilderlands.commands;
+
+import static net.minecraft.server.command.CommandManager.argument;
+import static net.minecraft.server.command.CommandManager.literal;
+
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import com.skadoosh.wilderlands.blockentities.CarvedRunestoneBlockEntity;
+import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
+import com.skadoosh.wilderlands.blocks.CarvedRunestoneBlock;
+import com.skadoosh.wilderlands.blocks.ModBlocks;
+import com.skadoosh.wilderlands.blocks.RunicKeystoneBlock;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.command.CommandBuildContext;
+import net.minecraft.command.argument.BlockPosArgumentType;
+import net.minecraft.command.argument.DimensionArgumentType;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.CommandManager.RegistrationEnvironment;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+
+public class RunestoneCommand
+{
+    private static final SimpleCommandExceptionType INVALID_SELECTION = new SimpleCommandExceptionType(Text.translatable("commands.bifrost.configure.invalid_selection"));
+    private static final SimpleCommandExceptionType NO_TARGET_FOUND = new SimpleCommandExceptionType(Text.translatable("commands.bifrost.configure.no_target_found"));
+    private static final SimpleCommandExceptionType POS_UNLOADED = new SimpleCommandExceptionType(Text.translatable("commands.bifrost.configure.unloaded_position"));
+    
+    public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandBuildContext registryAccess, RegistrationEnvironment environment)
+    {
+        dispatcher.register(
+            literal("bifrost")
+                .then(
+                    literal("configure")
+                    .requires(source -> source.hasPermission(2))
+
+                    .then(
+                        literal("runestone")
+
+                        .then(
+                            literal("select")
+                            .executes(contextx -> selectRunestone(contextx, RunicKeystoneBlock.SEARCH_SIZE))
+                            .then(
+                                argument("radius", IntegerArgumentType.integer())
+                                .executes(contextx -> selectRunestone(contextx, IntegerArgumentType.getInteger(contextx, "radius")))
+                            )
+                        )
+
+                        .then(
+                            literal("destination")
+                            .then(
+                                argument("pos", BlockPosArgumentType.blockPos())
+                                .executes(contextx -> setStoneDestination(contextx, BlockPosArgumentType.getBlockPos(contextx, "pos"), contextx.getSource().getWorld()))
+                                .then(
+                                    argument("dimension", DimensionArgumentType.dimension())
+                                    .executes(contextx -> setStoneDestination(contextx, BlockPosArgumentType.getBlockPos(contextx, "pos"), DimensionArgumentType.getDimensionArgument(contextx, "dimension")))
+                                )
+                            )
+                            .then(
+                                literal("selected_keystone")
+                                .executes(contextx -> setStoneDestination(contextx, selectedKeystonePos, contextx.getSource().getServer().getWorld(RegistryKey.of(RegistryKeys.WORLD, selectedKeystoneWorld))))
+                            )
+                        )
+                    )
+                    .then(
+                        literal("keystone")
+
+                        .then(
+                            literal("select")
+                            .executes(contextx -> selectKeystone(contextx, RunicKeystoneBlock.SEARCH_SIZE))
+                            .then(
+                                argument("radius", IntegerArgumentType.integer())
+                                .executes(contextx -> selectKeystone(contextx, IntegerArgumentType.getInteger(contextx, "radius")))
+                            )
+                        )
+
+                        // .then(
+                        //     literal("destination")
+                        //     .then(
+                        //         argument("pos", BlockPosArgumentType.blockPos())
+                        //         .executes(contextx -> setStoneDestination(contextx, BlockPosArgumentType.getBlockPos(contextx, "pos"), contextx.getSource().getWorld()))
+                        //         .then(
+                        //             argument("dimension", DimensionArgumentType.dimension())
+                        //             .executes(contextx -> setStoneDestination(contextx, BlockPosArgumentType.getBlockPos(contextx, "pos"), DimensionArgumentType.getDimensionArgument(contextx, "dimension")))
+                        //         )
+                        //     )
+                        // )
+                    )
+                )
+        );
+    }
+
+    private static BlockPos selectedRunestonePos = null;
+    private static Identifier selectedRunestoneWorld = null;
+
+    private static BlockPos selectedKeystonePos = null;
+    private static Identifier selectedKeystoneWorld = null;
+    
+    private static int selectRunestone(CommandContext<ServerCommandSource> contextx, int radius) throws CommandSyntaxException
+    {
+        final Vec3d origin = contextx.getSource().getPosition();
+
+        CarvedRunestoneBlockEntity closestRunestone = null;
+        double prevDist = Double.MAX_VALUE;
+        for (int x = -radius; x <= radius; x++)
+        {
+            for (int y = -radius; y <= radius; y++)
+            {
+                for (int z = -radius; z <= radius; z++)
+                {
+                    BlockPos pos = new BlockPos((int)origin.getX() + x, (int)origin.getY() + y, (int)origin.getZ() + z);
+                    java.util.Optional<CarvedRunestoneBlockEntity> opt = contextx.getSource().getWorld().getBlockEntity(pos, ModBlockEntities.CARVED_RUNESTONE_BLOCK_ENTITY);
+                    
+                    if (opt.isPresent())
+                    {
+                        double dist = origin.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ());
+                        if (dist < prevDist)
+                        {
+                            prevDist = dist;
+                            closestRunestone = opt.get();
+                        }
+                    }
+                }
+            }
+        }
+
+        if (closestRunestone != null)
+        {
+            selectedRunestonePos = closestRunestone.getPos();
+            selectedRunestoneWorld = closestRunestone.getWorld().getRegistryKey().getValue();
+            return 1;
+        }
+        else
+        {
+            throw NO_TARGET_FOUND.create();
+        }
+    }
+
+    private static int selectKeystone(CommandContext<ServerCommandSource> contextx, int radius) throws CommandSyntaxException
+    {
+        final Vec3d origin = contextx.getSource().getPosition();
+
+        BlockPos closestPos = null;
+        double prevDist = Double.MAX_VALUE;
+        for (int x = -radius; x <= radius; x++)
+        {
+            for (int y = -radius; y <= radius; y++)
+            {
+                for (int z = -radius; z <= radius; z++)
+                {
+                    BlockPos pos = new BlockPos((int)origin.getX() + x, (int)origin.getY() + y, (int)origin.getZ() + z);
+                    
+                    BlockState blockState = contextx.getSource().getWorld().getBlockState(pos);
+                    
+                    if (blockState.isOf(ModBlocks.RUNIC_KEYSTONE))
+                    {
+                        double dist = origin.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ());
+                        if (dist < prevDist)
+                        {
+                            prevDist = dist;
+                            closestPos = pos;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (closestPos != null)
+        {
+            selectedKeystonePos = closestPos;
+            selectedKeystoneWorld = contextx.getSource().getWorld().getRegistryKey().getValue();
+            return 1;
+        }
+        else
+        {
+            throw NO_TARGET_FOUND.create();
+        }
+    }
+
+    private static int setStoneDestination(CommandContext<ServerCommandSource> contextx, BlockPos dest, ServerWorld destWorld) throws CommandSyntaxException
+    {
+        if (selectedRunestonePos == null || selectedRunestoneWorld == null)
+        {
+            throw INVALID_SELECTION.create();
+        }
+
+        RegistryKey<World> registryKey = RegistryKey.of(RegistryKeys.WORLD, selectedRunestoneWorld);
+        final ServerWorld targetWorld = contextx.getSource().getServer().getWorld(registryKey);
+
+        Chunk chunk = targetWorld.getChunk(selectedRunestonePos);
+        if (targetWorld.isChunkLoaded(chunk.getPos().x, chunk.getPos().z))
+        {
+            BlockEntity blockEntity = targetWorld.getBlockEntity(selectedRunestonePos);
+            if (blockEntity instanceof CarvedRunestoneBlockEntity)
+            {
+                ((CarvedRunestoneBlockEntity)blockEntity).setDestination(dest, destWorld);
+                return 1;
+            }
+            else
+            {
+                throw INVALID_SELECTION.create();
+            }
+        }
+        else
+        {
+            throw POS_UNLOADED.create();
+        }
+    }
+}

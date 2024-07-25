@@ -1,7 +1,10 @@
 {
     "variants": {
-        "": {
+        "triggered=true": {
             "model": "wilderlands:block/runic_keystone"
+        },
+        "triggered=false": {
+            "model": "wilderlands:block/runic_keystone_inactive"
         }
     }
 }

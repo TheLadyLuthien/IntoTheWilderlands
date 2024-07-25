@@ -39,7 +39,7 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
     }
 
     private String dimension = "minecraft:overworld";
-    public String getDimension()
+    public String getDestinationDimension()
     {
         return dimension;
     }

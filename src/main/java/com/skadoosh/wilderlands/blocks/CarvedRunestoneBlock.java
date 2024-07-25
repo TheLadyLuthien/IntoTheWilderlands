@@ -31,6 +31,8 @@ public class CarvedRunestoneBlock extends Block implements BlockEntityProvider
     public static final BooleanProperty GLOWING = BooleanProperty.of("runestone_glowing");
     public static final int GLOWING_LIGHT_LEVEL = 4;
 
+    public static final VoxelShape TALL_SHAPE = Block.createCuboidShape(0, 0, 0, 16, 32, 16);
+
     public CarvedRunestoneBlock(Settings settings)
     {
         super(settings);
@@ -64,7 +66,7 @@ public class CarvedRunestoneBlock extends Block implements BlockEntityProvider
     public static int getLuminance(BlockState currentBlockState)
     {
         boolean activated = currentBlockState.get(GLOWING);
-        return activated ? GLOWING_LIGHT_LEVEL : 0;
+        return activated ? GLOWING_LIGHT_LEVEL : 1;
     }
 
 	// @Override
@@ -99,4 +101,23 @@ public class CarvedRunestoneBlock extends Block implements BlockEntityProvider
 
         return ActionResult.PASS;
     }
+
+    @Override
+    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context)
+    {
+        return TALL_SHAPE;    
+    }
+    
+    @Override
+    protected boolean isShapeFullCube(BlockState state, BlockView world, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
+    protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos)
+    {
+        return TALL_SHAPE;
+    }
+
 }

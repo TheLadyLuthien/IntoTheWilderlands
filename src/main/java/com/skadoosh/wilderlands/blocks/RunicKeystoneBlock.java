@@ -68,7 +68,7 @@ public class RunicKeystoneBlock extends Block
         return ActionResult.FAIL;
     }
 
-    private static final int SEARCH_SIZE = 5;
+    public static final int SEARCH_SIZE = 5;
 
     private static void enable(BlockPos origin, World world)
     {
@@ -124,7 +124,7 @@ public class RunicKeystoneBlock extends Block
     @SuppressWarnings("resource")
     public static void trigger(BlockPos origin, CarvedRunestoneBlockEntity blockEntity, ServerPlayerEntity user)
     {
-        Identifier identifier = Identifier.parse(blockEntity.getDimension());
+        Identifier identifier = Identifier.parse(blockEntity.getDestinationDimension());
         RegistryKey<World> registryKey = RegistryKey.of(RegistryKeys.WORLD, identifier);
 
         if (!blockEntity.getWorld().isClient)
@@ -148,7 +148,7 @@ public class RunicKeystoneBlock extends Block
                 disable(origin, blockEntity.getWorld());
                 
                 // teleport the user (do this last)
-                user.teleport(serverWorld, blockEntity.getDestinationPos().getX(), blockEntity.getDestinationPos().getY(), blockEntity.getDestinationPos().getZ(), user.getYaw(), user.getPitch());
+                user.teleport(serverWorld, blockEntity.getDestinationPos().getX() + 0.5, blockEntity.getDestinationPos().getY() + 1, blockEntity.getDestinationPos().getZ() + 0.5, user.getYaw(), user.getPitch());
             }
         }
     }

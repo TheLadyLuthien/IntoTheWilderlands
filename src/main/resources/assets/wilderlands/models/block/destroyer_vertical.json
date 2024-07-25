@@ -1,7 +1,7 @@
 {
     "parent": "minecraft:block/orientable_vertical",
     "textures": {
-        "front": "wilderlands:block/destroyer_front_verticle",
+        "front": "wilderlands:block/destroyer_front_vertical",
         "side": "minecraft:block/furnace_top"
     }
 }
