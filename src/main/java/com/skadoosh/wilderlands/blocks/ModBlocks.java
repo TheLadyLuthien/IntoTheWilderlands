@@ -7,6 +7,7 @@ import com.skadoosh.wilderlands.items.ModItems;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -19,7 +20,11 @@ public final class ModBlocks
     
     public static final Block RUNIC_KEYSTONE = register("runic_keystone", new RunicKeystoneBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)), true);
     
-    public static final Block DEPLOYER = register("deployer", new DeployerBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER)), true);
+    @GenerateItemModel
+    public static final Block DEPLOYER = register("deployer", new DeployerBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER).pistonBehavior(PistonBehavior.NORMAL)), true);
+    
+    @GenerateItemModel
+    public static final Block DESTROYER = register("destroyer", new DestroyerBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER).pistonBehavior(PistonBehavior.NORMAL)), true);
 
     private static Block register(String name, Block block, boolean shouldMakeItem)
     {

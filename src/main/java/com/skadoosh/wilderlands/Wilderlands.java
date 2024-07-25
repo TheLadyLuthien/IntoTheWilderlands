@@ -27,7 +27,7 @@ public class Wilderlands implements ModInitializer
         ModBlockEntities.init();
         ModEvents.register();
 
-        LOGGER.info("Hello Quilt world from {}! Stay fresh!", mod.metadata().name());
+        // LOGGER.info("Hello Quilt world from {}! Stay fresh!", mod.metadata().name());
     }
 
     public static Identifier id(String name)

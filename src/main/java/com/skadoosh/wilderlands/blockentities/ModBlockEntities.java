@@ -14,7 +14,7 @@ public final class ModBlockEntities
     
     public static final BlockEntityType<DeployerBlockEntity> DEPLOYER_BLOCK_ENTITY =
             Registry.register(Registries.BLOCK_ENTITY_TYPE, Wilderlands.id("deployer"), BlockEntityType.Builder.create(DeployerBlockEntity::new, ModBlocks.DEPLOYER).build());
-
+    
     public static void init()
     {
         // juszt load the file
