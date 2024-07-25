@@ -19,7 +19,8 @@
             "init": "com.skadoosh.wilderlands.Wilderlands",
             "fabric-datagen": [
                 "com.skadoosh.wilderlands.datagen.Datagen"
-            ]
+            ],
+            "cardinal-components": "com.skadoosh.wilderlands.persistance.ModComponentKeys"
         },
         "depends": [
             {
@@ -36,5 +37,8 @@
             }
         ]
     },
-    "mixin": "wilderlands.mixins.json"
+    "mixin": "wilderlands.mixins.json",
+    "cardinal-components": [
+        "wilderlands:named_keystone_data"
+    ]
 }

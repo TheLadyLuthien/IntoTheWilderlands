@@ -5,6 +5,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
@@ -13,6 +14,8 @@ import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.blocks.CarvedRunestoneBlock;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.blocks.RunicKeystoneBlock;
+import com.skadoosh.wilderlands.persistance.ModComponentKeys;
+import com.skadoosh.wilderlands.persistance.NamedKeystoneData;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -48,7 +51,6 @@ public class RunestoneCommand
 
                     .then(
                         literal("runestone")
-
                         .then(
                             literal("select")
                             .executes(contextx -> selectRunestone(contextx, RunicKeystoneBlock.SEARCH_SIZE))
@@ -86,18 +88,18 @@ public class RunestoneCommand
                             )
                         )
 
-                        // .then(
-                        //     literal("destination")
-                        //     .then(
-                        //         argument("pos", BlockPosArgumentType.blockPos())
-                        //         .executes(contextx -> setStoneDestination(contextx, BlockPosArgumentType.getBlockPos(contextx, "pos"), contextx.getSource().getWorld()))
-                        //         .then(
-                        //             argument("dimension", DimensionArgumentType.dimension())
-                        //             .executes(contextx -> setStoneDestination(contextx, BlockPosArgumentType.getBlockPos(contextx, "pos"), DimensionArgumentType.getDimensionArgument(contextx, "dimension")))
-                        //         )
-                        //     )
-                        // )
+                        .then(
+                            literal("name")
+                            .then(
+                                argument("name", StringArgumentType.string())
+                                .executes(contextx -> setKeystoneName(contextx, StringArgumentType.getString(contextx, "name")))
+                            )
+                        )
                     )
+                )
+                .then(
+                    literal("identify")
+                    .executes(contextx -> getKeystoneName(contextx))
                 )
         );
     }
@@ -216,6 +218,68 @@ public class RunestoneCommand
         else
         {
             throw POS_UNLOADED.create();
+        }
+    }
+
+    private static int setKeystoneName(CommandContext<ServerCommandSource> contextx, String name) throws CommandSyntaxException
+    {
+        if (selectedKeystonePos == null || selectedKeystoneWorld == null)
+        {
+            throw INVALID_SELECTION.create();
+        }
+
+        ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getWorld()).map.put(new NamedKeystoneData.KeystoneLocation(selectedKeystoneWorld, selectedKeystonePos), name);
+        return 1;
+    }
+
+    private static int getKeystoneName(CommandContext<ServerCommandSource> contextx) throws CommandSyntaxException
+    {
+        final Vec3d origin = contextx.getSource().getPosition();
+
+        final int radius = RunicKeystoneBlock.SEARCH_SIZE;
+        BlockPos closestPos = null;
+        double prevDist = Double.MAX_VALUE;
+        for (int x = -radius; x <= radius; x++)
+        {
+            for (int y = -radius; y <= radius; y++)
+            {
+                for (int z = -radius; z <= radius; z++)
+                {
+                    BlockPos pos = new BlockPos((int)origin.getX() + x, (int)origin.getY() + y, (int)origin.getZ() + z);
+                    
+                    BlockState blockState = contextx.getSource().getWorld().getBlockState(pos);
+                    
+                    if (blockState.isOf(ModBlocks.RUNIC_KEYSTONE))
+                    {
+                        double dist = origin.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ());
+                        if (dist < prevDist)
+                        {
+                            prevDist = dist;
+                            closestPos = pos;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (closestPos != null)
+        {
+            String name = ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getWorld()).get(contextx.getSource().getWorld().getRegistryKey().getValue(), closestPos);
+            
+            if (name == null)
+            {
+                name = "Unnamed Keystone";
+            }
+    
+            final String n = name;
+    
+            contextx.getSource().sendFeedback(() -> Text.literal("You are currently at " + n), false);
+    
+            return 1;
+        }
+        else
+        {
+            throw NO_TARGET_FOUND.create();
         }
     }
 }
