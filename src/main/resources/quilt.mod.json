@@ -6,17 +6,18 @@
         "version": "${version}",
         "metadata": {
             "name": "Into The Wilderlands",
-            "description": "The core mod for Infinity - Season 4",
+            "description": "The core mod for Infinity Season 4",
             "contributors": {
                 "ThatSkadoosh": "Owner"
             },
             "contact": {},
-            "icon": "assets/example_mod/icon.png",
+            "icon": "assets/wilderlands/icon.png",
             "license": "MIT"
         },
         "intermediate_mappings": "net.fabricmc:intermediary",
         "entrypoints": {
             "init": "com.skadoosh.wilderlands.Wilderlands",
+            "client_init": "com.skadoosh.wilderlands.ClientLoader",
             "fabric-datagen": [
                 "com.skadoosh.wilderlands.datagen.Datagen"
             ],

@@ -5,6 +5,7 @@ import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.skadoosh.cadmium.Cadmium;
 import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.commands.ModCommands;
@@ -22,6 +23,9 @@ public class Wilderlands implements ModInitializer
     @Override
     public void onInitialize(ModContainer mod)
     {
+        Cadmium.initialize();
+        
+        ModParticles.init();
         ModBlocks.init();
         ModItems.init();
         ModComponents.init();

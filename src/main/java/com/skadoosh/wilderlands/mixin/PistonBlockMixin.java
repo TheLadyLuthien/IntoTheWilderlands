@@ -20,6 +20,7 @@ public class PistonBlockMixin
     @Inject(method = "isMovable", cancellable = true, at = @At("TAIL"))
     private static void isMovable(BlockState state, World world, BlockPos pos, Direction direction, boolean canBreak, Direction pistonFacing, CallbackInfoReturnable<Boolean> ci)
     {
+        // world.getServer().sendSystemMessage(null);
         ci.setReturnValue(!state.hasBlockEntity() || state.isOf(ModBlocks.DESTROYER) || state.isOf(ModBlocks.DEPLOYER));
     }
 }

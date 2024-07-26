@@ -1,12 +1,16 @@
 package com.skadoosh.wilderlands.blocks;
 
 import com.skadoosh.wilderlands.blockentities.CarvedRunestoneBlockEntity;
+import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -113,6 +117,21 @@ public class CarvedRunestoneBlock extends Block implements BlockEntityProvider
     {
         return false;
     }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
+        return BlockRenderType.MODEL;
+    }
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, ModBlockEntities.CARVED_RUNESTONE_BLOCK_ENTITY, (world1, pos, state1, be) -> CarvedRunestoneBlockEntity.tick(world1, pos, state1, be));
+    }
+
+    @SuppressWarnings("unchecked")
+    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> checkType(BlockEntityType<A> givenType, BlockEntityType<E> expectedType, BlockEntityTicker<? super E> ticker) {
+        return expectedType == givenType ? (BlockEntityTicker<A>)ticker : null;
+     }
 
     // @Override
     // protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos)

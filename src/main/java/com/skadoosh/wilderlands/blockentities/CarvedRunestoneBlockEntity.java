@@ -2,11 +2,13 @@ package com.skadoosh.wilderlands.blockentities;
 
 import java.util.EnumSet;
 
+import com.skadoosh.wilderlands.ModParticles;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.RunicKeystoneBlock;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.HolderLookup.Provider;
 import net.minecraft.registry.RegistryKey;
@@ -82,5 +84,14 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
         destinationPos = new BlockPos(nbt.getInt("destX"), nbt.getInt("destY"), nbt.getInt("destZ"));
         keystonePos = new BlockPos(nbt.getInt("keystoneX"), nbt.getInt("keystoneY"), nbt.getInt("keystoneZ"));
         dimension = nbt.getString("dimension");
+    }
+
+    public static void tick(World world, BlockPos pos, BlockState state, CarvedRunestoneBlockEntity be)
+    {
+        if (world.isClient)
+        {
+            Wilderlands.LOGGER.info("got here");
+            ModParticles.RUNESTONE_IDLE.spawn(((ClientWorld)world), pos.getX(), pos.getY(), pos.getZ(), 0, 1, 0);
+        }
     }
 }
