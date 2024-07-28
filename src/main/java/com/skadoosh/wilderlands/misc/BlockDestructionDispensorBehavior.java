@@ -1,4 +1,4 @@
-package com.skadoosh.wilderlands.blocks;
+package com.skadoosh.wilderlands.misc;
 
 import org.slf4j.Logger;
 

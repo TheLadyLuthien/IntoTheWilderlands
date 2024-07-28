@@ -1,6 +1,8 @@
 package com.skadoosh.cadmium;
 
 import java.util.HashMap;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
@@ -21,7 +23,59 @@ public class ParticleBuilder
     private final Identifier identifier;
 
     private RenderType renderType = RenderType.PARTICLE_SHEET_OPAQUE;
+    private boolean collidesWithWorld = false;
+    private float scale = 1f;
+    private boolean exactVelocity = false;
+
+    private AdvancedParticle.RotationMode rotationMode = AdvancedParticle.RotationMode.ALIGN_WITH_CAMERA;
+
+    private Supplier<Integer> lifetimeSupplier = () -> 1;
+
+    public ParticleBuilder exactVelocity()
+    {
+        this.exactVelocity = true;
+        return this;
+    }
+
+    public ParticleBuilder lifetime(final int lifetime)
+    {
+        lifetimeSupplier = () -> lifetime;
+        return this;
+    }
+    public ParticleBuilder lifetime(Supplier<Integer> lifetimeSupplier)
+    {
+        this.lifetimeSupplier = lifetimeSupplier;
+        return this;
+    }
+
+    public ParticleBuilder alignWithVelocity()
+    {
+        rotationMode = AdvancedParticle.RotationMode.ALIGN_WITH_VELOCITY;
+        return this;
+    }
+    public ParticleBuilder alignWithWorldYAxis()
+    {
+        rotationMode = AdvancedParticle.RotationMode.ALIGN_WITH_WORLD;
+        return this;
+    }
+    public ParticleBuilder alignWithCamera()
+    {
+        rotationMode = AdvancedParticle.RotationMode.ALIGN_WITH_CAMERA;
+        return this;
+    }
+
+    public ParticleBuilder collidesWithWorld()
+    {
+        collidesWithWorld = true;
+        return this;
+    }
     
+    public ParticleBuilder scale(float scale)
+    {
+        this.scale = scale;
+        return this;    
+    }
+
     public ParticleBuilder opaque()
     {
         renderType = RenderType.PARTICLE_SHEET_OPAQUE;
@@ -49,7 +103,7 @@ public class ParticleBuilder
     {
         DefaultParticleType particleType = Registry.register(Registries.PARTICLE_TYPE, this.identifier, FabricParticleTypes.simple());
 
-        AdvancedParticle particle = new AdvancedParticle(identifier, renderType, particleType);
+        AdvancedParticle particle = new AdvancedParticle(identifier, renderType, particleType, collidesWithWorld, scale, rotationMode, lifetimeSupplier, exactVelocity);
 
         Cadmium.registerParticle(identifier, particle);
 
@@ -62,7 +116,7 @@ public class ParticleBuilder
         for (AdvancedParticle advancedParticle : Cadmium.retrieveAllParticles())
         {
             ParticleFactoryRegistry registry = ParticleFactoryRegistry.getInstance();
-            registry.register(advancedParticle.getVanillaParticleType(), advancedParticle.createParticleFactory());
+            registry.register(advancedParticle.getVanillaParticleType(), (fsp) -> advancedParticle.createParticleFactory(fsp));
         }
     }
 }

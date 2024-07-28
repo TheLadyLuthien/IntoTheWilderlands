@@ -18,6 +18,19 @@ public class NamedKeystoneData implements AutoSyncedComponent
         return map.get(new KeystoneLocation(dimension, pos));
     }
 
+    public KeystoneLocation get(String name)
+    {
+        for (var key : this.map.keySet())
+        {
+            String n = this.map.get(key);
+            if (name.equals(n))
+            {
+                return key;
+            }
+        }
+        return null;
+    }
+
     public static final class KeystoneLocation
     {
         public final Identifier dimension;

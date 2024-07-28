@@ -10,7 +10,7 @@ public class ClientLoader implements ClientModInitializer
     @Override
     public void onInitializeClient(ModContainer mod)
     {
-        Wilderlands.LOGGER.info("Wilderlands Client Loaded");
-        // Cadmium.initializeClient();
+        Wilderlands.LOGGER.info("Wilderlands Client Loaded!");
+        Cadmium.initializeClient();
     }
 }

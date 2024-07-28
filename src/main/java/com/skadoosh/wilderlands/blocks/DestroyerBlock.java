@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.MapCodec;
+import com.skadoosh.wilderlands.misc.BlockDestructionDispensorBehavior;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;

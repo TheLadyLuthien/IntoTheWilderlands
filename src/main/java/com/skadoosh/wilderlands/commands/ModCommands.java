@@ -7,7 +7,7 @@ public final class ModCommands
     public static void register()
     {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            RunestoneCommand.register(dispatcher, registryAccess, environment);
+            BifrostCommand.register(dispatcher, registryAccess, environment);
         });
     }
 }

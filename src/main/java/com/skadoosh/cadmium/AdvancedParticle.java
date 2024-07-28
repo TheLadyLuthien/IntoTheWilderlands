@@ -1,35 +1,55 @@
 package com.skadoosh.cadmium;
 
+import java.util.function.Supplier;
+
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
+import com.skadoosh.cadmium.AdvancedParticle.RotationMode;
+
+import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteProvider;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.client.particle.BillboardParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.SpriteBillboardParticle;
+import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.particle.ParticleType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3i;
 
 public class AdvancedParticle
 {
-    public AdvancedParticle(Identifier identifier, RenderType renderType, DefaultParticleType vanillaParticleType)
+    public AdvancedParticle(Identifier identifier, RenderType renderType, DefaultParticleType vanillaParticleType, boolean collidesWithWorld, float scale, RotationMode rotationMode, Supplier<Integer> lifetimeSupplier, boolean exactVelocity)
     {
         this.identifier = identifier;
         this.renderType = renderType;
         this.vanillaParticleType = vanillaParticleType;
+        this.collidesWithWorld = collidesWithWorld;
+        this.scale = scale;
+        this.rotationMode = rotationMode;
+        this.lifetimeSupplier = lifetimeSupplier;
+        this.exactVelocity = exactVelocity;
     }
 
     protected final Identifier identifier;
     protected final RenderType renderType;
     protected final DefaultParticleType vanillaParticleType;
+    protected final boolean collidesWithWorld;
+    protected final float scale;
+    protected final AdvancedParticle.RotationMode rotationMode;
+    protected final Supplier<Integer> lifetimeSupplier;
+    protected final boolean exactVelocity;
+
+    public static enum RotationMode {
+        ALIGN_WITH_CAMERA, ALIGN_WITH_WORLD, ALIGN_WITH_VELOCITY;
+    }
 
     public static enum RenderType {
         TERRAIN_SHEET, PARTICLE_SHEET_OPAQUE, PARTICLE_SHEET_TRANSLUCENT, PARTICLE_SHEET_LIT, CUSTOM, NO_RENDER,
@@ -41,15 +61,15 @@ public class AdvancedParticle
     }
 
     @ClientOnly
-    public Particle createVanillaParticle(DefaultParticleType arg0, ClientWorld arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7)
+    public Particle createVanillaParticle(DefaultParticleType arg0, ClientWorld arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, SpriteProvider spriteProvider)
     {
-        return this.new SummonableParticle(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        return this.new SummonableParticle(arg1, arg2, arg3, arg4, arg5, arg6, arg7, spriteProvider);
     }
 
     @ClientOnly
-    public Factory createParticleFactory()
+    public Factory createParticleFactory(SpriteProvider spriteProvider)
     {
-        return this.new Factory();
+        return this.new Factory(spriteProvider);
     }
 
     public void spawn(ServerWorld world, float x, float y, float z, float velX, float velY, float velZ)
@@ -74,9 +94,38 @@ public class AdvancedParticle
     @ClientOnly
     public class SummonableParticle extends SpriteBillboardParticle
     {
-        protected SummonableParticle(ClientWorld world, double d, double e, double f, double g, double h, double i)
+        protected final SpriteProvider spriteProvider;
+        protected final double initialVelocityX;
+        protected final double initialVelocityY;
+        protected final double initialVelocityZ;
+
+        private final BillboardParticle.FacingCameraMode velocityAlignmentFunction;
+
+        protected SummonableParticle(ClientWorld world, double x, double y, double z, double velX, double velY, double velZ, SpriteProvider spriteProvider)
         {
-            super(world, d, e, f, g, h, i);
+            super(world, x, y, z, velX, velY, velZ);
+
+            this.spriteProvider = spriteProvider;
+            this.setSpriteForAge(spriteProvider);
+
+            if (AdvancedParticle.this.exactVelocity)
+            {
+                this.velocityX = velX;
+                this.velocityY = velY;
+                this.velocityZ = velZ;
+            }
+
+            this.collidesWithWorld = AdvancedParticle.this.collidesWithWorld;
+            this.scale = AdvancedParticle.this.scale;
+            this.maxAge = AdvancedParticle.this.lifetimeSupplier.get();
+
+            this.initialVelocityX = velX;
+            this.initialVelocityY = velY;
+            this.initialVelocityZ = velZ;
+            this.velocityAlignmentFunction = (rotation, camera, tickDelta) -> {
+                rotation.fromAxisAngleRad(0, 1, 0, (float)MathHelper.atan2(initialVelocityZ, initialVelocityX));
+                // rotation.set((float)(-initialVelocityZ), camera.getRotation().y, (float)(initialVelocityX), 0.0f);
+            };
         }
 
         @Override
@@ -94,27 +143,52 @@ public class AdvancedParticle
                     return ParticleTextureSheet.PARTICLE_SHEET_LIT;
                 case NO_RENDER:
                     return ParticleTextureSheet.NO_RENDER;
-                case CUSTOM:
+                case CUSTOM: 
                     return ParticleTextureSheet.CUSTOM;
             }
             return null;
+        }
+
+        @Override
+        public BillboardParticle.FacingCameraMode getFacingCameraMode()
+        {
+            switch (rotationMode)
+            {
+                case ALIGN_WITH_CAMERA:
+                    return FacingCameraMode.ALL_AXIS;
+                case ALIGN_WITH_WORLD:
+                    return FacingCameraMode.Y_AND_W;
+                case ALIGN_WITH_VELOCITY:
+                    return this.velocityAlignmentFunction;
+
+                default:
+                    return super.getFacingCameraMode();
+            }
+        }
+
+        @Override
+        public void tick()
+        {
+            super.tick();
+            this.setSpriteForAge(this.spriteProvider);
         }
     }
 
 
     @ClientOnly
-    public class Factory implements ParticleFactory<DefaultParticleType> 
+    public class Factory implements ParticleFactory<DefaultParticleType>
     {
-        protected Factory()
-        {
+        protected final SpriteProvider spriteProvider;
 
+        protected Factory(SpriteProvider spriteProvider)
+        {
+            this.spriteProvider = spriteProvider;
         }
 
         @Override
         public Particle createParticle(DefaultParticleType arg0, ClientWorld arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7)
         {
-            return AdvancedParticle.this.createVanillaParticle(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            return AdvancedParticle.this.createVanillaParticle(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, spriteProvider);
         }
     }
-
 }

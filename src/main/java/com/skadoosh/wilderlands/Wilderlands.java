@@ -12,6 +12,7 @@ import com.skadoosh.wilderlands.commands.ModCommands;
 import com.skadoosh.wilderlands.components.ModComponents;
 import com.skadoosh.wilderlands.events.ModEvents;
 import com.skadoosh.wilderlands.items.ModItems;
+import com.skadoosh.wilderlands.misc.ModParticles;
 
 import net.minecraft.util.Identifier;
 

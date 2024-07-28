@@ -2,9 +2,12 @@ package com.skadoosh.wilderlands.blockentities;
 
 import java.util.EnumSet;
 
-import com.skadoosh.wilderlands.ModParticles;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
+
 import com.skadoosh.wilderlands.Wilderlands;
+import com.skadoosh.wilderlands.blocks.CarvedRunestoneBlock;
 import com.skadoosh.wilderlands.blocks.RunicKeystoneBlock;
+import com.skadoosh.wilderlands.misc.ModParticles;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,6 +21,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -90,8 +94,28 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
     {
         if (world.isClient)
         {
-            Wilderlands.LOGGER.info("got here");
-            ModParticles.RUNESTONE_IDLE.spawn(((ClientWorld)world), pos.getX(), pos.getY(), pos.getZ(), 0, 1, 0);
+            if (state.get(CarvedRunestoneBlock.GLOWING).booleanValue())
+            {
+                playActiveParticles((ClientWorld)world, pos);
+            }
         }
+    }
+    
+    @ClientOnly
+    private static void playActiveParticles(ClientWorld world, BlockPos pos)
+    {
+        if (world.getTime() % 4 != 0)
+        {
+            return;
+        }
+
+        // double angleIncrement = 2 * Math.PI / (2 + world.random.nextInt(5));
+        // for (int i = 0; i < 12; i++) {
+            double angle = /* (i * angleIncrement) +  */(world.random.nextFloat() * 360);
+            float x = (float) (0.5 * Math.cos(angle));
+            float z = (float) (0.5 * Math.sin(angle));
+            
+            ModParticles.RUNESTONE_IDLE.spawn(world, pos.getX() + x + 0.5f, pos.getY(), pos.getZ() + z + 0.5f, 0, MathHelper.nextBetween(world.random, 0.1f, 0.2f), 0);
+        // }
     }
 }

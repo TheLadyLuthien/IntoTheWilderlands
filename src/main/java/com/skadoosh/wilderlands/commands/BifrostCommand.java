@@ -14,6 +14,9 @@ import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.blocks.CarvedRunestoneBlock;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.blocks.RunicKeystoneBlock;
+import com.skadoosh.wilderlands.components.ModComponents;
+import com.skadoosh.wilderlands.misc.BifrostHelper;
+import com.skadoosh.wilderlands.misc.BifrostHelper.KeyType;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 import com.skadoosh.wilderlands.persistance.NamedKeystoneData;
 
@@ -22,6 +25,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.command.CommandBuildContext;
 import net.minecraft.command.argument.BlockPosArgumentType;
 import net.minecraft.command.argument.DimensionArgumentType;
+import net.minecraft.component.type.NbtComponent;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.command.CommandManager;
@@ -29,17 +34,19 @@ import net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-public class RunestoneCommand
+public class BifrostCommand
 {
     private static final SimpleCommandExceptionType INVALID_SELECTION = new SimpleCommandExceptionType(Text.translatable("commands.bifrost.configure.invalid_selection"));
     private static final SimpleCommandExceptionType NO_TARGET_FOUND = new SimpleCommandExceptionType(Text.translatable("commands.bifrost.configure.no_target_found"));
     private static final SimpleCommandExceptionType POS_UNLOADED = new SimpleCommandExceptionType(Text.translatable("commands.bifrost.configure.unloaded_position"));
+    private static final SimpleCommandExceptionType KEY_NOT_HELD = new SimpleCommandExceptionType(Text.translatable("commands.bifrost.configure.key_not_held"));
     
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandBuildContext registryAccess, RegistrationEnvironment environment)
     {
@@ -96,6 +103,144 @@ public class RunestoneCommand
                             )
                         )
                     )
+                    .then(
+                        literal("list_names")
+                        .executes(contextx -> listKeystoneNames(contextx))
+                    )
+                    .then(
+                        literal("held_key")
+                        .then(
+                            literal("get")
+                            .executes(contextx -> {
+                                NbtComponent nbtComponent = BifrostHelper.getKeyStack(contextx.getSource().getPlayerOrThrow()).get(ModComponents.BIFROST_KEY);
+                                contextx.getSource().sendFeedback(() -> Text.literal(nbtComponent.toString()), false);
+                                return 1;
+                            })
+                        )
+                        .then(
+                            literal("set")
+                            .then(
+                                literal("to_single_destination")
+                                .then(
+                                    argument("destination_name", StringArgumentType.string())
+                                    .then(
+                                        argument("uses_remaining", IntegerArgumentType.integer())
+                                        .executes(contextx -> {
+                                            BifrostHelper.buildKey(BifrostHelper.getKeyStack(contextx.getSource().getPlayerOrThrow()))
+                                                .type(KeyType.TO_SINGLE_DESTINATION)
+                                                .keystoneData(StringArgumentType.getString(contextx, "destination_name"))
+                                                .usesRemaining(IntegerArgumentType.getInteger(contextx, "uses_remaining"));
+                                            return 1;
+                                        })
+                                    )
+                                    .then(
+                                        literal("unlimited")
+                                        .executes(contextx -> {
+                                            BifrostHelper.buildKey(BifrostHelper.getKeyStack(contextx.getSource().getPlayerOrThrow()))
+                                                .type(KeyType.TO_SINGLE_DESTINATION)
+                                                .keystoneData(StringArgumentType.getString(contextx, "destination_name"))
+                                                .usesRemaining(-1);
+                                            return 1;
+                                        })
+                                    )
+                                )
+                            )
+                            .then(
+                                literal("to_from_single_destination")
+                                .then(
+                                    argument("keystone_name", StringArgumentType.string())
+                                    .then(
+                                        argument("uses_remaining", IntegerArgumentType.integer())
+                                        .executes(contextx -> {
+                                            BifrostHelper.buildKey(BifrostHelper.getKeyStack(contextx.getSource().getPlayerOrThrow()))
+                                                .type(KeyType.TO_FROM_SINGLE_DESTINATION)
+                                                .keystoneData(StringArgumentType.getString(contextx, "keystone_name"))
+                                                .usesRemaining(IntegerArgumentType.getInteger(contextx, "uses_remaining"));
+                                            return 1;
+                                        })
+                                    )
+                                    .then(
+                                        literal("unlimited")
+                                        .executes(contextx -> {
+                                            BifrostHelper.buildKey(BifrostHelper.getKeyStack(contextx.getSource().getPlayerOrThrow()))
+                                                .type(KeyType.TO_FROM_SINGLE_DESTINATION)
+                                                .keystoneData(StringArgumentType.getString(contextx, "keystone_name"))
+                                                .usesRemaining(-1);
+                                            return 1;
+                                        })
+                                    )
+                                )
+                            )
+                            .then(
+                                literal("to_single_dimension")
+                                .then(
+                                    argument("dimension", DimensionArgumentType.dimension())
+                                    .then(
+                                        argument("uses_remaining", IntegerArgumentType.integer())
+                                        .executes(contextx -> {
+                                            BifrostHelper.buildKey(BifrostHelper.getKeyStack(contextx.getSource().getPlayerOrThrow()))
+                                                .type(KeyType.TO_SINGLE_DIMENSION)
+                                                .dimension(DimensionArgumentType.getDimensionArgument(contextx, "dimension"))
+                                                .usesRemaining(IntegerArgumentType.getInteger(contextx, "uses_remaining"));
+                                            return 1;
+                                        })
+                                    )
+                                    .then(
+                                        literal("unlimited")
+                                        .executes(contextx -> {
+                                            BifrostHelper.buildKey(BifrostHelper.getKeyStack(contextx.getSource().getPlayerOrThrow()))
+                                                .type(KeyType.TO_SINGLE_DIMENSION)
+                                                .dimension(DimensionArgumentType.getDimensionArgument(contextx, "dimension"))
+                                                .usesRemaining(-1);
+                                            return 1;
+                                        })
+                                    )
+                                )
+                            )
+                            .then(
+                                literal("within_current_dimension")
+                                .then(
+                                    argument("uses_remaining", IntegerArgumentType.integer())
+                                    .executes(contextx -> {
+                                        BifrostHelper.buildKey(BifrostHelper.getKeyStack(contextx.getSource().getPlayerOrThrow()))
+                                            .type(KeyType.WITHIN_CURRENT_DIMENSION)
+                                            .usesRemaining(IntegerArgumentType.getInteger(contextx, "uses_remaining"));
+                                        return 1;
+                                    })
+                                )
+                                .then(
+                                    literal("unlimited")
+                                    .executes(contextx -> {
+                                        BifrostHelper.buildKey(BifrostHelper.getKeyStack(contextx.getSource().getPlayerOrThrow()))
+                                            .type(KeyType.WITHIN_CURRENT_DIMENSION)
+                                            .usesRemaining(-1);
+                                        return 1;
+                                    })
+                                )
+                            )
+                            .then(
+                                literal("universal")
+                                .then(
+                                    argument("uses_remaining", IntegerArgumentType.integer())
+                                    .executes(contextx -> {
+                                        BifrostHelper.buildKey(BifrostHelper.getKeyStack(contextx.getSource().getPlayerOrThrow()))
+                                            .type(KeyType.UNIVERSAL)
+                                            .usesRemaining(IntegerArgumentType.getInteger(contextx, "uses_remaining"));
+                                        return 1;
+                                    })
+                                )
+                                .then(
+                                    literal("unlimited")
+                                    .executes(contextx -> {
+                                        BifrostHelper.buildKey(BifrostHelper.getKeyStack(contextx.getSource().getPlayerOrThrow()))
+                                            .type(KeyType.UNIVERSAL)
+                                            .usesRemaining(-1);
+                                        return 1;
+                                    })
+                                )
+                            )
+                        )
+                    )
                 )
                 .then(
                     literal("identify")
@@ -109,7 +254,7 @@ public class RunestoneCommand
 
     private static BlockPos selectedKeystonePos = null;
     private static Identifier selectedKeystoneWorld = null;
-    
+
     private static int selectRunestone(CommandContext<ServerCommandSource> contextx, int radius) throws CommandSyntaxException
     {
         final Vec3d origin = contextx.getSource().getPosition();
@@ -228,7 +373,7 @@ public class RunestoneCommand
             throw INVALID_SELECTION.create();
         }
 
-        ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getWorld()).map.put(new NamedKeystoneData.KeystoneLocation(selectedKeystoneWorld, selectedKeystonePos), name);
+        getNamedKeystoneData(contextx).map.put(new NamedKeystoneData.KeystoneLocation(selectedKeystoneWorld, selectedKeystonePos), name);
         return 1;
     }
 
@@ -264,7 +409,7 @@ public class RunestoneCommand
 
         if (closestPos != null)
         {
-            String name = ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getWorld()).get(contextx.getSource().getWorld().getRegistryKey().getValue(), closestPos);
+            String name = getNamedKeystoneData(contextx).get(contextx.getSource().getWorld().getRegistryKey().getValue(), closestPos);
             
             if (name == null)
             {
@@ -281,5 +426,19 @@ public class RunestoneCommand
         {
             throw NO_TARGET_FOUND.create();
         }
+    }
+
+    public static int listKeystoneNames(CommandContext<ServerCommandSource> contextx) throws CommandSyntaxException
+    {
+        for (String name : ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getWorld()).map.values())
+        {
+            contextx.getSource().sendFeedback(() -> Text.literal(name), false);
+        }
+        return 1;
+    }
+
+    private static NamedKeystoneData getNamedKeystoneData(CommandContext<ServerCommandSource> contextx)
+    {
+        return ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getServer().getOverworld());
     }
 }

@@ -2,13 +2,18 @@ package com.skadoosh.wilderlands.blocks;
 
 import java.util.Optional;
 
+import org.quiltmc.loader.api.minecraft.ClientOnly;
+
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blockentities.CarvedRunestoneBlockEntity;
 import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.components.ModComponents;
+import com.skadoosh.wilderlands.misc.BifrostHelper;
+import com.skadoosh.wilderlands.misc.ModParticles;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -23,6 +28,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -45,24 +51,19 @@ public class RunicKeystoneBlock extends Block
     {
         if (!world.isClient)
         {
-            final ItemStack mainHand = entity.getStackInHand(Hand.MAIN_HAND);
-            final ItemStack offhand = entity.getStackInHand(Hand.OFF_HAND);
-
-            NbtComponent component = null;
-
-            if (mainHand.contains(ModComponents.BIFROST_KEY))
+            ItemStack keyStack = BifrostHelper.getKeyStack(entity);
+            
+            if (keyStack.get(ModComponents.BIFROST_KEY) != null && !state.get(Properties.TRIGGERED).booleanValue())
             {
-                component = mainHand.get(ModComponents.BIFROST_KEY);
-            }
-            else if (offhand.contains(ModComponents.BIFROST_KEY))
-            {
-                component = offhand.get(ModComponents.BIFROST_KEY);
-            }
-
-            if (component != null)
-            {
-                enable(pos, world);
-                return ActionResult.SUCCESS;
+                if (enable(pos, (ServerWorld)world, keyStack))
+                {
+                    BifrostHelper.expendKeyIfNecessary(keyStack, entity);
+                    return ActionResult.SUCCESS;
+                }
+                else
+                {
+                    return ActionResult.FAIL;
+                }
             }
         }
         return ActionResult.FAIL;
@@ -70,8 +71,9 @@ public class RunicKeystoneBlock extends Block
 
     public static final int SEARCH_SIZE = 5;
 
-    private static void enable(BlockPos origin, World world)
+    private static boolean enable(BlockPos origin, ServerWorld world, ItemStack keyStack)
     {
+        int enabledCount = 0;
         // loop through nearby blocks for runestones
         for (int x = -SEARCH_SIZE; x <= SEARCH_SIZE; x++)
         {
@@ -86,15 +88,29 @@ public class RunicKeystoneBlock extends Block
                     {
                         opt.get().setKeystonePos(origin);
 
-                        BlockState blockState = world.getBlockState(pos);
-                        world.setBlockState(pos, blockState.with(CarvedRunestoneBlock.GLOWING, true));
+                        if (BifrostHelper.shouldActivateRunestone(keyStack, world, origin, opt.get()))
+                        {
+                            enabledCount++;
+                            BlockState blockState = world.getBlockState(pos);
+                            world.setBlockState(pos, blockState.with(CarvedRunestoneBlock.GLOWING, true));
+                        }
                     }
                 }
             }
         }
-        
-        BlockState blockState = world.getBlockState(origin);
-        world.setBlockState(origin, blockState.with(Properties.TRIGGERED, true));
+
+        if (enabledCount > 0)
+        {
+            BlockState blockState = world.getBlockState(origin);
+            world.setBlockState(origin, blockState.with(Properties.TRIGGERED, true));
+            
+            return true;
+            // playEnableParticles(world, origin);
+        }
+        else
+        {
+            return false;
+        }
     }
     
     private static void disable(BlockPos origin, World world)
@@ -152,4 +168,21 @@ public class RunicKeystoneBlock extends Block
             }
         }
     }
+
+    // private static void playEnableParticles(ServerWorld world, BlockPos pos)
+    // {
+    //     final int count = 12;
+    //     final float speed = 1f;
+
+    //     final double angleIncrement = 2 * Math.PI / count;
+    //     for (int i = 0; i < count; i++)
+    //     {
+    //         double angle = (i * angleIncrement);
+    //         float x = (float)(0.5 * Math.cos(angle));
+    //         float z = (float)(0.5 * Math.sin(angle));
+
+    //         ModParticles.KEYSTONE_ACTIVATE.spawn(world, pos.getX() + x + 0.5f, pos.getY() + 1.1f, pos.getZ() + z + 0.5f, x * speed, 0, z * speed);
+    //     }
+    // }
+
 }
