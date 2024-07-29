@@ -8,5 +8,6 @@
   "block.wilderlands.destroyer": "Destroyer",
   "block.wilderlands.runic_keystone": "Runic Keystone",
   "item.wilderlands.bifrost_key": "Bifrost Key",
+  "itemGroup.wilderlands.birfost": "Bifrost, The Rainbow Bridge",
   "tooltip.bifrost_key.title": "§3§lBifrost Key§r"
 }

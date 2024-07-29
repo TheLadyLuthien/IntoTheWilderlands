@@ -435,13 +435,7 @@ public class BifrostCommand
     {
         for (String name : ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getServer().getOverworld()).map.values())
         {
-            try {
-                contextx.getSource().sendFeedback(() -> Text.literal(name).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, name.replaceAll("§", Matcher.quoteReplacement("$")))).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Copy " + name + " to clipboard")))), false);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();    // TODO: handle exception
-            }
+            contextx.getSource().sendFeedback(() -> Text.literal(name).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, name.replaceAll("§", Matcher.quoteReplacement("$")))).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Copy " + name + " to clipboard")))), false);
         }
         return 1;
     }

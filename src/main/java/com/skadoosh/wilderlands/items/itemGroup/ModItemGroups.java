@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
+import com.skadoosh.wilderlands.datagen.AutoTranslate;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.misc.AnnotationHelper;
 
@@ -18,6 +19,7 @@ import net.minecraft.text.Text;
 
 public class ModItemGroups
 {
+    @AutoTranslate("Bifrost, The Rainbow Bridge")
     public static final String BIFROST = "birfost";
     
     public static void register()
@@ -27,7 +29,7 @@ public class ModItemGroups
     
     private static void register(String id, Item icon)
     {
-        ItemGroup itemGroup = FabricItemGroup.builder().icon(() -> new ItemStack(icon)).name(Text.translatable("itemGroup.wilderlands." + id)).entries((context, entries) -> {
+        ItemGroup itemGroup = FabricItemGroup.builder().icon(() -> new ItemStack(icon)).name(Text.translatable(TRANSLATION_KEY_STUB + id)).entries((context, entries) -> {
             ArrayList<AnnotationHelper.ValueAnnotationPair<Item, AutoItemGroup>> items = AnnotationHelper.getFieldsWithAnnotation(AutoItemGroup.class, ModItems.class, Item.class);
             for (var itemData : items)
             {
@@ -48,4 +50,6 @@ public class ModItemGroups
         }).build();
         Registry.register(Registries.ITEM_GROUP, Wilderlands.id(id), itemGroup);
     }
+
+    public static final String TRANSLATION_KEY_STUB = "itemGroup.wilderlands.";
 }

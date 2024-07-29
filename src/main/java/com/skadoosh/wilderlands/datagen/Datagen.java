@@ -6,6 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.items.ModItems;
+import com.skadoosh.wilderlands.items.itemGroup.ModItemGroups;
 import com.skadoosh.wilderlands.misc.AnnotationHelper;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
@@ -92,6 +93,12 @@ public class Datagen implements DataGeneratorEntrypoint
             for (var itemData : items)
             {
                 tb.add(itemData.value, itemData.annotation.value());
+            }
+
+            ArrayList<AnnotationHelper.ValueAnnotationPair<String, AutoTranslate>> itemGroups = AnnotationHelper.getFieldsWithAnnotation(AutoTranslate.class, ModItemGroups.class, String.class);
+            for (var itemGroupData : itemGroups)
+            {
+                tb.add(ModItemGroups.TRANSLATION_KEY_STUB + itemGroupData.value, itemGroupData.annotation.value());
             }
         }
     }

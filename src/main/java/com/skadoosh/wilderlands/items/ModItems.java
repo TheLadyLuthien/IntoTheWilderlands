@@ -21,14 +21,12 @@ public final class ModItems
 {
     public static final HashMap<Block, Item> BLOCK_ITEMS = new HashMap<>();
 
-    @GenerateItemModel
     @AutoTranslate("Bifrost Key")
     @AutoItemGroup(ModItemGroups.BIFROST)
     public static final Item BIFROST_KEY = register("bifrost_key", new Item(new Item.Settings().rarity(Rarity.RARE).component(ModComponents.BIFROST_KEY, NbtComponent.of(new NbtCompound()))));
 
     public static void init()
     {
-        // TODO: fill block items map
     }
 
     private static Item register(String name, Item item)
