@@ -3,7 +3,10 @@ package com.skadoosh.wilderlands.commands;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
+import java.util.regex.Matcher;
+
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.LiteralMessage;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -33,7 +36,11 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.ClickEvent.Action;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -373,6 +380,8 @@ public class BifrostCommand
             throw INVALID_SELECTION.create();
         }
 
+        name = BifrostHelper.getTranslatedDimension(selectedKeystoneWorld).getString() + " - " + name;
+
         getNamedKeystoneData(contextx).map.put(new NamedKeystoneData.KeystoneLocation(selectedKeystoneWorld, selectedKeystonePos), name);
         return 1;
     }
@@ -430,9 +439,15 @@ public class BifrostCommand
 
     public static int listKeystoneNames(CommandContext<ServerCommandSource> contextx) throws CommandSyntaxException
     {
-        for (String name : ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getWorld()).map.values())
+        for (String name : ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getServer().getOverworld()).map.values())
         {
-            contextx.getSource().sendFeedback(() -> Text.literal(name), false);
+            try {
+                contextx.getSource().sendFeedback(() -> Text.literal(name).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, name.replaceAll("§", Matcher.quoteReplacement("$")))).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Copy " + name + " to clipboard")))), false);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();    // TODO: handle exception
+            }
         }
         return 1;
     }

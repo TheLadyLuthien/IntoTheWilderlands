@@ -1,5 +1,7 @@
 package com.skadoosh.wilderlands.misc;
 
+import java.util.regex.Matcher;
+
 import com.skadoosh.wilderlands.blockentities.CarvedRunestoneBlockEntity;
 import com.skadoosh.wilderlands.components.ModComponents;
 import com.skadoosh.wilderlands.items.ModItems;
@@ -13,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -59,7 +62,7 @@ public final class BifrostHelper
 
         public ChainBuilder keystoneData(String name)
         {
-            setKeyExtra(stack, name);
+            setKeyExtra(stack, name.replaceAll(Matcher.quoteReplacement("$"), "§"));
             return this;
         }
     }
@@ -99,10 +102,38 @@ public final class BifrostHelper
         return nbtComponent.copy();
     }
 
-    private static NbtCompound getComponent(ItemStack stack)
+    public static KeyType getKeyType(NbtCompound nbt)
+    {
+        try
+        {
+            return KeyType.valueOf(nbt.getString(NBT_TYPE).toUpperCase());
+        }
+        catch (IllegalArgumentException e)
+        {
+            return null;
+        }
+    }
+
+    public static NbtCompound getKeyComponent(ItemStack stack)
     {
         NbtComponent nbtComponent = stack.get(ModComponents.BIFROST_KEY);
+        if (nbtComponent == null)
+        {
+            return null;
+        }
         return nbtComponent.copy();
+    }
+
+    public static Text getTranslatedDimension(NbtCompound nbt)
+    {
+        String keyName = nbt.getString(NBT_DIMENSION);
+        Identifier id = Identifier.parse(keyName);
+        return getTranslatedDimension(id);
+    }
+
+    public static Text getTranslatedDimension(Identifier id)
+    {
+        return Text.translatable("bifrost.colorized.dimension." + id.getPath());
     }
 
     private static void updateStackNbt(ItemStack stack, NbtCompound nbt)
@@ -163,7 +194,7 @@ public final class BifrostHelper
 
     public static void expendKeyIfNecessary(ItemStack stack, PlayerEntity player)
     {
-        NbtCompound nbt = getComponent(stack);
+        NbtCompound nbt = getKeyComponent(stack);
         int usesRemaining = nbt.getInt(NBT_USES);
         if (usesRemaining == -1)
         {
@@ -199,10 +230,10 @@ public final class BifrostHelper
         }
     }
 
-    public static boolean shouldActivateRunestone(ItemStack keyStack,  ServerWorld world, BlockPos keystone, CarvedRunestoneBlockEntity runestone)
+    public static boolean shouldActivateRunestone(ItemStack keyStack, ServerWorld world, BlockPos keystone, CarvedRunestoneBlockEntity runestone)
     {
         final NbtCompound nbt = getOrCreateKeyComponent(keyStack);
-        final KeyType type = KeyType.valueOf(nbt.getString(NBT_TYPE).toUpperCase());
+        final KeyType type = getKeyType(nbt);
 
         final NamedKeystoneData nameMap = ModComponentKeys.NAMED_KEYSTONE_DATA.get(world.getServer().getOverworld());
 
@@ -226,12 +257,12 @@ public final class BifrostHelper
                 String destinationName = nbt.getString(NBT_KEYSTONE);
                 KeystoneLocation destination = nameMap.get(destinationName);
 
-                if ((runestone.getDestinationDimension().equals(destination.dimension.toString()) && runestone.getDestinationPos().equals(destination.position)) ||
-                    (world.getRegistryKey().getValue().toString().equals(destination.dimension.toString()) && keystone.equals(destination.position)))
+                if ((runestone.getDestinationDimension().equals(destination.dimension.toString()) && runestone.getDestinationPos().equals(destination.position))
+                        || (world.getRegistryKey().getValue().toString().equals(destination.dimension.toString()) && keystone.equals(destination.position)))
                 {
                     return true;
                 }
-                
+
                 break;
             }
 
@@ -257,7 +288,7 @@ public final class BifrostHelper
             }
 
             case UNIVERSAL:
-            return true;
+                return true;
 
             default:
                 return false;

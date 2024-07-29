@@ -53,7 +53,7 @@ public class RunicKeystoneBlock extends Block
         {
             ItemStack keyStack = BifrostHelper.getKeyStack(entity);
             
-            if (keyStack.get(ModComponents.BIFROST_KEY) != null && !state.get(Properties.TRIGGERED).booleanValue())
+            if (keyStack != null && keyStack.get(ModComponents.BIFROST_KEY) != null && !state.get(Properties.TRIGGERED).booleanValue())
             {
                 if (enable(pos, (ServerWorld)world, keyStack))
                 {
