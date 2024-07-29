@@ -1,10 +1,8 @@
 package com.skadoosh.wilderlands.items;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import com.skadoosh.wilderlands.Wilderlands;
-import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.components.ModComponents;
 import com.skadoosh.wilderlands.datagen.AutoTranslate;
 import com.skadoosh.wilderlands.datagen.GenerateItemModel;
@@ -12,9 +10,7 @@ import com.skadoosh.wilderlands.items.itemGroup.AutoItemGroup;
 import com.skadoosh.wilderlands.items.itemGroup.ModItemGroups;
 
 import net.minecraft.block.Block;
-import net.minecraft.component.DataComponent;
 import net.minecraft.component.type.NbtComponent;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;

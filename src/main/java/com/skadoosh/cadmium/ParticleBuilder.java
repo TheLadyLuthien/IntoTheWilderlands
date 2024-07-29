@@ -1,7 +1,5 @@
 package com.skadoosh.cadmium;
 
-import java.util.HashMap;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.quiltmc.loader.api.minecraft.ClientOnly;
@@ -10,12 +8,9 @@ import com.skadoosh.cadmium.AdvancedParticle.RenderType;
 
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.client.particle.FlameParticle;
-import net.minecraft.client.particle.SweepAttackParticle;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 
 public class ParticleBuilder

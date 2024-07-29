@@ -6,7 +6,6 @@ import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.misc.AnnotationHelper;
-import com.skadoosh.wilderlands.misc.AnnotationHelper.ValueAnnotationPair;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.block.Block;

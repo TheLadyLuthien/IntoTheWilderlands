@@ -2,13 +2,9 @@ package com.skadoosh.cadmium;
 
 import java.util.function.Supplier;
 
-import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
-import com.skadoosh.cadmium.AdvancedParticle.RotationMode;
-
-import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteProvider;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.particle.BillboardParticle;

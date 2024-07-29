@@ -12,8 +12,6 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.mixin.WorldRendererAccessor;
-import com.skadoosh.wilderlands.mixin.WorldRendererMixin;
-
 import net.minecraft.client.render.DimensionVisualEffects;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;

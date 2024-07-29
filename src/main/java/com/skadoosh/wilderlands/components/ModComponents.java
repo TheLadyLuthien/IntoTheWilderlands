@@ -5,13 +5,10 @@ import java.util.function.UnaryOperator;
 import com.skadoosh.wilderlands.Wilderlands;
 
 import net.minecraft.component.DataComponentType;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
-import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.StringIdentifiable.Codec;
 
 public final class ModComponents
 {

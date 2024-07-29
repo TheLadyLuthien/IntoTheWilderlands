@@ -1,8 +1,5 @@
 package com.skadoosh.wilderlands.blocks;
 
-import org.slf4j.Logger;
-
-import com.mojang.logging.LogUtils;
 import com.mojang.serialization.MapCodec;
 import com.skadoosh.wilderlands.misc.BlockDestructionDispensorBehavior;
 
@@ -22,7 +19,7 @@ import net.minecraft.world.World;
 
 public class DestroyerBlock extends DispenserBlock
 {
-    private static final Logger LOGGER = LogUtils.getLogger();
+    // private static final Logger LOGGER = LogUtils.getLogger();
     public static final MapCodec<DestroyerBlock> CODEC = createCodec(DestroyerBlock::new);
     private static final DispenserBehavior BEHAVIOR = new BlockDestructionDispensorBehavior();
 
