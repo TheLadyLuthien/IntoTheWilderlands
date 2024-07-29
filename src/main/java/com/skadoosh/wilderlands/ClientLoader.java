@@ -34,23 +34,23 @@ public class ClientLoader implements ClientModInitializer
 
                 switch (type) {
                     case TO_SINGLE_DESTINATION:
-                        lines.add(2, Text.literal("To " + nbt.getString(BifrostHelper.NBT_KEYSTONE)));
+                        lines.add(2, Text.literal("To §o" + nbt.getString(BifrostHelper.NBT_KEYSTONE)));
                     break;
                         
                     case TO_FROM_SINGLE_DESTINATION:
-                        lines.add(2, Text.literal("To or from " + nbt.getString(BifrostHelper.NBT_KEYSTONE)));
+                        lines.add(2, Text.literal("To or from §o" + nbt.getString(BifrostHelper.NBT_KEYSTONE)));
                     break;
                 
                     case TO_SINGLE_DIMENSION:
-                        lines.add(2, Text.literal("To the ").append(BifrostHelper.getTranslatedDimension(nbt)));
+                        lines.add(2, Text.literal("To the §o").append(BifrostHelper.getTranslatedDimension(nbt)));
                     break;
                 
                     case WITHIN_CURRENT_DIMENSION:
-                        lines.add(2, Text.literal("To anywhere within your current realm"));
+                        lines.add(2, Text.literal("To §oanywhere within your current realm"));
                     break;
                 
                     case UNIVERSAL:
-                        lines.add(2, Text.literal("To anywhere"));
+                        lines.add(2, Text.literal("To §oanywhere"));
                     break;
 
                     default:

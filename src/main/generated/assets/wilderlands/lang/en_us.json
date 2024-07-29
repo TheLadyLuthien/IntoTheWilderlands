@@ -3,5 +3,10 @@
   "bifrost.colorized.dimension.overworld": "§bOverworld§r",
   "bifrost.colorized.dimension.the_end": "§dEnd§r",
   "bifrost.colorized.dimension.the_nether": "§4Nether§r",
+  "block.wilderlands.carved_runestone": "Carved Runestone",
+  "block.wilderlands.deployer": "Deployer",
+  "block.wilderlands.destroyer": "Destroyer",
+  "block.wilderlands.runic_keystone": "Runic Keystone",
+  "item.wilderlands.bifrost_key": "Bifrost Key",
   "tooltip.bifrost_key.title": "§3§lBifrost Key§r"
 }

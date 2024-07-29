@@ -6,7 +6,10 @@ import java.util.HashMap;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.components.ModComponents;
+import com.skadoosh.wilderlands.datagen.AutoTranslate;
 import com.skadoosh.wilderlands.datagen.GenerateItemModel;
+import com.skadoosh.wilderlands.items.itemGroup.AutoItemGroup;
+import com.skadoosh.wilderlands.items.itemGroup.ModItemGroups;
 
 import net.minecraft.block.Block;
 import net.minecraft.component.DataComponent;
@@ -23,6 +26,8 @@ public final class ModItems
     public static final HashMap<Block, Item> BLOCK_ITEMS = new HashMap<>();
 
     @GenerateItemModel
+    @AutoTranslate("Bifrost Key")
+    @AutoItemGroup(ModItemGroups.BIFROST)
     public static final Item BIFROST_KEY = register("bifrost_key", new Item(new Item.Settings().rarity(Rarity.RARE).component(ModComponents.BIFROST_KEY, NbtComponent.of(new NbtCompound()))));
 
     public static void init()

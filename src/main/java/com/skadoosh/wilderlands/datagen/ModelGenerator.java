@@ -1,10 +1,13 @@
 package com.skadoosh.wilderlands.datagen;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.items.ModItems;
+import com.skadoosh.wilderlands.misc.AnnotationHelper;
+import com.skadoosh.wilderlands.misc.AnnotationHelper.ValueAnnotationPair;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -13,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.model.BlockStateModelGenerator;
 import net.minecraft.data.client.model.BlockStateVariant;
+import net.minecraft.data.client.model.ModelIds;
 import net.minecraft.data.client.model.Models;
 import net.minecraft.data.client.model.MultipartBlockStateSupplier;
 import net.minecraft.data.client.model.VariantSettings;
@@ -29,38 +33,20 @@ public class ModelGenerator extends FabricModelProvider
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator)
     {
-
+        ArrayList<AnnotationHelper.ValueAnnotationPair<Block, GenerateItemModel>> items = AnnotationHelper.getFieldsWithAnnotation(GenerateItemModel.class, ModBlocks.class, Block.class);
+        for (var itemData : items)
+        {
+            blockStateModelGenerator.registerParentedItemModel(itemData.value, ModelIds.getBlockModelId(itemData.value));
+        }
     }
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator)
     {
-        Class<ModItems> itemsClass = ModItems.class;
-        for (Field field : itemsClass.getFields())
+        ArrayList<AnnotationHelper.ValueAnnotationPair<Item, GenerateItemModel>> items = AnnotationHelper.getFieldsWithAnnotation(GenerateItemModel.class, ModItems.class, Item.class);
+        for (var itemData : items)
         {
-            if (field.isAnnotationPresent(GenerateItemModel.class))
-            {
-                try
-                {
-                    Object object = field.get(null);
-                    if (object instanceof Block)
-                    {
-                        generateItemModel(ModItems.BLOCK_ITEMS.get(object), itemModelGenerator);
-                    }
-                    else if (object instanceof Item)
-                    {
-                        generateItemModel((Item)object, itemModelGenerator);
-                    }
-                }
-                catch (IllegalArgumentException e)
-                {
-                    Wilderlands.LOGGER.error("@GenerateItemModel failed. Field is not static", e);
-                }
-                catch (IllegalAccessException e)
-                {
-                    Wilderlands.LOGGER.error("@GenerateItemModel failed. Field is not public", e);
-                }
-            }
+            generateItemModel(itemData.value, itemModelGenerator);
         }
     }
 
