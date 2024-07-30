@@ -475,7 +475,18 @@ public class BifrostCommand
                         .withHoverEvent(
                             new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("select this keystone")))
                     )
-                ),
+                )
+                .append(
+                    Text.literal("§6 (teleport) ")
+                    .setStyle(
+                        Style.EMPTY
+                        .withClickEvent(
+                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/bifrost configure keystone select \"" + BifrostHelper.sanitizeKeystoneName(name) + "\""))
+                        .withHoverEvent(
+                            new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("select this keystone")))
+                    )
+                )
+                ,
             false);
         }
         return 1;
