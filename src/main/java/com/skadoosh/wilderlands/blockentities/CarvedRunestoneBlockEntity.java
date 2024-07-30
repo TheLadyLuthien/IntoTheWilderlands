@@ -22,18 +22,21 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
     }
 
     private BlockPos destinationPos = new BlockPos(0, 100, 0);
+
     public BlockPos getDestinationPos()
     {
         return destinationPos;
     }
 
     private BlockPos keystonePos = new BlockPos(10, 90, 10);
+
     public BlockPos getKeystonePos()
     {
         return keystonePos;
     }
 
     private String dimension = "minecraft:overworld";
+
     public String getDestinationDimension()
     {
         return dimension;
@@ -64,7 +67,7 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
         nbt.putInt("keystoneZ", keystonePos.getZ());
 
         nbt.putString("dimension", dimension);
- 
+
         super.writeNbt(nbt, lookupProvider);
     }
 
@@ -87,9 +90,11 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
             {
                 playActiveParticles((ClientWorld)world, pos);
             }
+
+            // playBeamSwirlParticles((ClientWorld)world, be.keystonePos);
         }
     }
-    
+
     @ClientOnly
     private static void playActiveParticles(ClientWorld world, BlockPos pos)
     {
@@ -100,11 +105,30 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
 
         // double angleIncrement = 2 * Math.PI / (2 + world.random.nextInt(5));
         // for (int i = 0; i < 12; i++) {
-            double angle = /* (i * angleIncrement) +  */(world.random.nextFloat() * 360);
-            float x = (float) (0.5 * Math.cos(angle));
-            float z = (float) (0.5 * Math.sin(angle));
-            
-            ModParticles.RUNESTONE_IDLE.spawn(world, pos.getX() + x + 0.5f, pos.getY(), pos.getZ() + z + 0.5f, 0, MathHelper.nextBetween(world.random, 0.1f, 0.2f), 0);
+        double angle = /* (i * angleIncrement) + */(world.random.nextFloat() * 360);
+        float x = (float)(0.5 * Math.cos(angle));
+        float z = (float)(0.5 * Math.sin(angle));
+
+        ModParticles.RUNESTONE_IDLE.spawn(world, pos.getX() + x + 0.5f, pos.getY(), pos.getZ() + z + 0.5f, 0, MathHelper.nextBetween(world.random, 0.1f, 0.2f), 0);
         // }
+    }
+
+    @ClientOnly
+    private static void playBeamSwirlParticles(ClientWorld world, BlockPos pos)
+    {
+        final int count = 20;
+        final double dist = 2.0; 
+
+        final double angleIncrement = 2 * Math.PI / ((double)count);
+        final double offset = ((double)world.getTime() / 10);
+        
+        for (int i = 0; i < count; i++)
+        {
+            double angle = ((i * angleIncrement) + offset) % 360;
+            float x = (float)(dist * Math.cos(angle));
+            float z = (float)(dist * Math.sin(angle));
+
+            ModParticles.BIFROST_BEAM.spawn(world, pos.getX() + x + 0.5f, pos.getY() + 1.3f, pos.getZ() + z + 0.5f, 0, MathHelper.nextBetween(world.random, 0.8f, 1.2f), 0);
+        }
     }
 }

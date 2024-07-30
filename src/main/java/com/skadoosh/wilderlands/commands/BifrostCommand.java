@@ -20,6 +20,7 @@ import com.skadoosh.wilderlands.misc.BifrostHelper;
 import com.skadoosh.wilderlands.misc.BifrostHelper.KeyType;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 import com.skadoosh.wilderlands.persistance.NamedKeystoneData;
+import com.skadoosh.wilderlands.persistance.NamedKeystoneData.KeystoneLocation;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -93,6 +94,10 @@ public class BifrostCommand
                             .then(
                                 argument("radius", IntegerArgumentType.integer())
                                 .executes(contextx -> selectKeystone(contextx, IntegerArgumentType.getInteger(contextx, "radius")))
+                            )
+                            .then(
+                                argument("name", StringArgumentType.string())
+                                .executes(contextx -> selectKeystoneByName(contextx, StringArgumentType.getString(contextx, "name")))
                             )
                         )
 
@@ -296,6 +301,20 @@ public class BifrostCommand
         }
     }
 
+    private static int selectKeystoneByName(CommandContext<ServerCommandSource> contextx, String name) throws CommandSyntaxException
+    {
+        KeystoneLocation keystoneLocation = ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getServer().getOverworld()).get(BifrostHelper.desanitizeKeystoneName(name));
+        if (keystoneLocation == null)
+        {
+            throw NO_TARGET_FOUND.create();
+        }
+
+        selectedKeystonePos = keystoneLocation.position;
+        selectedKeystoneWorld = keystoneLocation.dimension;
+
+        return 1;
+    }
+
     private static int selectKeystone(CommandContext<ServerCommandSource> contextx, int radius) throws CommandSyntaxException
     {
         final Vec3d origin = contextx.getSource().getPosition();
@@ -435,7 +454,29 @@ public class BifrostCommand
     {
         for (String name : ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getServer().getOverworld()).map.values())
         {
-            contextx.getSource().sendFeedback(() -> Text.literal(name).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, name.replaceAll("§", Matcher.quoteReplacement("$")))).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Copy " + name + " to clipboard")))), false);
+            contextx.getSource().sendFeedback(() -> 
+                Text.literal(name + " ")
+                .append(
+                    Text.literal("§a (copy) ")
+                    .setStyle(
+                        Style.EMPTY
+                        .withClickEvent(
+                            new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, BifrostHelper.sanitizeKeystoneName(name)))
+                        .withHoverEvent(
+                            new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("copy " + name + " to clipboard")))
+                    )
+                )
+                .append(
+                    Text.literal("§b (select) ")
+                    .setStyle(
+                        Style.EMPTY
+                        .withClickEvent(
+                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/bifrost configure keystone select \"" + BifrostHelper.sanitizeKeystoneName(name) + "\""))
+                        .withHoverEvent(
+                            new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("select this keystone")))
+                    )
+                ),
+            false);
         }
         return 1;
     }

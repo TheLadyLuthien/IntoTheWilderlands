@@ -61,7 +61,7 @@ public final class BifrostHelper
 
         public ChainBuilder keystoneData(String name)
         {
-            setKeyExtra(stack, name.replaceAll(Matcher.quoteReplacement("$"), "§"));
+            setKeyExtra(stack, desanitizeKeystoneName(name));
             return this;
         }
     }
@@ -293,5 +293,15 @@ public final class BifrostHelper
                 return false;
         }
         return false;
+    }
+
+    public static String desanitizeKeystoneName(String name)
+    {
+        return name.replaceAll(Matcher.quoteReplacement("$"), "§");
+    }
+
+    public static String sanitizeKeystoneName(String name)
+    {
+        return name.replaceAll("§", Matcher.quoteReplacement("$"));
     }
 }

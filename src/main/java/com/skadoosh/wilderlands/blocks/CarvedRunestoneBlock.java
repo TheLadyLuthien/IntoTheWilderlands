@@ -91,7 +91,7 @@ public class CarvedRunestoneBlock extends Block implements BlockEntityProvider
                 if (blockEntity instanceof CarvedRunestoneBlockEntity)
                 {
                     CarvedRunestoneBlockEntity runestone = (CarvedRunestoneBlockEntity)blockEntity;
-                    RunicKeystoneBlock.trigger(runestone.getKeystonePos(), runestone, (ServerPlayerEntity)entity);
+                    RunicKeystoneBlock.trigger(world, runestone.getKeystonePos(), runestone);
     
                     return ActionResult.SUCCESS;
                 }
