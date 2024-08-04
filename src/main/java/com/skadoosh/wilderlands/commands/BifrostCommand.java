@@ -84,6 +84,19 @@ public class BifrostCommand
                                 .executes(contextx -> setStoneDestination(contextx, selectedKeystonePos, contextx.getSource().getServer().getWorld(RegistryKey.of(RegistryKeys.WORLD, selectedKeystoneWorld))))
                             )
                         )
+
+                        .then(
+                            literal("auto_link")
+                            .then(
+                                argument("destination_name", StringArgumentType.string())
+                                .executes(contextx -> {
+                                    selectKeystoneByName(contextx, StringArgumentType.getString(contextx, "destination_name"));
+                                    selectRunestone(contextx, RunicKeystoneBlock.SEARCH_SIZE);
+                                    setStoneDestination(contextx, selectedKeystonePos, contextx.getSource().getServer().getWorld(RegistryKey.of(RegistryKeys.WORLD, selectedKeystoneWorld)));
+                                    return 1;
+                                })
+                            )
+                        )
                     )
                     .then(
                         literal("keystone")
@@ -452,12 +465,15 @@ public class BifrostCommand
 
     public static int listKeystoneNames(CommandContext<ServerCommandSource> contextx) throws CommandSyntaxException
     {
-        for (String name : ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getServer().getOverworld()).map.values())
+        final var map = ModComponentKeys.NAMED_KEYSTONE_DATA.get(contextx.getSource().getServer().getOverworld()).map;
+        for (KeystoneLocation location : map.keySet())
         {
+            String name = map.get(location);
+
             contextx.getSource().sendFeedback(() -> 
                 Text.literal(name + " ")
                 .append(
-                    Text.literal("§a (copy) ")
+                    Text.literal("§a (cp) ")
                     .setStyle(
                         Style.EMPTY
                         .withClickEvent(
@@ -467,7 +483,7 @@ public class BifrostCommand
                     )
                 )
                 .append(
-                    Text.literal("§b (select) ")
+                    Text.literal("§b (sel) ")
                     .setStyle(
                         Style.EMPTY
                         .withClickEvent(
@@ -477,13 +493,23 @@ public class BifrostCommand
                     )
                 )
                 .append(
-                    Text.literal("§6 (teleport) ")
+                    Text.literal("§6 (tp) ")
                     .setStyle(
                         Style.EMPTY
                         .withClickEvent(
-                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/bifrost configure keystone select \"" + BifrostHelper.sanitizeKeystoneName(name) + "\""))
+                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/execute in " + location.dimension.toString() + " run tp @s " + location.position.getX() + " " + (location.position.getY() + 1) + " " + location.position.getZ()))
                         .withHoverEvent(
-                            new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("select this keystone")))
+                            new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("teleport to this keystone")))
+                    )
+                )
+                .append(
+                    Text.literal("§1 (alh) ")
+                    .setStyle(
+                        Style.EMPTY
+                        .withClickEvent(
+                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/bifrost configure runestone auto_link \"" + BifrostHelper.sanitizeKeystoneName(name) + "\""))
+                        .withHoverEvent(
+                            new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("select the keystone and link the nearest runestone to it")))
                     )
                 )
                 ,
