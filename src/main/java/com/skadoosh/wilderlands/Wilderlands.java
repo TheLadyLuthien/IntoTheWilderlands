@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.skadoosh.cadmium.Cadmium;
+import com.skadoosh.minigame.Minigame;
 import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.commands.ModCommands;
@@ -36,6 +37,8 @@ public class Wilderlands implements ModInitializer
         ModItemGroups.register();
         ModEvents.register();
         ModCommands.register();
+
+        Minigame.initialize();
 
         // LOGGER.info("Hello Quilt world from {}! Stay fresh!", mod.metadata().name());
     }

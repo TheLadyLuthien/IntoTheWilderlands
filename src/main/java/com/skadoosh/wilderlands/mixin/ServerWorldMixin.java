@@ -6,6 +6,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.google.common.base.Optional;
+import com.skadoosh.minigame.ZoneHelper;
+import com.skadoosh.minigame.ZoneHelper.ZoneType;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blockentities.CarvedRunestoneBlockEntity;
 import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
@@ -25,6 +27,13 @@ public class ServerWorldMixin
     @Inject(method = "canPlayerModifyAt", at = @At("HEAD"), cancellable = true)
     public void canPlayerModifyAt(PlayerEntity player, BlockPos origin, CallbackInfoReturnable<Boolean> ci)
     {
+        if (!ZoneHelper.getZoneType(player).canBuild)
+        {
+            ci.setReturnValue(false);
+            ci.cancel();
+            return;
+        }
+
         if (player.hasPermissionLevel(1))
         {
             return;

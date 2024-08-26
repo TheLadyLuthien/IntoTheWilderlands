@@ -8,6 +8,7 @@ public final class ModCommands
     {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             BifrostCommand.register(dispatcher, registryAccess, environment);
+            MinigameCommand.register(dispatcher, registryAccess, environment);
         });
     }
 }
