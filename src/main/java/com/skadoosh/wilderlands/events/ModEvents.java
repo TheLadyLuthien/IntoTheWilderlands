@@ -1,6 +1,7 @@
 package com.skadoosh.wilderlands.events;
 
 import com.skadoosh.minigame.DeathHelper;
+import com.skadoosh.minigame.GamePlayerData;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
@@ -19,6 +20,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 public final class ModEvents
@@ -71,8 +73,8 @@ public final class ModEvents
                     final ServerPlayerEntity player = (ServerPlayerEntity)entity;
                     if (DeathHelper.shouldMarkDeath(player, damageSource))
                     {
-                        ModComponentKeys.GAME_PLAYER_DATA.get(player).onMarkedDeath();
-                        
+                        GamePlayerData gamePlayerData = ModComponentKeys.GAME_PLAYER_DATA.get(player);
+                        gamePlayerData.onMarkedDeath();
                     }
                 }
             }

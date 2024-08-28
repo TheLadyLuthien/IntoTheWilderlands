@@ -1,0 +1,7 @@
+{
+    "parent": "fall_games:block/abstract_gravestone",
+    "textures": {
+        "wall": "minecraft:block/stone",
+        "skull": "fall_games:block/gravestone"
+    }
+}

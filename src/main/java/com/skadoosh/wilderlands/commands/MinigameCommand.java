@@ -12,6 +12,8 @@ import com.skadoosh.minigame.DeathHelper;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
 import net.minecraft.command.CommandBuildContext;
+import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.scoreboard.AbstractTeam.VisibilityRule;
 import net.minecraft.server.command.CommandManager.RegistrationEnvironment;
@@ -24,7 +26,7 @@ public class MinigameCommand
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandBuildContext registryAccess, RegistrationEnvironment environment)
     {
         dispatcher.register(
-            literal("mg").then(
+            literal("mg").requires(src -> src.hasPermission(3)).then(
                 literal("setup")
                 .then(
                     literal("reset")
@@ -34,7 +36,7 @@ public class MinigameCommand
                         {
                             contxtx.getSource().getServer().getScoreboard().removeTeam(contxtx.getSource().getServer().getScoreboard().getTeam(name));
                         }
-                        
+
                         return 0;
                     })
                 )
@@ -63,11 +65,35 @@ public class MinigameCommand
             )
         );
 
-        dispatcher.register(literal("lives").executes(contxtx -> {
-            int lives = ModComponentKeys.GAME_PLAYER_DATA.get((contxtx.getSource().getPlayerOrThrow())).getLives();
-            contxtx.getSource().sendFeedback(() -> Text.literal("You have " + lives + ((lives == 1) ? " life" : " lives") + " remaining").formatted(DeathHelper.getNameColor(lives)), false);
+        dispatcher.register(
+            literal("lives")
+            .executes(contxtx -> {
+                int lives = ModComponentKeys.GAME_PLAYER_DATA.get((contxtx.getSource().getPlayerOrThrow())).getLives();
+                contxtx.getSource().sendFeedback(() -> Text.literal("You have " + lives + ((lives == 1) ? " life" : " lives") + " remaining").formatted(DeathHelper.getNameColor(lives)), false);
 
-            return 0;
-        }));
+                return 0;
+            })
+            .then(
+                literal("set")
+                .requires(src -> src.hasPermission(3))
+                .then(
+                    argument("targets", EntityArgumentType.players())
+                    .then(
+                        argument("lives", IntegerArgumentType.integer(0))
+                        .executes(contxtx -> setLives(IntegerArgumentType.getInteger(contxtx, "lives"), EntityArgumentType.getPlayers(contxtx, "targets")))
+                    )
+                )
+            )
+        );
+    }
+
+    private static int setLives(int lives, Collection<? extends PlayerEntity> targets)
+    {
+        for (PlayerEntity playerEntity : targets)
+        {
+            ModComponentKeys.GAME_PLAYER_DATA.get(playerEntity).setLives(lives); 
+        }
+
+        return 0;
     }
 }

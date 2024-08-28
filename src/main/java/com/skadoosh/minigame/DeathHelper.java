@@ -29,6 +29,11 @@ public class DeathHelper {
         return false;
     }
 
+    public static boolean graveIsPublic(PlayerEntity player, DamageSource damageSource)
+    {
+        return shouldMarkDeath(player, damageSource);
+    }
+
     public static Formatting getNameColor(int lives)
     {
         if (lives >= 4)

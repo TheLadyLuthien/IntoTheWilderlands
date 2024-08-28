@@ -3,6 +3,7 @@ package com.skadoosh.wilderlands.datagen;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
+import com.skadoosh.minigame.Minigame;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.items.ModItems;
@@ -66,6 +67,10 @@ public class Datagen implements DataGeneratorEntrypoint
             translationBuilder.add("bifrost.colorized.dimension.the_end", "§dEnd§r");
             translationBuilder.add("bifrost.colorized.dimension.astral_wastes", "§7Astal Wastes§r");
 
+            translationBuilder.add(Minigame.EVERSTAR, "The Everstar");
+            translationBuilder.add(Minigame.GRAVE_TOKEN, "Grave Token");
+
+
             handleAutoTranslateAnnotation(translationBuilder);
 
             // try
@@ -85,7 +90,6 @@ public class Datagen implements DataGeneratorEntrypoint
             ArrayList<AnnotationHelper.ValueAnnotationPair<Block, AutoTranslate>> blocks = AnnotationHelper.getFieldsWithAnnotation(AutoTranslate.class, ModBlocks.class, Block.class);
             for (var blockData : blocks)
             {
-                Wilderlands.LOGGER.info("Datagen'd Block " + blockData.annotation.value());
                 tb.add(blockData.value, blockData.annotation.value());
             }
 

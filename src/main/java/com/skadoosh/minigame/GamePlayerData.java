@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.HolderLookup.Provider;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
 
 public class GamePlayerData implements AutoSyncedComponent, RespawnableComponent<GamePlayerData>
@@ -21,6 +22,11 @@ public class GamePlayerData implements AutoSyncedComponent, RespawnableComponent
     private static final String LIVES = "lives";
     private int lives = 5;
     
+    public void setLives(int lives)
+    {
+        this.lives = lives;
+    }
+
     public int getLives()
     {
         return lives;
@@ -52,6 +58,8 @@ public class GamePlayerData implements AutoSyncedComponent, RespawnableComponent
                 // set to spectator
                 sp.changeGameMode(GameMode.SPECTATOR);
             }
+
+            player.sendMessage(Text.literal("Your death was marked. You have " + lives +  (lives == 1 ? " life" : " lives") + " remaining."), false);
         }
     }
 }
