@@ -12,7 +12,8 @@
     "client": [
         "DimensionVisiualEffectsMixin",
         "WorldRendererMixin",
-        "WorldRendererAccessor"
+        "WorldRendererAccessor",
+        "DebugHudMixin"
     ],
     "injectors": {
         "defaultRequire": 1

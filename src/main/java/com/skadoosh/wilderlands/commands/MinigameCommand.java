@@ -9,16 +9,22 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.skadoosh.minigame.DeathHelper;
+import com.skadoosh.minigame.TeamRefrence;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
 import net.minecraft.command.CommandBuildContext;
+import net.minecraft.command.argument.ColumnPosArgumentType;
 import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.command.argument.TeamArgumentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.scoreboard.AbstractTeam.VisibilityRule;
 import net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.ColumnPos;
+import net.minecraft.world.World;
 import net.minecraft.server.command.ServerCommandSource;
 
 public class MinigameCommand
@@ -62,6 +68,31 @@ public class MinigameCommand
                         })
                     )
                 )
+                .then(
+                    literal("zone")
+                    .then(
+                        literal("chunk")
+                        .then(
+                            argument("pos", ColumnPosArgumentType.columnPos())
+                            .then(
+                                argument("team", TeamArgumentType.team())
+                                .executes(contxtx -> setChunkZone(contxtx.getSource().getWorld(), ColumnPosArgumentType.getColumnPos(contxtx, "pos").toChunkPos(), TeamArgumentType.getTeam(contxtx, "team").getName()))
+                            )
+                            .then(
+                                literal("neutral")
+                                .executes(contxtx -> setChunkZone(contxtx.getSource().getWorld(), ColumnPosArgumentType.getColumnPos(contxtx, "pos").toChunkPos(), null))
+                            )
+                            // .executes(contxtx -> {
+                            //     ColumnPos cpos = ColumnPosArgumentType.getColumnPos(contxtx, "pos");
+                            //     ChunkPos chunkPos = cpos.toChunkPos();
+
+                            //     ModComponentKeys.GAME_WORLD_DATA.get(contxtx.getSource().getWorld())
+                                
+                            //     return 0;
+                            // })
+                        )
+                    )
+                )
             )
         );
 
@@ -94,6 +125,12 @@ public class MinigameCommand
             ModComponentKeys.GAME_PLAYER_DATA.get(playerEntity).setLives(lives); 
         }
 
+        return 0;
+    }
+
+    private static int setChunkZone(World world, ChunkPos chunkPos, String teamId)
+    {
+        ModComponentKeys.GAME_WORLD_DATA.get(world).setTeamAtChunk(chunkPos, teamId);
         return 0;
     }
 }

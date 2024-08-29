@@ -7,10 +7,14 @@ import com.skadoosh.minigame.blockentities.GravestoneBlockEntity;
 import com.skadoosh.minigame.blocks.GravestoneBlock;
 import com.skadoosh.minigame.items.GraveTokenItem;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
+
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.render.DeltaTracker;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -31,6 +35,15 @@ public class Minigame
     
     public static void initialize()
     {
+        HudRenderCallback.EVENT.register(new HudRenderCallback() {
+
+            @Override
+            public void onHudRender(GuiGraphics drawContext, DeltaTracker tickCounter)
+            {
+                // drawContext.deb
+            }
+            
+        });
     }
 
     public static Identifier id(String name)

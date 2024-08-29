@@ -45,7 +45,11 @@ public class GravestoneBlock extends Block implements BlockEntityProvider
             if (gbe.getTeam() != GravestoneBlockEntity.NO_TEAM)
             {
                 // check the team
-                canOpen = world.getScoreboard().getPlayerTeam(entity.getProfileName()).getName().equals(gbe.getTeam());
+                Team playerTeam = world.getScoreboard().getPlayerTeam(entity.getProfileName());
+                if (playerTeam != null)
+                {
+                    canOpen = playerTeam.getName().equals(gbe.getTeam());
+                }
             }
             else
             {

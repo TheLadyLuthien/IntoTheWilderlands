@@ -41,6 +41,7 @@
     "mixin": "wilderlands.mixins.json",
     "cardinal-components": [
         "wilderlands:named_keystone_data",
+        "fall_games:game_world_data",
         "fall_games:game_player_data"
     ]
 }
