@@ -26,6 +26,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ColumnPos;
 import net.minecraft.world.World;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public class MinigameCommand
 {
@@ -92,6 +93,23 @@ public class MinigameCommand
                             // })
                         )
                     )
+                    .then(
+                        literal("area")
+                        .then(
+                            argument("center", ColumnPosArgumentType.columnPos())
+                            .then(
+                                argument("chunk_radius", IntegerArgumentType.integer())
+                                .then(
+                                    argument("team", TeamArgumentType.team())
+                                    .executes(contxtx -> setChunkAreaZone(contxtx.getSource().getWorld(), ColumnPosArgumentType.getColumnPos(contxtx, "center").toChunkPos(), IntegerArgumentType.getInteger(contxtx, "chunk_radius"), TeamArgumentType.getTeam(contxtx, "team").getName()))
+                                )
+                                .then(
+                                    literal("neutral")
+                                    .executes(contxtx -> setChunkAreaZone(contxtx.getSource().getWorld(), ColumnPosArgumentType.getColumnPos(contxtx, "center").toChunkPos(), IntegerArgumentType.getInteger(contxtx, "chunk_radius"), null))
+                                )
+                            )
+                        )
+                    )
                 )
             )
         );
@@ -116,6 +134,31 @@ public class MinigameCommand
                 )
             )
         );
+
+        dispatcher.register(
+            literal("score")
+            .executes(contxtx -> {
+                ServerPlayerEntity player = contxtx.getSource().getPlayerOrThrow();
+                TeamRefrence team = TeamRefrence.of(player);
+                
+                if (team.getData(contxtx.getSource().getWorld()) == null)
+                {
+                    contxtx.getSource().sendFeedback(() -> {
+                        return Text.literal("The neutral team cannot have a score");
+                    }, false);
+                    
+                    return 0;
+                }
+
+                final int totalScore = team.getData(contxtx.getSource().getWorld()).getTotalScore();
+                
+                contxtx.getSource().sendFeedback(() -> {
+                    return Text.literal("Your team's score is " + totalScore);
+                }, false);
+
+                return totalScore;
+            })
+        );
     }
 
     private static int setLives(int lives, Collection<? extends PlayerEntity> targets)
@@ -131,6 +174,24 @@ public class MinigameCommand
     private static int setChunkZone(World world, ChunkPos chunkPos, String teamId)
     {
         ModComponentKeys.GAME_WORLD_DATA.get(world).setTeamAtChunk(chunkPos, teamId);
+        return 0;
+    }
+
+    private static int setChunkAreaZone(World world, ChunkPos origin, int radius, String teamId)
+    {
+        final var data = ModComponentKeys.GAME_WORLD_DATA.get(world);
+        data.haltAutoSync();
+
+        for (int x = (origin.x - radius); x < (origin.x + radius); x++)
+        {
+            for (int z = (origin.z - radius); z < (origin.z + radius); z++)
+            {
+                ChunkPos pos = new ChunkPos(x, z);
+                data.setTeamAtChunk(pos, teamId);
+            }
+        }
+
+        data.resumeAutoSync();
         return 0;
     }
 }

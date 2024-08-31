@@ -1,4 +1,4 @@
-package com.skadoosh.minigame;
+package com.skadoosh.minigame.persistance;
 
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.entity.RespawnableComponent;
@@ -21,6 +21,10 @@ public class GamePlayerData implements AutoSyncedComponent, RespawnableComponent
 
     private static final String LIVES = "lives";
     private int lives = 5;
+
+    private static final String PREVIOUS_ZONE = "previous_zone";
+    public static final String NO_ZONE = "no_zone";
+    private String previousZone = NO_ZONE;
     
     public void setLives(int lives)
     {
@@ -32,16 +36,28 @@ public class GamePlayerData implements AutoSyncedComponent, RespawnableComponent
         return lives;
     }
 
+    public String getPreviousZoneId()
+    {
+        return previousZone.equals(NO_ZONE) ? null : previousZone;
+    }
+
+    public void setPreviousZoneId(String zoneId)
+    {
+        previousZone = (zoneId == null ? NO_ZONE : zoneId);
+    }
+
     @Override
     public void readFromNbt(NbtCompound tag, Provider registryLookup)
     {
         lives = tag.getInt(LIVES);
+        // previousZone = tag.getString(PREVIOUS_ZONE);
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, Provider registryLookup)
     {
         tag.putInt(LIVES, lives);
+        // tag.putString(PREVIOUS_ZONE, previousZone);
     }
 
     public void onMarkedDeath()

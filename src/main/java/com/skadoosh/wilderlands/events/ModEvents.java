@@ -1,7 +1,9 @@
 package com.skadoosh.wilderlands.events;
 
 import com.skadoosh.minigame.DeathHelper;
-import com.skadoosh.minigame.GamePlayerData;
+import com.skadoosh.minigame.TeamRefrence;
+import com.skadoosh.minigame.persistance.GamePlayerData;
+import com.skadoosh.minigame.persistance.GameTeamData;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
@@ -45,7 +47,17 @@ public final class ModEvents
                     final ServerPlayerEntity killerPlayer = (ServerPlayerEntity)killer;
                     final ServerPlayerEntity deadPlayer = (ServerPlayerEntity)killedEntity;
                     
-
+                    boolean deathMarked = DeathHelper.shouldMarkDeath(deadPlayer, killerPlayer);
+                    if (deathMarked)
+                    {
+                        TeamRefrence team = TeamRefrence.of(killerPlayer);
+                        GameTeamData gtd = team.getData(world);
+                    
+                        if (gtd != null)
+                        {
+                            gtd.addKill();
+                        }
+                    }
                 }
             }
         });

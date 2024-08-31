@@ -1,7 +1,10 @@
-package com.skadoosh.minigame;
+package com.skadoosh.minigame.persistance;
 
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+
+import com.skadoosh.minigame.TeamRefrence;
+import com.skadoosh.wilderlands.persistance.SyncableComponent;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -12,18 +15,17 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class GameWorldData implements AutoSyncedComponent
+public class GameWorldData extends SyncableComponent<GameWorldData, World>
 {
     private final World world;
-    private final ComponentKey<GameWorldData> componentKey;
 
     private static final String TEAM_CHUNK_MAP = "team_chunk_map";
     private final HashMap<ChunkPos, String> teamChunkMap = new HashMap<>();
 
     public GameWorldData(World world, ComponentKey<GameWorldData> key)
     {
+        super(key, world);
         this.world = world;
-        this.componentKey = key;
     }
 
     @Override
@@ -76,10 +78,5 @@ public class GameWorldData implements AutoSyncedComponent
         }
 
         sync();
-    }
-
-    private void sync()
-    {
-        this.componentKey.sync(this.world);
     }
 }

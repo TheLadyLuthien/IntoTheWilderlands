@@ -16,12 +16,33 @@ public class DeathHelper {
             return true;
         }
 
-        if (zone == ZoneType.Neutral && damageSource.getSource() instanceof PlayerEntity /* TODO: && was enemy team */)
+        if (zone == ZoneType.Neutral && damageSource.getSource() instanceof PlayerEntity && !TeamRefrence.of((PlayerEntity)damageSource.getSource()).isFriendlyWith(player))
         {
             return true;
         }
 
-        if (zone == ZoneType.Friendly && damageSource.getSource() instanceof PlayerEntity && RaidHelper.isOnRaid((PlayerEntity)damageSource.getSource()) /* TODO: && was enemy team */)
+        if (zone == ZoneType.Friendly && damageSource.getSource() instanceof PlayerEntity && RaidHelper.isOnRaid((PlayerEntity)damageSource.getSource()) && !TeamRefrence.of((PlayerEntity)damageSource.getSource()).isFriendlyWith(player))
+        {
+            return true;
+        }
+
+        return false;
+    }
+    public static boolean shouldMarkDeath(PlayerEntity player, PlayerEntity killer)
+    {
+        ZoneType zone = ZoneHelper.getZoneType(player);
+
+        if (zone == ZoneType.Enemy)
+        {
+            return true;
+        }
+
+        if (zone == ZoneType.Neutral && !TeamRefrence.of(killer).isFriendlyWith(player))
+        {
+            return true;
+        }
+
+        if (zone == ZoneType.Friendly && RaidHelper.isOnRaid(killer) && !TeamRefrence.of(killer).isFriendlyWith(player))
         {
             return true;
         }

@@ -1,6 +1,9 @@
 package com.skadoosh.minigame;
 
-import com.skadoosh.minigame.ZoneHelper.ZoneType;
+import org.jetbrains.annotations.Nullable;
+
+import com.skadoosh.minigame.persistance.GameTeamData;
+import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
@@ -10,6 +13,7 @@ public class TeamRefrence
 {
     private static final NeutralTeam NEUTRAL_TEAM = new NeutralTeam();
 
+    @Nullable
     private final String teamId; // can be null to represent neutral team
 
     public static TeamRefrence of(String teamId)
@@ -21,6 +25,18 @@ public class TeamRefrence
         return new TeamRefrence(teamId);
     }
 
+    public static TeamRefrence of(PlayerEntity player)
+    {
+        try
+        {
+            return of(player.getWorld().getScoreboard().getPlayerTeam(player.getProfileName()).getName());
+        }
+        catch (Exception e)
+        {
+            return NEUTRAL_TEAM;
+        }
+    }
+
     protected TeamRefrence(String teamId)
     {
         this.teamId = teamId;
@@ -28,7 +44,8 @@ public class TeamRefrence
 
     public Team getTeam(World world)
     {
-        if (teamId == null) return null;
+        if (teamId == null)
+            return null;
         return world.getScoreboard().getTeam(teamId);
     }
 
@@ -40,6 +57,21 @@ public class TeamRefrence
     public boolean isFriendlyWith(PlayerEntity player)
     {
         return hasMember(player);
+    }
+
+    public GameTeamData getData(World world)
+    {
+        return ModComponentKeys.GAME_TEAM_DATA.get(getTeam(world));
+    }
+
+    public String getId()
+    {
+        return teamId;
+    }
+
+    public String getName(World world)
+    {
+        return getTeam(world).getDisplayName().getString();
     }
 
     public static class NeutralTeam extends TeamRefrence
@@ -65,6 +97,18 @@ public class TeamRefrence
         public boolean isFriendlyWith(PlayerEntity player)
         {
             return true;
+        }
+
+        @Override
+        public String getName(World world)
+        {
+            return "Neutral";
+        }
+
+        @Override
+        public GameTeamData getData(World world)
+        {
+            return null;
         }
     }
 

@@ -20,6 +20,18 @@ repositories {
         name = "Ladysnake Mods"
         url = "https://maven.ladysnake.org/releases"
 	}
+
+	exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 loom {
@@ -56,6 +68,7 @@ dependencies {
 	modImplementation "org.quiltmc:qsl:10.0.0-alpha.1+1.21"
 
 	modImplementation(libs.bundles.cca)
+	modImplementation(libs.bundles.xaeros)
 	// include(libs.bundles.cca)
 	
 	// modImplementation libs.bundles.quilted.fabric.api // If you wish to use Fabric API's deprecated modules, you can replace the above line with this one
