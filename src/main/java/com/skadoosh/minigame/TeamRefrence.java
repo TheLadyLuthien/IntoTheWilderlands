@@ -6,6 +6,7 @@ import com.skadoosh.minigame.persistance.GameTeamData;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
 
@@ -49,6 +50,13 @@ public class TeamRefrence
         return world.getScoreboard().getTeam(teamId);
     }
 
+    public Team getTeam(Scoreboard sb)
+    {
+        if (teamId == null)
+            return null;
+        return sb.getTeam(teamId);
+    }
+
     public boolean hasMember(PlayerEntity player)
     {
         return getTeam(player.getWorld()).getPlayerList().contains(player.getProfileName());
@@ -74,6 +82,11 @@ public class TeamRefrence
         return getTeam(world).getDisplayName().getString();
     }
 
+    public String getName(Scoreboard sb)
+    {
+        return getTeam(sb).getDisplayName().getString();
+    }
+
     public static class NeutralTeam extends TeamRefrence
     {
         protected NeutralTeam()
@@ -83,6 +96,12 @@ public class TeamRefrence
 
         @Override
         public Team getTeam(World world)
+        {
+            return null;
+        }
+
+        @Override
+        public Team getTeam(Scoreboard sb)
         {
             return null;
         }
@@ -101,6 +120,12 @@ public class TeamRefrence
 
         @Override
         public String getName(World world)
+        {
+            return "Neutral";
+        }
+
+        @Override
+        public String getName(Scoreboard sb)
         {
             return "Neutral";
         }

@@ -12,12 +12,14 @@ import com.skadoosh.minigame.DeathHelper;
 import com.skadoosh.minigame.TeamRefrence;
 import com.skadoosh.minigame.ZoneHelper;
 import com.skadoosh.minigame.persistance.GamePlayerData;
+import com.skadoosh.minigame.voicechat.VoicehcatHelper;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 @Mixin(PlayerEntity.class)
@@ -58,9 +60,10 @@ public class PlayerEntityMixin
 	@Inject(method = "tickMovement", at = @At("TAIL"))
 	public void tickMovement(CallbackInfo ci) 
 	{
-		PlayerEntity thisEntity = (PlayerEntity)(Object)(this);
-		if (!thisEntity.getWorld().isClient)
+		PlayerEntity te = (PlayerEntity)(Object)(this);
+		if (!te.getWorld().isClient)
 		{
+			ServerPlayerEntity thisEntity = (ServerPlayerEntity)(Object)(this);
 			final GamePlayerData gamePlayerData = ModComponentKeys.GAME_PLAYER_DATA.get(thisEntity);
 			String previousZoneId = gamePlayerData.getPreviousZoneId();
 			TeamRefrence currentZone = ZoneHelper.getZone(thisEntity);
@@ -82,6 +85,12 @@ public class PlayerEntityMixin
 				gamePlayerData.setPreviousZoneId(currentZoneId);
 	
 				thisEntity.sendMessage(ZoneHelper.getZoneType(thisEntity).styleText(Text.literal("You've entered " + currentZone.getName(thisEntity.getWorld()) + " territory")), true);
+			
+				// join the voice group if needed
+				if (currentZone.hasMember(thisEntity))
+				{
+					VoicehcatHelper.joinTeamGroup(thisEntity);
+				}
 			}
 		}
 	}
