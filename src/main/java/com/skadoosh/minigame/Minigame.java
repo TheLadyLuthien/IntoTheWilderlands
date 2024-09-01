@@ -50,24 +50,25 @@ public class Minigame
 
     public static void initialize()
     {
-        // ServerLifecycleEvents.SERVER_STARTED.register(new ServerStarted()
-        // {
-        //     @Override
-        //     public void onServerStarted(MinecraftServer server)
-        //     {
-        //         ServerScoreboard sb = server.getScoreboard();
-        //         Collection<String> teamNames = sb.getTeamNames();
-        //         for (String id : teamNames)
-        //         {
-        //             TeamRefrence tr = TeamRefrence.of(id);
-        //             final String password = UUID.randomUUID().toString();
+        ServerLifecycleEvents.SERVER_STARTED.register(new ServerStarted()
+        {
+            @Override
+            public void onServerStarted(MinecraftServer server)
+            {
+                ServerScoreboard sb = server.getScoreboard();
+                Collection<String> teamNames = sb.getTeamNames();
+                for (String id : teamNames)
+                {
+                    TeamRefrence tr = TeamRefrence.of(id);
+                    final String password = UUID.randomUUID().toString();
 
-        //             final var group = PluginEntrypoint.SERVER_API.groupBuilder().setName(tr.getName(sb)).setHidden(true).setPassword(password).setPersistent(true).setType(Type.OPEN).setId(UUID.nameUUIDFromBytes(tr.getId().getBytes())).build();
+                    final var group = PluginEntrypoint.SERVER_API.groupBuilder().setName(tr.getName(sb)).setPassword(password).setPersistent(true).setType(Type.OPEN).build();
+                    tr.getData(sb).setVoiceGroup(group);
 
-        //             Minigame.LOGGER.info("Password for " + id + "'s group is: " + password);
-        //         }
-        //     }
-        // });
+                    Minigame.LOGGER.info("Password for " + id + "'s group is: " + password);
+                }
+            }
+        });
     }
 
     public static Identifier id(String name)

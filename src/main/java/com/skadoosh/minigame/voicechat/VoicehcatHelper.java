@@ -3,18 +3,29 @@ package com.skadoosh.minigame.voicechat;
 import java.util.Map;
 import java.util.UUID;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.skadoosh.minigame.Minigame;
 import com.skadoosh.minigame.TeamRefrence;
 
-import de.maxhenkel.voicechat.Voicechat;
 import de.maxhenkel.voicechat.api.Group;
-import de.maxhenkel.voicechat.api.ServerPlayer;
 import de.maxhenkel.voicechat.api.VoicechatConnection;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class VoicehcatHelper
 {
     public static void joinTeamGroup(ServerPlayerEntity player)
+    {
+        Group group = TeamRefrence.of(player).getData(player.getWorld()).getVoiceGroup();
+        setGroup(player, group);
+    }
+
+    public static void leaveTeamGroup(ServerPlayerEntity player)
+    {
+        setGroup(player, null);
+    }
+
+    private static void setGroup(ServerPlayerEntity player, @Nullable Group group)
     {
         if (PluginEntrypoint.SERVER_API == null)
         {
@@ -28,26 +39,6 @@ public class VoicehcatHelper
             return;
         }
 
-        try
-        {
-            var group = PluginEntrypoint.SERVER_API.getGroup(UUID.nameUUIDFromBytes(TeamRefrence.of(player).getName(player.getWorld()).getBytes()));
-
-            if (group != null)
-            {
-                playerConnection.setGroup(group);
-                Minigame.LOGGER.info(group.getId() + "");
-            }
-        }
-        catch (Throwable e)
-        {
-            e.printStackTrace();
-        }
-
-        // playerConnection.setGroup(group.get);
-    }
-
-    public static void leaveTeamGroup(ServerPlayer player)
-    {
-
+        playerConnection.setGroup(group);
     }
 }

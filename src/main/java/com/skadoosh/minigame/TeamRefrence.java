@@ -72,6 +72,11 @@ public class TeamRefrence
         return ModComponentKeys.GAME_TEAM_DATA.get(getTeam(world));
     }
 
+    public GameTeamData getData(Scoreboard sb)
+    {
+        return ModComponentKeys.GAME_TEAM_DATA.get(getTeam(sb));
+    }
+
     public String getId()
     {
         return teamId;

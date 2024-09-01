@@ -91,6 +91,10 @@ public class PlayerEntityMixin
 				{
 					VoicehcatHelper.joinTeamGroup(thisEntity);
 				}
+				else
+				{
+					VoicehcatHelper.leaveTeamGroup(thisEntity);
+				}
 			}
 		}
 	}

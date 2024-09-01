@@ -5,6 +5,7 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 import com.skadoosh.wilderlands.persistance.NbtValue;
 
+import de.maxhenkel.voicechat.api.Group;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.HolderLookup.Provider;
 import net.minecraft.scoreboard.Scoreboard;
@@ -24,6 +25,19 @@ public class GameTeamData implements AutoSyncedComponent
     private final NbtValue<Integer> markedKills = new NbtValue<Integer>("marked_kills",  0);
 
     private final NbtWorldPosValue baseLocation = new NbtWorldPosValue("base_location", new BlockPos(0, 0, 0), Identifier.ofDefault("overworld"));
+
+    @Nullable
+    private Group voiceGroup = null;
+
+    public Group getVoiceGroup()
+    {
+        return voiceGroup;
+    }
+
+    public void setVoiceGroup(Group voiceGroup)
+    {
+        this.voiceGroup = voiceGroup;
+    }
 
     public NbtWorldPosValue getBaseLocation()
     {
