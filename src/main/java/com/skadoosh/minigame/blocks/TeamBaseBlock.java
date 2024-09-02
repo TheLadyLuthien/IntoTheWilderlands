@@ -8,6 +8,7 @@ import com.skadoosh.minigame.ZoneHelper;
 import com.skadoosh.minigame.persistance.GameTeamData;
 import com.skadoosh.minigame.persistance.NbtWorldPosValue;
 import com.skadoosh.wilderlands.components.ModComponents;
+import com.skadoosh.wilderlands.mixin.BannerBlockEntityAccessor;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
 import net.minecraft.block.Block;
@@ -26,6 +27,7 @@ import net.minecraft.registry.Holder.Direct;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
@@ -88,6 +90,8 @@ public class TeamBaseBlock extends Block
             BannerBlockEntity bbe = (BannerBlockEntity)be;
             try
             {
+                Text text = Text.literal(team.getName(server.getScoreboard()) + "'s Flag").setStyle(Style.EMPTY.withItalic(false).withBold(false));
+                ((BannerBlockEntityAccessor)(Object)bbe).setCustomName(text);
                 BannerBlockEntity.class.getField("teamId").set(bbe, team.getId());
             }
             catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e)
@@ -148,7 +152,7 @@ public class TeamBaseBlock extends Block
                         // matching base & player teams, not their own flag
                         teamOfUser.getData(world).addCapture();
 
-                        teamOfBase.sendMessageToMembers(sw.getServer(), entity.getDisplayName().copy().append(Text.literal(" captured " + bannerTeam.getName(sw) + "'s falg!")), false);
+                        teamOfBase.sendMessageToMembers(sw.getServer(), entity.getDisplayName().copy().append(Text.literal(" captured " + bannerTeam.getName(sw) + "'s flag!")), false);
                         bannerTeam.sendMessageToMembers(sw.getServer(), Text.literal("Your flag was captured. It has now been returned to your base."), false);
 
                         NbtWorldPosValue bannerBaseLocation = bannerTeam.getData(world).getBaseLocation();

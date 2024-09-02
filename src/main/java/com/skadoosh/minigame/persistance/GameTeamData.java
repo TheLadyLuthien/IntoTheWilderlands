@@ -54,7 +54,7 @@ public class GameTeamData implements AutoSyncedComponent
 
     public void addCapture()
     {
-        flagCaptureCount.set(flagCaptureCount.get() + 1);
+        flagCaptureCount.set(flagCaptureCount.get() + 2);
     }
 
     public void addKill()

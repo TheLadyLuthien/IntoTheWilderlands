@@ -8,6 +8,7 @@
         "PistonBlockMixin",
         "PistonHandlerMixin",
         "ServerPlayerEntityMixin",
+        "BannerBlockEntityAccessor",
         "BannerBlockEntityMixin"
     ],
     "client": [
