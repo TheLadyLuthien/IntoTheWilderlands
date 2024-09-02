@@ -30,14 +30,16 @@ public class NbtWorldPosValue implements NbtReadWrite
         pos = new BlockPos(comp.getInt("x"), comp.getInt("y"), comp.getInt("z"));
         world = comp.getString("world");
     }
-
+    
     @Override
     public void write(NbtCompound nbt)
     {
-        nbt.putInt("x", pos.getX());
-        nbt.putInt("y", pos.getY());
-        nbt.putInt("z", pos.getZ());
-        nbt.putString("world", world);
+        NbtCompound comp = new NbtCompound();
+        comp.putInt("x", pos.getX());
+        comp.putInt("y", pos.getY());
+        comp.putInt("z", pos.getZ());
+        comp.putString("world", world);
+        nbt.put(name, comp);
     }
 
     public BlockPos getPos()

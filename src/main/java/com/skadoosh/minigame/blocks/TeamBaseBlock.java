@@ -17,9 +17,12 @@ import net.minecraft.block.entity.BannerBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AutomaticItemPlacementContext;
 import net.minecraft.item.BannerItem;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Holder.Direct;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -30,6 +33,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 
@@ -111,13 +115,16 @@ public class TeamBaseBlock extends Block
 
             ItemStack mainHand = entity.getStackInHand(Hand.MAIN_HAND);
             ItemStack offHand = entity.getStackInHand(Hand.OFF_HAND);
+            Hand hand = null;
             if (mainHand != null && !mainHand.isEmpty())
             {
                 stack = mainHand;
+                hand = Hand.MAIN_HAND;
             }
             else if (offHand != null && !offHand.isEmpty())
             {
                 stack = offHand;
+                hand = Hand.OFF_HAND;
             }
 
             if (stack == null || !stack.isOf(Items.WHITE_BANNER) || stack.get(ModComponents.FLAG_TEAM_ID) == null)
@@ -144,7 +151,15 @@ public class TeamBaseBlock extends Block
                         teamOfBase.sendMessageToMembers(sw.getServer(), entity.getDisplayName().copy().append(Text.literal(" captured " + bannerTeam.getName(sw) + "'s falg!")), false);
                         bannerTeam.sendMessageToMembers(sw.getServer(), Text.literal("Your flag was captured. It has now been returned to your base."), false);
 
-                        // TODO: make new flag appear and remove old one
+                        NbtWorldPosValue bannerBaseLocation = bannerTeam.getData(world).getBaseLocation();
+                        ServerWorld bannerBaseWorld = bannerBaseLocation.getWorld(sw.getServer());
+                        
+                        bannerBaseWorld.setBlockState(bannerBaseLocation.getPos().up(), Blocks.AIR.getDefaultState());
+                        bannerBaseWorld.setBlockState(bannerBaseLocation.getPos().up().up(), Blocks.AIR.getDefaultState());
+                        ((BlockItem)(stack.getItem())).place(new AutomaticItemPlacementContext(bannerBaseWorld, bannerBaseLocation.getPos().up(), Direction.DOWN, stack, Direction.DOWN));
+                        
+                        // TeamBaseBlock.generateFlagAtBase(sw.getServer(), bannerTeam);
+                        entity.setStackInHand(hand, ItemStack.EMPTY);
 
                         return ActionResult.CONSUME;
                     }
