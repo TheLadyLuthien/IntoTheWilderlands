@@ -7,7 +7,8 @@
         "PlayerEntityMixin",
         "PistonBlockMixin",
         "PistonHandlerMixin",
-        "ServerPlayerEntityMixin"
+        "ServerPlayerEntityMixin",
+        "BannerBlockEntityMixin"
     ],
     "client": [
         "DimensionVisiualEffectsMixin",

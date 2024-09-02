@@ -5,10 +5,16 @@ import org.jetbrains.annotations.Nullable;
 import com.skadoosh.minigame.persistance.GameTeamData;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
+import net.minecraft.command.argument.MessageArgumentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class TeamRefrence
 {
@@ -35,6 +41,20 @@ public class TeamRefrence
         catch (Exception e)
         {
             return NEUTRAL_TEAM;
+        }
+    }
+
+    public void sendMessageToMembers(MinecraftServer server, Text message, boolean actionBar)
+    {
+        List<ServerPlayerEntity> list = server.getPlayerManager().getPlayerList().stream().filter((player) -> {
+            return this.hasMember(player);
+        }).toList();
+        if (!list.isEmpty())
+        {
+            for (ServerPlayerEntity player : list)
+            {
+                player.sendMessage(message, actionBar);
+            }
         }
     }
 

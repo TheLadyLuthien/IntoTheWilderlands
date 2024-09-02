@@ -10,6 +10,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.skadoosh.minigame.DeathHelper;
 import com.skadoosh.minigame.TeamRefrence;
+import com.skadoosh.minigame.blocks.TeamBaseBlock;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
 import net.minecraft.command.CommandBuildContext;
@@ -19,6 +20,7 @@ import net.minecraft.command.argument.TeamArgumentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.scoreboard.AbstractTeam.VisibilityRule;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -109,6 +111,23 @@ public class MinigameCommand
                                 )
                             )
                         )
+                    )
+                )
+            ).then(
+                literal("fix")
+                .then(
+                    literal("team_flag_lost")
+                    .then(
+                        argument("team", TeamArgumentType.team())
+                        .executes(contxtx -> {
+                            MinecraftServer server = contxtx.getSource().getServer();
+                            
+                            Team team = TeamArgumentType.getTeam(contxtx, "team");
+                            TeamRefrence t = TeamRefrence.of(team.getName());
+                            
+                            TeamBaseBlock.generateFlagAtBase(server, t);
+                            return 0;
+                        })
                     )
                 )
             )
