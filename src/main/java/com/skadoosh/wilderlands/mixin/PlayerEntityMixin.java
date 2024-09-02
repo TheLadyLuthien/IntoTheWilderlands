@@ -12,6 +12,8 @@ import com.skadoosh.minigame.DeathHelper;
 import com.skadoosh.minigame.TeamRefrence;
 import com.skadoosh.minigame.ZoneHelper;
 import com.skadoosh.minigame.persistance.GamePlayerData;
+import com.skadoosh.minigame.persistance.GameTeamData;
+import com.skadoosh.minigame.voicechat.PluginEntrypoint;
 import com.skadoosh.minigame.voicechat.VoicehcatHelper;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
@@ -96,6 +98,8 @@ public class PlayerEntityMixin
 					VoicehcatHelper.leaveTeamGroup(thisEntity);
 				}
 			}
+
+			GameTeamData.test(thisEntity, gamePlayerData, currentZone);
 		}
 	}
 }

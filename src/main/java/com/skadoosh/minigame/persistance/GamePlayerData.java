@@ -25,7 +25,19 @@ public class GamePlayerData implements AutoSyncedComponent, RespawnableComponent
     private static final String PREVIOUS_ZONE = "previous_zone";
     public static final String NO_ZONE = "no_zone";
     private String previousZone = NO_ZONE;
+
+    private boolean voicechatInitialized = false;
     
+    public boolean isVoicechatInitialized()
+    {
+        return voicechatInitialized;
+    }
+
+    public void setVoicechatInitialized(boolean voicechatInitialized)
+    {
+        this.voicechatInitialized = voicechatInitialized;
+    }
+
     public void setLives(int lives)
     {
         this.lives = lives;

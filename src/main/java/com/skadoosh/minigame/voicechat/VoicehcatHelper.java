@@ -14,31 +14,32 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class VoicehcatHelper
 {
-    public static void joinTeamGroup(ServerPlayerEntity player)
+    public static boolean joinTeamGroup(ServerPlayerEntity player)
     {
         Group group = TeamRefrence.of(player).getData(player.getWorld()).getVoiceGroup();
-        setGroup(player, group);
+        return setGroup(player, group);
     }
 
-    public static void leaveTeamGroup(ServerPlayerEntity player)
+    public static boolean leaveTeamGroup(ServerPlayerEntity player)
     {
-        setGroup(player, null);
+        return setGroup(player, null);
     }
 
-    private static void setGroup(ServerPlayerEntity player, @Nullable Group group)
+    private static boolean setGroup(ServerPlayerEntity player, @Nullable Group group)
     {
         if (PluginEntrypoint.SERVER_API == null)
         {
-            return;
+            return false;
         }
 
         VoicechatConnection playerConnection = PluginEntrypoint.SERVER_API.getConnectionOf(player.getUuid());
 
-        if (playerConnection == null)
+        if (playerConnection == null || !playerConnection.isConnected())
         {
-            return;
+            return false;
         }
 
         playerConnection.setGroup(group);
+        return true;
     }
 }
