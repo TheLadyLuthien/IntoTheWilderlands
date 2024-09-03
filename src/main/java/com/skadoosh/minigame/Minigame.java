@@ -39,7 +39,7 @@ public class Minigame
     public static final Logger LOGGER = LoggerFactory.getLogger("Wilderlands_Fall_Game");
     public static final String NAMESPACE = "fall_games";
 
-    public static final Block GRAVESTONE_BLOCK = Registry.register(Registries.BLOCK, id("gravestone"), new GravestoneBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)));
+    public static final Block GRAVESTONE_BLOCK = Registry.register(Registries.BLOCK, id("gravestone"), new GravestoneBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).nonOpaque()));
     public static final BlockEntityType<GravestoneBlockEntity> GRAVESTONE_BLOCK_ENTITY_TYPE = Registry.register(Registries.BLOCK_ENTITY_TYPE, id("gravestone"), BlockEntityType.Builder.create(GravestoneBlockEntity::new, ModBlocks.DEPLOYER).build());
 
     public static final Item GRAVE_TOKEN = Registry.register(Registries.ITEM, id("grave_token"), new GraveTokenItem(new Item.Settings().fireproof().maxCount(1)));

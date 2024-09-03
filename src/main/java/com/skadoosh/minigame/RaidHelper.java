@@ -1,10 +1,17 @@
 package com.skadoosh.minigame;
 
-import net.minecraft.entity.player.PlayerEntity;
+import com.skadoosh.minigame.persistance.GameTeamData;
 
-public class RaidHelper {
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.scoreboard.Team;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+
+public class RaidHelper
+{
     public static boolean isOnRaid(PlayerEntity player)
     {
-        return false;
+        TeamRefrence tr = TeamRefrence.of(player);
+        return tr.isOnRaid(player.getWorld().getScoreboard());
     }
 }

@@ -11,15 +11,18 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.skadoosh.minigame.DeathHelper;
 import com.skadoosh.minigame.TeamRefrence;
 import com.skadoosh.minigame.blocks.TeamBaseBlock;
+import com.skadoosh.minigame.persistance.GameTeamData;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
 import net.minecraft.command.CommandBuildContext;
 import net.minecraft.command.argument.ColumnPosArgumentType;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.TeamArgumentType;
+import net.minecraft.command.argument.TimeArgumentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.scoreboard.AbstractTeam.VisibilityRule;
+import net.minecraft.scoreboard.ServerScoreboard;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import net.minecraft.text.Text;
@@ -193,6 +196,133 @@ public class MinigameCommand
 
                 return totalScore;
             })
+        );
+
+        dispatcher.register(
+            literal("raid")
+            .then(
+                literal("status")
+                .executes(contxtx -> {
+                    ServerPlayerEntity player = contxtx.getSource().getPlayerOrThrow();
+                    TeamRefrence team = TeamRefrence.of(player);
+
+                    ServerScoreboard sb = contxtx.getSource().getServer().getScoreboard();
+                    GameTeamData gtd = team.getData(sb);
+                    
+                    if (team.isOnRaid(sb))
+                    {
+                        long remaining = GameTeamData.RAID_DURATION - (gtd.getTick() - gtd.previousRaidStart.get());
+                        contxtx.getSource().sendFeedback(() -> Text.literal(team.getName(sb) + " is currently on a raid! " + (remaining / 20 / 60) + " min remaining."), false);
+                    }
+                    else
+                    {
+
+                        long remaining = (gtd.nextRaidStart.get() - gtd.getTick());
+                        long min = remaining / 20 / 60;
+                        long days = min / 20;
+
+                        if (days == 0l)
+                        {
+                            contxtx.getSource().sendFeedback(() -> Text.literal(team.getName(sb) + " is not on a raid. Next raid is soon..."), false);
+                        }
+                        else
+                        {
+                            contxtx.getSource().sendFeedback(() -> Text.literal(team.getName(sb) + " is not on a raid. Next raid is in " + days + " Minecraft days."), false);
+                        }
+                    }
+                    
+                    return 0;
+                })
+            )
+            .then(
+                literal("reset_time")
+                .requires(p -> p.hasPermission(3))
+                .then(
+                    argument("team", TeamArgumentType.team())
+                    .executes(contxtx -> {
+                        TeamRefrence team = TeamRefrence.of(TeamArgumentType.getTeam(contxtx, "team").getName());
+                        ServerScoreboard sb = contxtx.getSource().getServer().getScoreboard();
+                        
+                        GameTeamData gtd = team.getData(sb);
+                        
+                        gtd.setNextRaidTime();
+                        
+                        long remaining = (gtd.nextRaidStart.get() - gtd.getTick());
+                        long min = remaining / 20 / 60;
+                         
+                        contxtx.getSource().sendFeedback(() -> Text.literal(team.getName(sb) + "'s next raid is now in " + min + " mins."), false);
+                            
+                        return 0;
+                    })
+                )
+            )
+            .then(
+                literal("get_exact_time")
+                .requires(p -> p.hasPermission(3))
+                .then(
+                    argument("team", TeamArgumentType.team())
+                    .executes(contxtx -> {
+                        TeamRefrence team = TeamRefrence.of(TeamArgumentType.getTeam(contxtx, "team").getName());
+                        ServerScoreboard sb = contxtx.getSource().getServer().getScoreboard();
+                        
+                        GameTeamData gtd = team.getData(sb);
+                        
+                        long remaining = (gtd.nextRaidStart.get() - gtd.getTick());
+                        long min = remaining / 20 / 60;
+                         
+                        contxtx.getSource().sendFeedback(() -> Text.literal(team.getName(sb) + "'s next raid is in " + min + " mins."), false);
+                            
+                        return 0;
+                    })
+                )
+            )
+            .then(
+                literal("set_exact_time")
+                .requires(p -> p.hasPermission(3))
+                .then(
+                    argument("team", TeamArgumentType.team())
+                    .then(
+                        argument("time", TimeArgumentType.of(10))
+                        .executes(contxtx -> {
+                            TeamRefrence team = TeamRefrence.of(TeamArgumentType.getTeam(contxtx, "team").getName());
+                            ServerScoreboard sb = contxtx.getSource().getServer().getScoreboard();
+                            
+                            GameTeamData gtd = team.getData(sb);
+                            
+                            gtd.nextRaidStart.set(gtd.getTick() + IntegerArgumentType.getInteger(contxtx, "time"));
+
+                            long remaining = (gtd.nextRaidStart.get() - gtd.getTick());
+                            long min = remaining / 20 / 60;
+                             
+                            contxtx.getSource().sendFeedback(() -> Text.literal(team.getName(sb) + "'s next raid is in " + min + " mins."), false);
+                                
+                            return 0;
+                        })
+                    )
+                )
+            )
+            .then(
+                literal("force_end")
+                .requires(p -> p.hasPermission(3))
+                .then(
+                    argument("team", TeamArgumentType.team())
+                    .executes(contxtx -> {
+                        TeamRefrence team = TeamRefrence.of(TeamArgumentType.getTeam(contxtx, "team").getName());
+                        ServerScoreboard sb = contxtx.getSource().getServer().getScoreboard();
+                        
+                        GameTeamData gtd = team.getData(sb);
+                        
+                        gtd.previousRaidStart.set(0l);
+
+                        long remaining = (gtd.nextRaidStart.get() - gtd.getTick());
+                        long min = remaining / 20 / 60;
+                            
+                        contxtx.getSource().sendFeedback(() -> Text.literal(team.getName(sb) + "'s next raid is in " + min + " mins."), false);
+                            
+                        return 0;
+                    })
+                )
+            )
         );
     }
 

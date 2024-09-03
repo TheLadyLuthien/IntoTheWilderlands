@@ -9,12 +9,14 @@
         "PistonHandlerMixin",
         "ServerPlayerEntityMixin",
         "BannerBlockEntityAccessor",
+        "PlayerInventoryAccessor",
         "BannerBlockEntityMixin"
     ],
     "client": [
         "DimensionVisiualEffectsMixin",
         "WorldRendererMixin",
         "WorldRendererAccessor",
+        "MinecraftClientMixin",
         "DebugHudMixin"
     ],
     "injectors": {

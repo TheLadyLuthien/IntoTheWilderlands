@@ -69,6 +69,8 @@ public class Datagen implements DataGeneratorEntrypoint
 
             translationBuilder.add(Minigame.EVERSTAR, "The Everstar");
             translationBuilder.add(Minigame.GRAVE_TOKEN, "Grave Token");
+            translationBuilder.add(Minigame.GRAVESTONE_BLOCK, "Gravestone");
+            translationBuilder.add(Minigame.TEAM_BASE, "Team Base");
 
 
             handleAutoTranslateAnnotation(translationBuilder);

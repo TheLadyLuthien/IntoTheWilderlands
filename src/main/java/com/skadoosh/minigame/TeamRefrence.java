@@ -112,6 +112,11 @@ public class TeamRefrence
         return getTeam(sb).getDisplayName().getString();
     }
 
+    public boolean isOnRaid(Scoreboard sb)
+    {
+        return getData(sb).isOnRaid();
+    }
+
     public static class NeutralTeam extends TeamRefrence
     {
         protected NeutralTeam()
@@ -159,6 +164,12 @@ public class TeamRefrence
         public GameTeamData getData(World world)
         {
             return null;
+        }
+
+        @Override
+        public boolean isOnRaid(Scoreboard sb)
+        {
+            return false;
         }
     }
 

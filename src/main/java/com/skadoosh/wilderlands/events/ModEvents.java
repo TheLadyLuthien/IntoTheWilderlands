@@ -47,16 +47,23 @@ public final class ModEvents
                     final ServerPlayerEntity killerPlayer = (ServerPlayerEntity)killer;
                     final ServerPlayerEntity deadPlayer = (ServerPlayerEntity)killedEntity;
                     
+                    TeamRefrence killerTeam = TeamRefrence.of(killerPlayer);
+                    TeamRefrence deadTeam = TeamRefrence.of(deadPlayer);
+
                     boolean deathMarked = DeathHelper.shouldMarkDeath(deadPlayer, killerPlayer);
                     if (deathMarked)
                     {
-                        TeamRefrence team = TeamRefrence.of(killerPlayer);
-                        GameTeamData gtd = team.getData(world);
+                        GameTeamData gtd = killerTeam.getData(world);
                     
                         if (gtd != null)
                         {
                             gtd.addKill();
                         }
+                    }
+
+                    if (!killerTeam.equals(deadTeam))
+                    {
+                        killerPlayer.heal(4 * 2);
                     }
                 }
             }

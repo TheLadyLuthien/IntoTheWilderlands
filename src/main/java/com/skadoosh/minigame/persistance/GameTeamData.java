@@ -1,34 +1,53 @@
 package com.skadoosh.minigame.persistance;
 
+import java.util.List;
+import java.util.Random;
+
 import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
+import com.skadoosh.minigame.RaidHelper;
 import com.skadoosh.minigame.TeamRefrence;
 import com.skadoosh.minigame.voicechat.VoicehcatHelper;
 import com.skadoosh.wilderlands.persistance.NbtValue;
 
 import de.maxhenkel.voicechat.api.Group;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Holder;
 import net.minecraft.registry.HolderLookup.Provider;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class GameTeamData implements AutoSyncedComponent
+public class GameTeamData implements ServerTickingComponent
 {
+    public static final int RAID_DURATION = 20 * 60 * 20;
+
     private final Team team;
     private final Scoreboard scoreboard;
     private final MinecraftServer server;
 
-    private final NbtValue<Integer> flagCaptureCount = new NbtValue<Integer>("flag_capture_count",  0);
-    private final NbtValue<Integer> markedKills = new NbtValue<Integer>("marked_kills",  0);
-    private final NbtValue<Boolean> hasEverstar = new NbtValue<Boolean>("has_everstar",  false);
+    private final NbtValue<Integer> flagCaptureCount = new NbtValue<Integer>("flag_capture_count", 0);
+    private final NbtValue<Integer> markedKills = new NbtValue<Integer>("marked_kills", 0);
+    private final NbtValue<Boolean> hasEverstar = new NbtValue<Boolean>("has_everstar", false);
+
+    private final NbtValue<Long> tick = new NbtValue<Long>("tick", 0l);
+
+    public final NbtValue<Long> nextRaidStart = new NbtValue<Long>("next_raid_start", (long)(-RAID_DURATION));
+    public final NbtValue<Long> previousRaidStart = new NbtValue<Long>("prev_raid_start", (long)(-RAID_DURATION));
 
     private final NbtWorldPosValue baseLocation = new NbtWorldPosValue("base_location", new BlockPos(0, 0, 0), Identifier.ofDefault("overworld"));
+
+    private static final Holder<StatusEffect>[] RAID_EFFECTS = new Holder[] {StatusEffects.STRENGTH, StatusEffects.SPEED, StatusEffects.INVISIBILITY, StatusEffects.WEAVING, StatusEffects.FIRE_RESISTANCE, StatusEffects.ABSORPTION};
 
     @Nullable
     private Group voiceGroup = null;
@@ -36,6 +55,11 @@ public class GameTeamData implements AutoSyncedComponent
     public Group getVoiceGroup()
     {
         return voiceGroup;
+    }
+
+    public long getTick()
+    {
+        return tick.get();
     }
 
     public void setVoiceGroup(Group voiceGroup)
@@ -82,8 +106,11 @@ public class GameTeamData implements AutoSyncedComponent
         markedKills.read(tag);
         baseLocation.read(tag);
         hasEverstar.read(tag);
+        nextRaidStart.read(tag);
+        previousRaidStart.read(tag);
+        tick.read(tag);
     }
-    
+
     @Override
     public void writeToNbt(NbtCompound tag, Provider registryLookup)
     {
@@ -91,6 +118,9 @@ public class GameTeamData implements AutoSyncedComponent
         markedKills.write(tag);
         baseLocation.write(tag);
         hasEverstar.write(tag);
+        nextRaidStart.write(tag);
+        previousRaidStart.write(tag);
+        tick.write(tag);
     }
 
     public static void test(ServerPlayerEntity thisEntity, GamePlayerData gamePlayerData, TeamRefrence currentZone)
@@ -112,5 +142,65 @@ public class GameTeamData implements AutoSyncedComponent
                 }
             }
         }
+    }
+
+    @Override
+    public void serverTick()
+    {
+        if (tick.get() == 0)
+        {
+            setNextRaidTime();
+        }
+
+        if (tick.get() >= nextRaidStart.get())
+        {
+            startRaid();
+        }
+
+        tick.set(tick.get() + 1);
+    }
+
+    private void startRaid()
+    {
+        // set the start time
+        long currentTick = tick.get();
+        previousRaidStart.set(currentTick);
+
+        TeamRefrence teamRefrence = TeamRefrence.of(this.team.getName());
+        teamRefrence.sendMessageToMembers(server, Text.literal("A raid has begun!"), true);
+
+
+
+        List<ServerPlayerEntity> list = server.getPlayerManager().getPlayerList().stream().filter((player) -> {
+            return teamRefrence.hasMember(player);
+        }).toList();
+        if (!list.isEmpty())
+        {
+            for (ServerPlayerEntity player : list)
+            {
+                player.addStatusEffect(new StatusEffectInstance(getRandomStatusEffectForRaid(), RAID_DURATION, 0, false, true, true));
+            }
+        }
+
+        // setup the next raid
+        setNextRaidTime();
+    }
+
+    private Holder<StatusEffect> getRandomStatusEffectForRaid()
+    {
+        int rnd = new Random().nextInt(RAID_EFFECTS.length);
+        return RAID_EFFECTS[rnd];
+    }
+
+    public void setNextRaidTime()
+    {
+        // (2 * 60 * 20 * 3)
+        long nextRaid = tick.get() + server.getOverworld().getRandom().range(RAID_DURATION + (RAID_DURATION * 2), RAID_DURATION + (20 * 60 * 20 * 3));
+        nextRaidStart.set(nextRaid);
+    }
+
+    public boolean isOnRaid()
+    {
+        return (tick.get() > previousRaidStart.get() && tick.get() < previousRaidStart.get() + RAID_DURATION);
     }
 }

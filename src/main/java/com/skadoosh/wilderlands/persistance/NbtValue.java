@@ -36,6 +36,10 @@ public class NbtValue<T> implements NbtReadWrite
         {
             nbt.putFloat(name, ((Float)value).floatValue());
         }
+        else if (value instanceof Long)
+        {
+            nbt.putLong(name, ((Long)value).longValue());
+        }
         else if (value instanceof String)
         {
             nbt.putString(name, ((String)value));
@@ -54,6 +58,10 @@ public class NbtValue<T> implements NbtReadWrite
         else if (value instanceof Float)
         {
             value = (T)Float.valueOf(nbt.getFloat(name)); 
+        }
+        else if (value instanceof Long)
+        {
+            value = (T)Long.valueOf(nbt.getLong(name));
         }
         else if (value instanceof String)
         {
