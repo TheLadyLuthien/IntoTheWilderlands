@@ -17,12 +17,16 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.packet.s2c.play.SoundPlayS2CPacket;
 import net.minecraft.registry.Holder;
 import net.minecraft.registry.HolderLookup.Provider;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -179,6 +183,7 @@ public class GameTeamData implements ServerTickingComponent
             for (ServerPlayerEntity player : list)
             {
                 player.addStatusEffect(new StatusEffectInstance(getRandomStatusEffectForRaid(), RAID_DURATION, 0, false, true, true));
+                player.networkHandler.send(new SoundPlayS2CPacket(SoundEvents.EVENT_RAID_HORN, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 1, 1, 1));
             }
         }
 
