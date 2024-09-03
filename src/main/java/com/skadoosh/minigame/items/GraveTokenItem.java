@@ -1,5 +1,7 @@
 package com.skadoosh.minigame.items;
 
+import com.skadoosh.minigame.Minigame;
+
 import net.minecraft.block.entity.StructureBlockBlockEntity.Action;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.mob.PiglinBrain;
@@ -33,10 +35,17 @@ public class GraveTokenItem extends Item
     @Override
     public ActionResult useOnBlock(ItemUsageContext context)
     {
-        return redeem(context.getWorld(), context.getPlayer(), context.getHand()) ? ActionResult.CONSUME : ActionResult.SUCCESS;
+        if (context.getWorld().getBlockState(context.getBlockPos()).isOf(Minigame.TEAM_BASE))
+        {
+            return redeem(context.getWorld(), context.getPlayer(), context.getHand()) ? ActionResult.CONSUME : ActionResult.SUCCESS;
+        }
+        else
+        {
+            return ActionResult.FAIL;
+        }
     }
 
-    private boolean redeem(World world, PlayerEntity user, Hand hand)
+    private static boolean redeem(World world, PlayerEntity user, Hand hand)
     {
         if (world.isClient)
         {

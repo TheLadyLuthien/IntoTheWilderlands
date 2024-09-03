@@ -130,6 +130,22 @@ public class MinigameCommand
                         })
                     )
                 )
+                .then(
+                    literal("award_everstar")
+                    .then(
+                        argument("team", TeamArgumentType.team())
+                        .executes(contxtx -> {
+                            MinecraftServer server = contxtx.getSource().getServer();
+                            
+                            Team team = TeamArgumentType.getTeam(contxtx, "team");
+                            TeamRefrence t = TeamRefrence.of(team.getName());
+                            
+                            t.getData(server.getScoreboard()).addEverstar();
+                            // TeamBaseBlock.generateFlagAtBase(server, t);
+                            return 0;
+                        })
+                    )
+                )
             )
         );
 

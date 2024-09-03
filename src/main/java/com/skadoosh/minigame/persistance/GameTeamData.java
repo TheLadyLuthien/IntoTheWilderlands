@@ -26,6 +26,7 @@ public class GameTeamData implements AutoSyncedComponent
 
     private final NbtValue<Integer> flagCaptureCount = new NbtValue<Integer>("flag_capture_count",  0);
     private final NbtValue<Integer> markedKills = new NbtValue<Integer>("marked_kills",  0);
+    private final NbtValue<Boolean> hasEverstar = new NbtValue<Boolean>("has_everstar",  false);
 
     private final NbtWorldPosValue baseLocation = new NbtWorldPosValue("base_location", new BlockPos(0, 0, 0), Identifier.ofDefault("overworld"));
 
@@ -49,12 +50,17 @@ public class GameTeamData implements AutoSyncedComponent
 
     public int getTotalScore()
     {
-        return flagCaptureCount.get() + markedKills.get();
+        return flagCaptureCount.get() + markedKills.get() + (hasEverstar.get() ? 3 : 0);
     }
 
     public void addCapture()
     {
         flagCaptureCount.set(flagCaptureCount.get() + 2);
+    }
+
+    public void addEverstar()
+    {
+        hasEverstar.set(true);
     }
 
     public void addKill()
@@ -75,6 +81,7 @@ public class GameTeamData implements AutoSyncedComponent
         flagCaptureCount.read(tag);
         markedKills.read(tag);
         baseLocation.read(tag);
+        hasEverstar.read(tag);
     }
     
     @Override
@@ -83,6 +90,7 @@ public class GameTeamData implements AutoSyncedComponent
         flagCaptureCount.write(tag);
         markedKills.write(tag);
         baseLocation.write(tag);
+        hasEverstar.write(tag);
     }
 
     public static void test(ServerPlayerEntity thisEntity, GamePlayerData gamePlayerData, TeamRefrence currentZone)
