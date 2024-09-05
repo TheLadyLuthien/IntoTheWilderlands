@@ -72,6 +72,14 @@ dependencies {
 	modImplementation(libs.bundles.voicechat)
 	modImplementation(libs.bundles.cca)
 	modImplementation(libs.bundles.xaeros)
+
+	// sodium
+	modRuntimeOnly "maven.modrinth:AANobbMI:dNHeFokL"
+	
+	// sodium extra
+	// modRuntimeOnly "maven.modrinth:PtjYWJkn:uuhVlRGv"
+	
+	
 	// include(libs.bundles.cca)
 	
 	// modImplementation libs.bundles.quilted.fabric.api // If you wish to use Fabric API's deprecated modules, you can replace the above line with this one
