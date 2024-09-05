@@ -4,11 +4,14 @@ import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 
 import com.skadoosh.cadmium.Cadmium;
+import com.skadoosh.minigame.Minigame;
+import com.skadoosh.minigame.items.gravetoken.GTScreen;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.misc.BifrostHelper;
 import com.skadoosh.wilderlands.misc.BifrostHelper.KeyType;
 
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
@@ -91,5 +94,7 @@ public class ClientLoader implements ClientModInitializer
                 return 0;
             }
         });
+
+        HandledScreens.register(Minigame.GRAVE_TOKEN_SCREEN_HANDLER_TYPE, GTScreen::new);
     }
 }

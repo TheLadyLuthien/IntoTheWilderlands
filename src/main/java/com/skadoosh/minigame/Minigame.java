@@ -10,26 +10,25 @@ import com.skadoosh.minigame.blockentities.GravestoneBlockEntity;
 import com.skadoosh.minigame.blocks.GravestoneBlock;
 import com.skadoosh.minigame.blocks.TeamBaseBlock;
 import com.skadoosh.minigame.items.GraveTokenItem;
+import com.skadoosh.minigame.items.gravetoken.GTScreenHandler;
 import com.skadoosh.minigame.voicechat.PluginEntrypoint;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 
-import de.maxhenkel.voicechat.api.VoicechatPlugin;
 import de.maxhenkel.voicechat.api.Group.Type;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.ServerStarted;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.render.DeltaTracker;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.feature_flags.FeatureFlags;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.scoreboard.ServerScoreboard;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -48,6 +47,8 @@ public class Minigame
     public static final Block TEAM_BASE = Registry.register(Registries.BLOCK, id("team_base"), new TeamBaseBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)));
     public static final Item TEAM_BASE_ITEM = Registry.register(Registries.ITEM, id("team_base"), new BlockItem(TEAM_BASE, new Item.Settings().rarity(Rarity.EPIC).fireproof().maxCount(1)));
 
+    public static final ScreenHandlerType<GTScreenHandler> GRAVE_TOKEN_SCREEN_HANDLER_TYPE = Registry.register(Registries.SCREEN_HANDLER_TYPE, id("grave_token_screen_handler"), new ScreenHandlerType<>(GTScreenHandler::new, FeatureFlags.DEFAULT_SET));
+    
     public static void initialize()
     {
         ServerLifecycleEvents.SERVER_STARTED.register(new ServerStarted()
