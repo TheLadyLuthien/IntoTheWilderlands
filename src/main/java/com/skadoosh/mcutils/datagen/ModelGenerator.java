@@ -1,4 +1,4 @@
-package com.skadoosh.wilderlands.datagen;
+package com.skadoosh.mcutils.datagen;
 
 import java.util.ArrayList;
 

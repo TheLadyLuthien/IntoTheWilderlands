@@ -2,10 +2,10 @@ package com.skadoosh.wilderlands.items;
 
 import java.util.HashMap;
 
+import com.skadoosh.mcutils.datagen.AutoTranslate;
+import com.skadoosh.mcutils.datagen.GenerateItemModel;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.components.ModComponents;
-import com.skadoosh.wilderlands.datagen.AutoTranslate;
-import com.skadoosh.wilderlands.datagen.GenerateItemModel;
 import com.skadoosh.wilderlands.items.itemGroup.AutoItemGroup;
 import com.skadoosh.wilderlands.items.itemGroup.ModItemGroups;
 

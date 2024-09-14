@@ -2,9 +2,9 @@ package com.skadoosh.wilderlands.items.itemGroup;
 
 import java.util.ArrayList;
 
+import com.skadoosh.mcutils.datagen.AutoTranslate;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
-import com.skadoosh.wilderlands.datagen.AutoTranslate;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.misc.AnnotationHelper;
 
