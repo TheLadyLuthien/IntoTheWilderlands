@@ -1,7 +1,9 @@
 package com.skadoosh.minigame.persistance;
 
-import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.entity.RespawnableComponent;
+
+import com.skadoosh.wilderlands.persistance.SyncableComponent;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -10,10 +12,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
 
-public class GamePlayerData implements AutoSyncedComponent, RespawnableComponent<GamePlayerData>
+public class GamePlayerData extends SyncableComponent<GamePlayerData, PlayerEntity> implements RespawnableComponent<GamePlayerData>
 {
-    public GamePlayerData(PlayerEntity player)
+    public GamePlayerData(PlayerEntity player, ComponentKey<GamePlayerData> key)
     {
+        super(key, player);
         this.player = player;
     }
 
@@ -22,7 +25,7 @@ public class GamePlayerData implements AutoSyncedComponent, RespawnableComponent
     private static final String LIVES = "lives";
     private int lives = 5;
 
-    private static final String PREVIOUS_ZONE = "previous_zone";
+    // private static final String PREVIOUS_ZONE = "previous_zone";
     public static final String NO_ZONE = "no_zone";
     private String previousZone = NO_ZONE;
 
@@ -41,6 +44,7 @@ public class GamePlayerData implements AutoSyncedComponent, RespawnableComponent
     public void setLives(int lives)
     {
         this.lives = lives;
+        sync();
     }
 
     public int getLives()
@@ -74,9 +78,8 @@ public class GamePlayerData implements AutoSyncedComponent, RespawnableComponent
 
     public void onMarkedDeath()
     {
-        if (player instanceof ServerPlayerEntity)
+        if (player instanceof final ServerPlayerEntity sp)
         {
-            final var sp = ((ServerPlayerEntity)player);
             lives--;
             if (lives <= 0)
             {
@@ -89,5 +92,6 @@ public class GamePlayerData implements AutoSyncedComponent, RespawnableComponent
 
             player.sendMessage(Text.literal("Your death was marked. You have " + lives +  (lives == 1 ? " life" : " lives") + " remaining."), false);
         }
+        sync();
     }
 }

@@ -28,6 +28,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -172,7 +173,7 @@ public class GameTeamData implements ServerTickingComponent
 
         TeamRefrence teamRefrence = TeamRefrence.of(this.team.getName());
         teamRefrence.sendMessageToMembers(server, Text.literal("A raid has begun!"), true);
-
+        teamRefrence.sendMessageToMembers(server, Text.literal("A raid has begun! Time remaining: 20 min").formatted(Formatting.YELLOW), false);
 
 
         List<ServerPlayerEntity> list = server.getPlayerManager().getPlayerList().stream().filter((player) -> {
@@ -183,7 +184,7 @@ public class GameTeamData implements ServerTickingComponent
             for (ServerPlayerEntity player : list)
             {
                 player.addStatusEffect(new StatusEffectInstance(getRandomStatusEffectForRaid(), RAID_DURATION, 0, false, true, true));
-                player.networkHandler.send(new SoundPlayS2CPacket(SoundEvents.EVENT_RAID_HORN, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 1, 1, 1));
+                player.networkHandler.send(new SoundPlayS2CPacket(SoundEvents.EVENT_RAID_HORN, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 100, 1, 1));
             }
         }
 

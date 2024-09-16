@@ -7,6 +7,7 @@
         "PlayerEntityMixin",
         "PistonBlockMixin",
         "PistonHandlerMixin",
+        "ServerWorldMixin",
         "ServerPlayerEntityMixin",
         "BannerBlockEntityAccessor",
         "PlayerInventoryAccessor",
@@ -17,6 +18,7 @@
         "WorldRendererMixin",
         "WorldRendererAccessor",
         "MinecraftClientMixin",
+        "PlayerListHudMixin",
         "DebugHudMixin"
     ],
     "injectors": {

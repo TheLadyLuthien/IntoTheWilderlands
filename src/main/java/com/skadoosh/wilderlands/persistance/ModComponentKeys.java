@@ -33,7 +33,7 @@ public final class ModComponentKeys implements WorldComponentInitializer, Entity
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry)
     {
-        registry.registerForPlayers(GAME_PLAYER_DATA, GamePlayerData::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(GAME_PLAYER_DATA, (player) -> new GamePlayerData(player, GAME_PLAYER_DATA), RespawnCopyStrategy.ALWAYS_COPY);
     }
 
     @Override
