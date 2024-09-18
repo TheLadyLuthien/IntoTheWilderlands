@@ -11,6 +11,7 @@
         "ServerPlayerEntityMixin",
         "BannerBlockEntityAccessor",
         "PlayerInventoryAccessor",
+        "ElytraItemMixin",
         "BannerBlockEntityMixin"
     ],
     "client": [

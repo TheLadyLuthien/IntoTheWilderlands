@@ -5,8 +5,8 @@
         "id": "wilderlands",
         "version": "${version}",
         "metadata": {
-            "name": "Into The Wilderlands",
-            "description": "The core mod for Infinity Season 4",
+            "name": "Capture The Fort",
+            "description": "A fun mingame of base-building and infiltration",
             "contributors": {
                 "ThatSkadoosh": "Owner"
             },
@@ -46,6 +46,7 @@
         "wilderlands:named_keystone_data",
         "fall_games:game_world_data",
         "fall_games:game_player_data",
-        "fall_games:game_team_data"
+        "fall_games:game_team_data",
+        "fall_games:game_client_lives_data"
     ]
 }

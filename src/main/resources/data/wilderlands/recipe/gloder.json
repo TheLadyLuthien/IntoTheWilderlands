@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "group": "boat",
+    "pattern": [
+        " C ",
+        "sps",
+        "p p"
+    ],
+    "key": {
+        "C": {
+            "item": "minecraft:leather_chestplate"
+        },
+        "s": {
+            "item": "minecraft:stick"
+        },
+        "p": {
+            "item": "minecraft:phantom_membrane"
+        }
+    },
+    "result": {
+        "id": "minecraft:elytra",
+        "count": 1
+    }
+}

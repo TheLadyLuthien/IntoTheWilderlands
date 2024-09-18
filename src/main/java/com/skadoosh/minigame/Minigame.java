@@ -17,6 +17,7 @@ import com.skadoosh.wilderlands.blocks.ModBlocks;
 import de.maxhenkel.voicechat.api.Group.Type;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.ServerStarted;
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -24,7 +25,9 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.feature_flags.FeatureFlags;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.ElytraItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.scoreboard.ServerScoreboard;
@@ -46,6 +49,8 @@ public class Minigame
 
     public static final Block TEAM_BASE = Registry.register(Registries.BLOCK, id("team_base"), new TeamBaseBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)));
     public static final Item TEAM_BASE_ITEM = Registry.register(Registries.ITEM, id("team_base"), new BlockItem(TEAM_BASE, new Item.Settings().rarity(Rarity.EPIC).fireproof().maxCount(1)));
+    
+    public static final Item GLIDER = Registry.register(Registries.ITEM, id("glider"), new ElytraItem(new Item.Settings().rarity(Rarity.EPIC).maxCount(1).maxDamage(10)));
 
     public static final ScreenHandlerType<GTScreenHandler> GRAVE_TOKEN_SCREEN_HANDLER_TYPE = Registry.register(Registries.SCREEN_HANDLER_TYPE, id("grave_token_screen_handler"), new ScreenHandlerType<>(GTScreenHandler::new, FeatureFlags.DEFAULT_SET));
     
@@ -69,6 +74,12 @@ public class Minigame
                     Minigame.LOGGER.info("Password for " + id + "'s group is: " + password);
                 }
             }
+        });
+
+        DefaultItemComponentEvents.MODIFY.register(context -> {
+            context.modify(Items.ELYTRA, builder -> {
+                builder.put(DataComponentTypes.MAX_DAMAGE, 5);
+            });
         });
     }
 

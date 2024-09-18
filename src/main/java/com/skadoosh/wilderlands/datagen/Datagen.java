@@ -13,6 +13,7 @@ import com.skadoosh.wilderlands.misc.AnnotationHelper;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Block;
@@ -22,6 +23,7 @@ import net.minecraft.registry.HolderLookup.Provider;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
 
 public class Datagen implements DataGeneratorEntrypoint
 {
@@ -33,21 +35,91 @@ public class Datagen implements DataGeneratorEntrypoint
         pack.addProvider(TagGenerator::new);
         pack.addProvider(ModelGenerator::new);
         pack.addProvider(EnglishLanguageProvider::new);
+        pack.addProvider(BlockLootTableGenerator::new);
     }
 
-    private static class TagGenerator extends FabricTagProvider.ItemTagProvider
+    private static class TagGenerator extends FabricTagProvider.BlockTagProvider
     {
         public TagGenerator(FabricDataOutput output, CompletableFuture<Provider> completableFuture)
         {
             super(output, completableFuture);
         }
 
-        private static final TagKey<Item> ALL_ITEMS = TagKey.of(RegistryKeys.ITEM, Wilderlands.id("all_items"));
+        private static final TagKey<Block> MINING_TOOL_HOE = TagKey.of(RegistryKeys.BLOCK, Identifier.ofDefault("mineable/hoe"));
+        private static final TagKey<Block> MINING_TOOL_AXE = TagKey.of(RegistryKeys.BLOCK, Identifier.ofDefault("mineable/axe"));
+        private static final TagKey<Block> MINING_TOOL_PICKAXE = TagKey.of(RegistryKeys.BLOCK, Identifier.ofDefault("mineable/pickaxe"));
+        private static final TagKey<Block> MINING_TOOL_SHOVEL = TagKey.of(RegistryKeys.BLOCK, Identifier.ofDefault("mineable/shovel"));
+        
+        private static final TagKey<Block> REQUIRES_TOOL_STONE = TagKey.of(RegistryKeys.BLOCK, Identifier.ofDefault("mineable/needs_stone_tool"));
+        private static final TagKey<Block> REQUIRES_TOOL_IRON = TagKey.of(RegistryKeys.BLOCK, Identifier.ofDefault("mineable/needs_iron_tool"));
+        private static final TagKey<Block> REQUIRES_TOOL_DIAMOND = TagKey.of(RegistryKeys.BLOCK, Identifier.ofDefault("mineable/needs_diamond_tool"));
 
         @Override
         protected void configure(Provider wrapperLookup)
         {
-            getOrCreateTagBuilder(ALL_ITEMS).add(Items.SLIME_BALL).add(Items.ROTTEN_FLESH).addOptionalTag(ItemTags.DIRT);
+            final FabricTagBuilder hoeTag = this.getOrCreateTagBuilder(MINING_TOOL_HOE);
+            final FabricTagBuilder axeTag = this.getOrCreateTagBuilder(MINING_TOOL_AXE);
+            final FabricTagBuilder pickaxeTag = this.getOrCreateTagBuilder(MINING_TOOL_PICKAXE);
+            final FabricTagBuilder shovelTag = this.getOrCreateTagBuilder(MINING_TOOL_SHOVEL);
+            
+            final FabricTagBuilder stoneTag = this.getOrCreateTagBuilder(REQUIRES_TOOL_STONE);
+            final FabricTagBuilder ironTag = this.getOrCreateTagBuilder(REQUIRES_TOOL_IRON);
+            final FabricTagBuilder diamondTag = this.getOrCreateTagBuilder(REQUIRES_TOOL_DIAMOND);
+
+            ArrayList<AnnotationHelper.ValueAnnotationPair<Block, AutoBlockLoot>> blocks = AnnotationHelper.getFieldsWithAnnotation(AutoBlockLoot.class, ModBlocks.class, Block.class);
+            for (var blockData : blocks)
+            {
+                FabricTagBuilder prefferedTool = switch (blockData.annotation.prefersTool())
+                {
+                    case AXE -> axeTag;
+                    case HOE -> hoeTag;
+                    case PICKAXE -> pickaxeTag;
+                    case SHOVEL -> shovelTag;
+                    default -> null;
+                };
+
+                FabricTagBuilder requiredLevel = switch (blockData.annotation.requiresTool())
+                {
+                    case DIAMOND -> diamondTag;
+                    case IRON -> ironTag;
+                    case STONE -> stoneTag;
+                    default -> null;
+                };
+
+                if (prefferedTool != null)
+                {
+                    prefferedTool.add(blockData.value);
+                }
+                if (requiredLevel != null)
+                {
+                    requiredLevel.add(blockData.value);
+                }
+            }
+        }
+    }
+
+    private static class BlockLootTableGenerator extends FabricBlockLootTableProvider
+    {
+        protected BlockLootTableGenerator(FabricDataOutput dataOutput, CompletableFuture<Provider> registryLookup)
+        {
+            super(dataOutput, registryLookup);
+        }
+
+        @Override
+        public void generate()
+        {
+            ArrayList<AnnotationHelper.ValueAnnotationPair<Block, AutoBlockLoot>> blocks = AnnotationHelper.getFieldsWithAnnotation(AutoBlockLoot.class, ModBlocks.class, Block.class);
+            for (var blockData : blocks)
+            {
+                if (blockData.annotation.requireSilkTouch())
+                {
+                    this.addDropWithSilkTouch(blockData.value);
+                }
+                else
+                {
+                    this.addDrop(blockData.value);
+                }
+            }
         }
     }
 
@@ -66,6 +138,8 @@ public class Datagen implements DataGeneratorEntrypoint
             translationBuilder.add("bifrost.colorized.dimension.the_nether", "§4Nether§r");
             translationBuilder.add("bifrost.colorized.dimension.the_end", "§dEnd§r");
             translationBuilder.add("bifrost.colorized.dimension.astral_wastes", "§7Astal Wastes§r");
+
+            translationBuilder.add(Items.ELYTRA, "Rickety Glider");
 
             translationBuilder.add(Minigame.EVERSTAR, "The Everstar");
             translationBuilder.add(Minigame.GRAVE_TOKEN, "Grave Token");

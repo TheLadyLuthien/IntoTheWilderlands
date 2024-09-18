@@ -11,6 +11,7 @@ import org.ladysnake.cca.api.v3.world.WorldComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.world.WorldComponentInitializer;
 
 import com.skadoosh.minigame.Minigame;
+import com.skadoosh.minigame.persistance.GameClientLivesData;
 import com.skadoosh.minigame.persistance.GamePlayerData;
 import com.skadoosh.minigame.persistance.GameTeamData;
 import com.skadoosh.minigame.persistance.GameWorldData;
@@ -22,6 +23,7 @@ public final class ModComponentKeys implements WorldComponentInitializer, Entity
     public static final ComponentKey<GamePlayerData> GAME_PLAYER_DATA = ComponentRegistry.getOrCreate(Minigame.id("game_player_data"), GamePlayerData.class);
     public static final ComponentKey<GameWorldData> GAME_WORLD_DATA = ComponentRegistry.getOrCreate(Minigame.id("game_world_data"), GameWorldData.class);
     public static final ComponentKey<GameTeamData> GAME_TEAM_DATA = ComponentRegistry.getOrCreate(Minigame.id("game_team_data"), GameTeamData.class);
+    public static final ComponentKey<GameClientLivesData> GAME_CLIENT_LIVES_DATA = ComponentRegistry.getOrCreate(Minigame.id("game_client_lives_data"), GameClientLivesData.class);
 
     @Override
     public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry)
@@ -40,5 +42,6 @@ public final class ModComponentKeys implements WorldComponentInitializer, Entity
     public void registerScoreboardComponentFactories(ScoreboardComponentFactoryRegistry registry)
     {
         registry.registerTeamComponent(GAME_TEAM_DATA, (team, scoreboard, server) -> new GameTeamData(team, scoreboard, server));
+        registry.registerScoreboardComponent(GAME_CLIENT_LIVES_DATA, (scoreboard, server) -> new GameClientLivesData(GAME_CLIENT_LIVES_DATA, scoreboard));
     }
 }

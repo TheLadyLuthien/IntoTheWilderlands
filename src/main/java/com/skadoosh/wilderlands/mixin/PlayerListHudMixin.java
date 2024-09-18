@@ -1,5 +1,7 @@
 package com.skadoosh.wilderlands.mixin;
 
+import java.util.UUID;
+
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.mojang.authlib.GameProfile;
+import com.skadoosh.minigame.DeathHelper;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
 import net.minecraft.client.MinecraftClient;
@@ -32,18 +35,14 @@ public abstract class PlayerListHudMixin
     @Inject(method = "getPlayerName", at = @At("HEAD"), cancellable = true)
     public void getPlayerName(PlayerListEntry entry, CallbackInfoReturnable<Text> ci)
     {
-        GameProfile profile = entry.getProfile();
         if (client.world != null)
         {
-            PlayerEntity player = client.world.getPlayerByUuid(profile.getId());
-
-            if (player != null)
-            {
-                // final int lives = ModComponentKeys.GAME_PLAYER_DATA.get(player).getLives();
-                ci.setReturnValue(applyGameModeFormatting(entry, player.getDisplayName().copy()));
-                ci.cancel();
-                return;
-            }
+            GameProfile profile = entry.getProfile();
+            UUID uuid = profile.getId();
+            int lives = ModComponentKeys.GAME_CLIENT_LIVES_DATA.get(client.world.getScoreboard()).getLives(uuid);
+            ci.setReturnValue(applyGameModeFormatting(entry, Text.literal(entry.getProfile().getName()).formatted(DeathHelper.getNameColor(lives))));
+            ci.cancel();
+            return;
         }
     }
 }

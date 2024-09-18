@@ -3,6 +3,7 @@ package com.skadoosh.minigame.persistance;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.entity.RespawnableComponent;
 
+import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 import com.skadoosh.wilderlands.persistance.SyncableComponent;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,7 +24,8 @@ public class GamePlayerData extends SyncableComponent<GamePlayerData, PlayerEnti
     private final PlayerEntity player;
 
     private static final String LIVES = "lives";
-    private int lives = 5;
+    public static final int STARTING_LIVES = 5;
+    private int lives = STARTING_LIVES;
 
     // private static final String PREVIOUS_ZONE = "previous_zone";
     public static final String NO_ZONE = "no_zone";
@@ -44,6 +46,7 @@ public class GamePlayerData extends SyncableComponent<GamePlayerData, PlayerEnti
     public void setLives(int lives)
     {
         this.lives = lives;
+        updateGlobalLifeInfo();
         sync();
     }
 
@@ -60,6 +63,11 @@ public class GamePlayerData extends SyncableComponent<GamePlayerData, PlayerEnti
     public void setPreviousZoneId(String zoneId)
     {
         previousZone = (zoneId == null ? NO_ZONE : zoneId);
+    }
+
+    private void updateGlobalLifeInfo()
+    {
+        ModComponentKeys.GAME_CLIENT_LIVES_DATA.get(this.player.getScoreboard()).setLives(this.player.getUuid(), lives);
     }
 
     @Override
@@ -91,6 +99,7 @@ public class GamePlayerData extends SyncableComponent<GamePlayerData, PlayerEnti
             }
 
             player.sendMessage(Text.literal("Your death was marked. You have " + lives +  (lives == 1 ? " life" : " lives") + " remaining."), false);
+            updateGlobalLifeInfo();
         }
         sync();
     }
