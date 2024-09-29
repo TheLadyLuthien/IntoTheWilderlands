@@ -6,6 +6,7 @@
     "mixins": [
         "PlayerEntityMixin",
         "PistonBlockMixin",
+        "ServerWorldMixin",
         "PistonHandlerMixin"
     ],
     "client": [

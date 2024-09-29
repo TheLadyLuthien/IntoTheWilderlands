@@ -35,6 +35,10 @@ public final class ModBlocks
     @GenerateItemModel
     @AutoTranslate("Destroyer")
     public static final Block DESTROYER = register("destroyer", new DestroyerBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER).pistonBehavior(PistonBehavior.NORMAL)), true);
+    
+    @GenerateItemModel
+    @AutoTranslate("Holotile")
+    public static final Block HOLOTILE = register("holotile", new HolotileBlock(AbstractBlock.Settings.copy(Blocks.TINTED_GLASS)), true);
 
     private static Block register(String name, Block block, boolean shouldMakeItem)
     {

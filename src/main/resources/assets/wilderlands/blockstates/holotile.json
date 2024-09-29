@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "open=true": {
+            "model": "wilderlands:block/holotile_open"
+        },
+        "open=false": {
+            "model": "wilderlands:block/holotile_closed"
+        }
+    }
+}
