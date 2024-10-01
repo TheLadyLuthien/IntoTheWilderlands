@@ -8,6 +8,7 @@ import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.misc.BifrostHelper;
 import com.skadoosh.wilderlands.misc.BifrostHelper.KeyType;
+import com.skadoosh.wilderlands.screen.handler.ModScreenHandlers;
 
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -22,6 +23,7 @@ public class ClientLoader implements ClientModInitializer
     @Override
     public void onInitializeClient(ModContainer mod)
     {
+        ModScreenHandlers.initialize();
         Wilderlands.LOGGER.info("Wilderlands Client Loaded!");
         Cadmium.initializeClient();
 

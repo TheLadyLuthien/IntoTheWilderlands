@@ -39,6 +39,11 @@ public final class ModBlocks
     @GenerateItemModel
     @AutoTranslate("Holotile")
     public static final Block HOLOTILE = register("holotile", new HolotileBlock(AbstractBlock.Settings.copy(Blocks.TINTED_GLASS)), true);
+    
+    @GenerateItemModel
+    @AutoTranslate("Astral Forge")
+    @AutoItemGroup(ModItemGroups.BIFROST)
+    public static final Block ASTRAL_FORGE_CORE = register("astral_forge_core", new AstralForgeCoreBlock(AbstractBlock.Settings.copy(Blocks.SMITHING_TABLE)), true);
 
     private static Block register(String name, Block block, boolean shouldMakeItem)
     {
