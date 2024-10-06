@@ -11,7 +11,7 @@ public class ModScreenHandlers
 {
     public static final ScreenHandlerType<AstralForgeCoreScreenHandler> ASTRAL_FORGE_CORE_SCREEN_HANDLER_TYPE = Registry.register(Registries.SCREEN_HANDLER_TYPE, Wilderlands.id("astral_forge_core_screen_handler_type"), new ScreenHandlerType<AstralForgeCoreScreenHandler>(AstralForgeCoreScreenHandler::new, FeatureFlags.DEFAULT_SET));
 
-    public static void initialize()
+    public static void init()
     {
 
     }    

@@ -1,7 +1,5 @@
 package com.skadoosh.wilderlands.screen.handler;
 
-import org.quiltmc.loader.api.minecraft.ClientOnly;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -12,10 +10,8 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 
-@ClientOnly
 public class AstralForgeCoreScreenHandler extends ScreenHandler
 {
-
     public AstralForgeCoreScreenHandler(int syncId, Inventory inventory)
     {
         this(syncId, inventory, new ArrayPropertyDelegate(3), ScreenHandlerContext.EMPTY);

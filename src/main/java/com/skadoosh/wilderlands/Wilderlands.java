@@ -10,6 +10,7 @@ import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.commands.ModCommands;
 import com.skadoosh.wilderlands.components.ModComponents;
+import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.events.ModEvents;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.items.itemGroup.ModItemGroups;
@@ -29,7 +30,8 @@ public class Wilderlands implements ModInitializer
         Cadmium.initialize();
         
         ModParticles.init();
-        ModScreenHandlers.initialize();
+        ModEnchantments.init();
+        ModScreenHandlers.init();
         ModBlocks.init();
         ModItems.init();
         ModComponents.init();
