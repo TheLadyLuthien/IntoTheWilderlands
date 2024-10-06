@@ -1,0 +1,35 @@
+{
+  "anvil_cost": 2,
+  "description": {
+    "translate": "enchantment.wilderlands.butchering"
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": {
+          "type": "minecraft:linear",
+          "base": 2.0,
+          "per_level_above_first": 1.0
+        },
+        "attribute": "minecraft:generic.attack_speed",
+        "id": "wilderlands:butchering",
+        "operation": "add_value"
+      }
+    ]
+  },
+  "exclusive_set": "#wilderlands:b_level_enchantments",
+  "max_cost": {
+    "base": 2,
+    "per_level_above_first": 1
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 2,
+    "per_level_above_first": 0
+  },
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#minecraft:axes",
+  "weight": 10
+}

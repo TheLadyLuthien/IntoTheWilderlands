@@ -64,7 +64,7 @@ public class Datagen implements DataGeneratorEntrypoint
             final var a = getOrCreateTagBuilder(A_LEVEL);
             final var b = getOrCreateTagBuilder(B_LEVEL);
             final var c = getOrCreateTagBuilder(C_LEVEL);
-            final var star = getOrCreateTagBuilder(C_LEVEL);
+            final var star = getOrCreateTagBuilder(STAR_LEVEL);
 
             // a.add(ModEnchantments.FROST_ASPECT);
 

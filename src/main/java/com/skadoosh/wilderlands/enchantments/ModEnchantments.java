@@ -5,6 +5,7 @@ import com.skadoosh.mcutils.datagen.AutoTranslate;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.enchantments.EnchantmentLevel.Level;
 import com.skadoosh.wilderlands.enchantments.effects.Freeze;
+import com.skadoosh.wilderlands.enchantments.effects.StrengthenEffect;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
@@ -20,7 +21,17 @@ public class ModEnchantments
     @EnchantmentLevel(Level.A)
     public static final RegistryKey<Enchantment> FROST_ASPECT = keyOf(Wilderlands.id("frost_aspect"));
     
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> VAMPIRIC = keyOf(Wilderlands.id("vampiric"));
+    
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> LIFELINKED = keyOf(Wilderlands.id("lifelinked"));
+    
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> BUTCHERING = keyOf(Wilderlands.id("butchering"));
+    
     public static final MapCodec<Freeze> FREEZE_EFFECT = registerEntityEffect(Wilderlands.id("freeze"), Freeze.CODEC);
+    public static final MapCodec<StrengthenEffect> STRENTHEN_EFFECT = registerEntityEffect(Wilderlands.id("strengthen"), StrengthenEffect.CODEC);
 
     public static <T extends EnchantmentEntityEffect> MapCodec<T> registerEntityEffect(Identifier id, MapCodec<T> codec)
     {

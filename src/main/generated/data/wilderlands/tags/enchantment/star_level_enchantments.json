@@ -1,6 +1,10 @@
 {
   "values": [
     {
+      "id": "wilderlands:frost_aspect",
+      "required": false
+    },
+    {
       "id": "wilderlands:vampiric",
       "required": false
     },
