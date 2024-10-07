@@ -1,6 +1,8 @@
-// 1.21	2024-10-06T20:24:56.802435	Into The Wilderlands/Wilderlands - Enchantment Generator
+// 1.21	2024-10-07T20:58:26.661957	Into The Wilderlands/Wilderlands - Enchantment Generator
 e7d81426296d8f1d1102bf5b829e4bf47f9dd18e data/wilderlands/enchantment/vampiric.json
 8d71f57cc4ee87f3bca2dcd1085ee4989d964f5d data/wilderlands/enchantment/lifelinked.json
-550fabb29137388688df0922f5559d012a800978 data/wilderlands/enchantment/butchering.json
+398fa6395a51ba489f83f244817c5990b535645e data/wilderlands/enchantment/lumberjack.json
+299084eb9ca9c6cad0940d55d01ba04171ba790b data/wilderlands/enchantment/butchering.json
+dc6058f4f24ef40d72f1c207a8b472d708e24de0 data/wilderlands/enchantment/beheading.json
 6e4bf2f0248f406a13739697776927895e85d563 data/wilderlands/enchantment/frost_aspect.json
 cfa2aa0e48faf44cbc1d791242efddf9ad518ae6 data/minecraft/enchantment/silk_touch.json

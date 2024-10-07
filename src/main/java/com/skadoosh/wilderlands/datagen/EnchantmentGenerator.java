@@ -4,6 +4,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.Freeze;
+import com.skadoosh.wilderlands.enchantments.effects.StrengthenEffect;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
@@ -153,7 +154,35 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                     Operation.ADD_VALUE
                 )
             )
+            .addEffect(
+                EnchantmentEffectComponentTypes.POST_ATTACK, // when to trigger
+                EnchantmentEffectTarget.ATTACKER, // when who holds it
+                EnchantmentEffectTarget.ATTACKER, // who gets affected
+                new StrengthenEffect(LevelBasedValue.linear(2, 0), LevelBasedValue.linear(0, 1))
+            )
             .withExclusiveSet(B_LEVEL)
+        );
+
+        register(entries, ModEnchantments.LUMBERJACK, 
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.AXES),
+                    1,
+                    EquipmentSlotGroup.MAINHAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
+
+        register(entries, ModEnchantments.BEHEADING, 
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.AXES),
+                    1,
+                    EquipmentSlotGroup.MAINHAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
         );
     }
 }

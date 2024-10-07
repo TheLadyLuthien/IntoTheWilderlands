@@ -15,6 +15,25 @@
         "id": "wilderlands:butchering",
         "operation": "add_value"
       }
+    ],
+    "minecraft:post_attack": [
+      {
+        "affected": "attacker",
+        "effect": {
+          "type": "wilderlands:strengthen",
+          "duration": {
+            "type": "minecraft:linear",
+            "base": 2.0,
+            "per_level_above_first": 0.0
+          },
+          "effectLevel": {
+            "type": "minecraft:linear",
+            "base": 0.0,
+            "per_level_above_first": 1.0
+          }
+        },
+        "enchanted": "attacker"
+      }
     ]
   },
   "exclusive_set": "#wilderlands:b_level_enchantments",

@@ -15,6 +15,14 @@
     {
       "id": "wilderlands:butchering",
       "required": false
+    },
+    {
+      "id": "wilderlands:lumberjack",
+      "required": false
+    },
+    {
+      "id": "wilderlands:beheading",
+      "required": false
     }
   ]
 }

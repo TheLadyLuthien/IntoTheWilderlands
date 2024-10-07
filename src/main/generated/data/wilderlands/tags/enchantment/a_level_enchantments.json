@@ -3,6 +3,14 @@
     {
       "id": "wilderlands:frost_aspect",
       "required": false
+    },
+    {
+      "id": "wilderlands:lumberjack",
+      "required": false
+    },
+    {
+      "id": "wilderlands:beheading",
+      "required": false
     }
   ]
 }
