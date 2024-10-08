@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents.StopSleeping;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ProfileComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -67,5 +68,9 @@ public final class ModEvents
         });
 
         PlayerBlockBreakEvents.BEFORE.register(new LumberjackEvent());
+
+        // LootTableEvents.MODIFY.register((lootTableKey, builder, source, lookup) -> {
+        //     builder.
+        // });
     }
 }

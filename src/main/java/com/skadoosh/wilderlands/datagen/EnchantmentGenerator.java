@@ -184,5 +184,16 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
             )
             .withExclusiveSet(A_LEVEL)
         );
+
+        register(entries, ModEnchantments.PROSPECTOR, 
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.PICKAXES),
+                    1,
+                    EquipmentSlotGroup.MAINHAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
     }
 }

@@ -4,17 +4,21 @@ import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.HolderLookup.RegistryLookup;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import com.skadoosh.wilderlands.datagen.Datagen;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.persistance.LumberjackComponent;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
@@ -52,7 +56,7 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before
 		return true;
 	}
 
-    public static List<BlockPos> gatherTree(List<BlockPos> tree, BlockView world, BlockPos.Mutable pos, Block original)
+    public static List<BlockPos> gatherTree(List<BlockPos> tree, BlockView world, BlockPos.Mutable pos, Block original, TagKey<Block> tag)
     {
         if (tree.size() < MAX_BLOCKS)
         {
@@ -64,10 +68,10 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before
                     for (int z = -1; z <= 1; z++)
                     {
                         BlockState state = world.getBlockState(pos.set(originalX + x, originalY + y, originalZ + z));
-                        if (state.isIn(BlockTags.LOGS) && !tree.contains(pos) && state.getBlock() == original)
+                        if (state.isIn(tag) && !tree.contains(pos) && state.getBlock() == original)
                         {
                             tree.add(pos.toImmutable());
-                            gatherTree(tree, world, pos, original);
+                            gatherTree(tree, world, pos, original, tag);
                         }
                     }
                 }
@@ -107,7 +111,13 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before
 
     public static boolean canActivate(PlayerEntity player, ItemStack stack, BlockState state)
     {
-        return !player.isSneaking() && (EnchantmentHelper.getLevel(player.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.LUMBERJACK), stack) > 0) && state.isIn(BlockTags.LOGS) && player.canHarvest(state);
+        if (player.isSneaking() || !player.canHarvest(state))
+        {
+            return false;
+        }
+
+        RegistryLookup<Enchantment> lookup = player.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT);
+        return ((EnchantmentHelper.getLevel(lookup.getHolderOrThrow(ModEnchantments.LUMBERJACK), stack) > 0) && state.isIn(BlockTags.LOGS)) || ((EnchantmentHelper.getLevel(lookup.getHolderOrThrow(ModEnchantments.PROSPECTOR), stack) > 0) && state.isIn(Datagen.BlockTagGenerator.ORES));
     }
 
     public static boolean isValid(List<BlockPos> tree)

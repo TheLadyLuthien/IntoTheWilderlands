@@ -20,12 +20,14 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.HolderLookup.Provider;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 
@@ -36,7 +38,7 @@ public class Datagen implements DataGeneratorEntrypoint
     {
         final FabricDataGenerator.Pack pack = generator.createPack();
 
-        pack.addProvider(TagGenerator::new);
+        pack.addProvider(BlockTagGenerator::new);
         pack.addProvider(EnchantmentTags::new);
         pack.addProvider(EnchantmentGenerator::new);
         pack.addProvider(ModelGenerator::new);
@@ -105,19 +107,28 @@ public class Datagen implements DataGeneratorEntrypoint
         }
     }
 
-    public static class TagGenerator extends FabricTagProvider.ItemTagProvider
+    public static class BlockTagGenerator extends FabricTagProvider.BlockTagProvider
     {
-        public TagGenerator(FabricDataOutput output, CompletableFuture<Provider> completableFuture)
+        public BlockTagGenerator(FabricDataOutput output, CompletableFuture<Provider> completableFuture)
         {
             super(output, completableFuture);
         }
 
-        public static final TagKey<Item> ALL_ITEMS = TagKey.of(RegistryKeys.ITEM, Wilderlands.id("all_items"));
+        public static final TagKey<Block> ORES = TagKey.of(RegistryKeys.BLOCK, Wilderlands.id("ores"));
 
         @Override
         protected void configure(Provider wrapperLookup)
         {
-            getOrCreateTagBuilder(ALL_ITEMS).add(Items.SLIME_BALL).add(Items.ROTTEN_FLESH).addOptionalTag(ItemTags.DIRT);
+            getOrCreateTagBuilder(ORES)
+            .addOptionalTag(BlockTags.COAL_ORES)
+            .addOptionalTag(BlockTags.GOLD_ORES)
+            .addOptionalTag(BlockTags.IRON_ORES)
+            .addOptionalTag(BlockTags.LAPIS_ORES)
+            .addOptionalTag(BlockTags.COPPER_ORES)
+            .addOptionalTag(BlockTags.DIAMOND_ORES)
+            .addOptionalTag(BlockTags.EMERALD_ORES)
+            .addOptionalTag(BlockTags.REDSTONE_ORES)
+            .add(Blocks.NETHER_QUARTZ_ORE);
         }
     }
 

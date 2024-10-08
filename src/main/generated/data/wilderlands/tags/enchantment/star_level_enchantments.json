@@ -23,6 +23,10 @@
     {
       "id": "wilderlands:beheading",
       "required": false
+    },
+    {
+      "id": "wilderlands:prospector",
+      "required": false
     }
   ]
 }
