@@ -1,0 +1,35 @@
+{
+  "anvil_cost": 2,
+  "description": {
+    "translate": "enchantment.wilderlands.dextrous"
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": {
+          "type": "minecraft:linear",
+          "base": 0.4,
+          "per_level_above_first": 0.2
+        },
+        "attribute": "minecraft:player.sneaking_speed",
+        "id": "wilderlands:dextrous",
+        "operation": "add_value"
+      }
+    ]
+  },
+  "exclusive_set": "#wilderlands:b_level_enchantments",
+  "max_cost": {
+    "base": 2,
+    "per_level_above_first": 1
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 2,
+    "per_level_above_first": 0
+  },
+  "slots": [
+    "feet"
+  ],
+  "supported_items": "#minecraft:enchantable/foot_armor",
+  "weight": 10
+}

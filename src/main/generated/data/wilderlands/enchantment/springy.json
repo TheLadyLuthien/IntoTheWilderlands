@@ -1,0 +1,35 @@
+{
+  "anvil_cost": 2,
+  "description": {
+    "translate": "enchantment.wilderlands.springy"
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": {
+          "type": "minecraft:linear",
+          "base": 1.8,
+          "per_level_above_first": 0.2
+        },
+        "attribute": "minecraft:generic.jump_strength",
+        "id": "wilderlands:springy",
+        "operation": "add_multiplied_base"
+      }
+    ]
+  },
+  "exclusive_set": "#wilderlands:b_level_enchantments",
+  "max_cost": {
+    "base": 2,
+    "per_level_above_first": 1
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 2,
+    "per_level_above_first": 0
+  },
+  "slots": [
+    "feet"
+  ],
+  "supported_items": "#minecraft:enchantable/foot_armor",
+  "weight": 10
+}

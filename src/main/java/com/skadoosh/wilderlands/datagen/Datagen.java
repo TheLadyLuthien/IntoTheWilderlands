@@ -104,6 +104,8 @@ public class Datagen implements DataGeneratorEntrypoint
                 // Wilderlands.LOGGER.info("Datagen'd Block " + blockData.annotation.value());
                 // tb.add(blockData.value, blockData.annotation.value());
             }
+
+            
         }
     }
 
@@ -115,6 +117,8 @@ public class Datagen implements DataGeneratorEntrypoint
         }
 
         public static final TagKey<Block> ORES = TagKey.of(RegistryKeys.BLOCK, Wilderlands.id("ores"));
+        public static final TagKey<Block> VOIDABLE = TagKey.of(RegistryKeys.BLOCK, Wilderlands.id("voidable"));
+        public static final TagKey<Block> AUTOSMELTS = TagKey.of(RegistryKeys.BLOCK, Wilderlands.id("voidable"));
 
         @Override
         protected void configure(Provider wrapperLookup)
@@ -128,7 +132,23 @@ public class Datagen implements DataGeneratorEntrypoint
             .addOptionalTag(BlockTags.DIAMOND_ORES)
             .addOptionalTag(BlockTags.EMERALD_ORES)
             .addOptionalTag(BlockTags.REDSTONE_ORES)
-            .add(Blocks.NETHER_QUARTZ_ORE);
+            .add(Blocks.NETHER_QUARTZ_ORE)
+            .add(Blocks.ANCIENT_DEBRIS);
+
+            getOrCreateTagBuilder(VOIDABLE)
+            .addOptionalTag(BlockTags.BASE_STONE_NETHER)
+            .addOptionalTag(BlockTags.BASE_STONE_OVERWORLD)
+            .addOptionalTag(BlockTags.DIRT)
+            .add(Blocks.COBBLESTONE)
+            .add(Blocks.BLACKSTONE)
+            .add(Blocks.COBBLED_DEEPSLATE);
+            
+            getOrCreateTagBuilder(AUTOSMELTS)
+            .addOptionalTag(ORES)
+            .add(Blocks.STONE)
+            .add(Blocks.COBBLESTONE)
+            .add(Blocks.WET_SPONGE)
+            .add(Blocks.SAND);
         }
     }
 

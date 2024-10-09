@@ -32,6 +32,7 @@
       "id": "#minecraft:redstone_ores",
       "required": false
     },
-    "minecraft:nether_quartz_ore"
+    "minecraft:nether_quartz_ore",
+    "minecraft:ancient_debris"
   ]
 }

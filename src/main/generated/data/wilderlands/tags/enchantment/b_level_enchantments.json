@@ -11,6 +11,22 @@
     {
       "id": "wilderlands:butchering",
       "required": false
+    },
+    {
+      "id": "wilderlands:voiding",
+      "required": false
+    },
+    {
+      "id": "wilderlands:amphibious",
+      "required": false
+    },
+    {
+      "id": "wilderlands:dextrous",
+      "required": false
+    },
+    {
+      "id": "wilderlands:springy",
+      "required": false
     }
   ]
 }

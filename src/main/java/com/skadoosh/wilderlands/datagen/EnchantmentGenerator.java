@@ -15,6 +15,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.LevelBasedValue;
 import net.minecraft.enchantment.effect.AddValue;
 import net.minecraft.enchantment.effect.DamageEntity;
+import net.minecraft.enchantment.effect.DamageImmunity;
 import net.minecraft.enchantment.effect.EnchantmentAttribute;
 import net.minecraft.enchantment.effect.EnchantmentEffectTarget;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
@@ -25,11 +26,15 @@ import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.item.Item;
+import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
+import net.minecraft.predicate.TagPredicate;
+import net.minecraft.predicate.entity.DamageSourcePredicate;
 import net.minecraft.registry.HolderSet;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.HolderLookup.Provider;
 import net.minecraft.registry.HolderLookup.RegistryLookup;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.ItemTags;
 
 public class EnchantmentGenerator extends FabricDynamicRegistryProvider
@@ -194,6 +199,113 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                 )
             )
             .withExclusiveSet(A_LEVEL)
+        );
+
+        register(entries, ModEnchantments.VOIDING, 
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.PICKAXES),
+                    1,
+                    EquipmentSlotGroup.MAINHAND
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
+        );
+
+        register(entries, ModEnchantments.MOLTEN, 
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.PICKAXES),
+                    1,
+                    EquipmentSlotGroup.MAINHAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
+
+        register(entries, Enchantments.FEATHER_FALLING, 
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.FEET
+                )
+            )
+            .addEffect(
+                EnchantmentEffectComponentTypes.DAMAGE_IMMUNITY,
+                DamageImmunity.INSTANCE,
+                DamageSourcePropertiesLootCondition.builder(DamageSourcePredicate.Builder.create().add(TagPredicate.expected(DamageTypeTags.IS_FALL)).add(TagPredicate.unexpected(DamageTypeTags.BYPASSES_INVULNERABILITY)))
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
+
+        register(entries, ModEnchantments.AMPHIBIOUS, 
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.FEET
+                )
+            )
+            .addEffect(
+                EnchantmentEffectComponentTypes.ATTRIBUTES,
+                new EnchantmentAttribute(
+                    ModEnchantments.AMPHIBIOUS.getValue(),
+                    EntityAttributes.GENERIC_WATER_MOVEMENT_EFFICIENCY,
+                    LevelBasedValue.linear(1f, 0.1f),
+                    Operation.ADD_VALUE
+                )
+            )
+            .addEffect(
+                EnchantmentEffectComponentTypes.ATTRIBUTES,
+                new EnchantmentAttribute(
+                    ModEnchantments.AMPHIBIOUS.getValue(),
+                    EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED,
+                    LevelBasedValue.linear(4, 4),
+                    Operation.ADD_MULTIPLIED_TOTAL
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
+        );
+
+        register(entries, ModEnchantments.DEXTROUS, 
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.FEET
+                )
+            )
+            .addEffect(
+                EnchantmentEffectComponentTypes.ATTRIBUTES,
+                new EnchantmentAttribute(
+                    ModEnchantments.DEXTROUS.getValue(),
+                    EntityAttributes.PLAYER_SNEAKING_SPEED,
+                    LevelBasedValue.linear(0.4f, 0.2f),
+                    Operation.ADD_VALUE
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
+        );
+
+        register(entries, ModEnchantments.SPRINGY, 
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.FEET
+                )
+            )
+            .addEffect(
+                EnchantmentEffectComponentTypes.ATTRIBUTES,
+                new EnchantmentAttribute(
+                    ModEnchantments.SPRINGY.getValue(),
+                    EntityAttributes.GENERIC_JUMP_STRENGTH,
+                    LevelBasedValue.linear(1.8f, 0.2f),
+                    Operation.ADD_MULTIPLIED_BASE
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
         );
     }
 }

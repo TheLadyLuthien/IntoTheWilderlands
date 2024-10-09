@@ -13,6 +13,10 @@
       "required": false
     },
     {
+      "id": "wilderlands:molten",
+      "required": false
+    },
+    {
       "id": "wilderlands:prospector",
       "required": false
     }

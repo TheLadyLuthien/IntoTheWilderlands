@@ -1,9 +1,11 @@
 package com.skadoosh.wilderlands.events;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import com.skadoosh.wilderlands.datagen.Datagen;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.lumberjack.LumberjackEvent;
 import com.skadoosh.wilderlands.misc.BeheadingEntry;
@@ -13,6 +15,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents.StopSleeping;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.minecraft.block.Blocks;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ProfileComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -23,6 +26,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.condition.InvertedLootCondition;
 import net.minecraft.loot.condition.MatchToolLootCondition;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.predicate.NumberRange;
@@ -32,6 +36,8 @@ import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.unmapped.C_idgyzprx;
+import net.minecraft.unmapped.C_loxplxmp;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 
@@ -81,35 +87,30 @@ public final class ModEvents
         PlayerBlockBreakEvents.BEFORE.register(new LumberjackEvent());
 
         LootTableEvents.MODIFY.register((lootTableKey, builder, source, lookup) -> {
-            builder.modifyPools(e -> {
-                e.conditionally(
-                    new MatchToolLootCondition(
-                        Optional.of(
-                            ItemPredicate.Builder.create()
-                                .method_58179(
-                                    new EnchantmentPredicate(
-                                        lookup.getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VOIDING),
-                                        null
-                                    ),
-                                    null
+            if (lookup.getLookupOrThrow(RegistryKeys.BLOCK).getTagOrThrow(Datagen.BlockTagGenerator.VOIDABLE).stream().map(holder -> holder.value()).anyMatch(block -> (block.getLootTableId() == lootTableKey) && source.isBuiltin()))
+            {
+                builder.modifyPools(e -> {
+                    e.conditionally(
+                        new InvertedLootCondition(
+                            new MatchToolLootCondition(
+                                Optional.of(
+                                    ItemPredicate.Builder.create()
+                                        .method_58179(
+                                            C_idgyzprx.ENCHANTMENTS,
+                                            C_loxplxmp.C_zqrrydyv.method_58173(List.of(
+                                                new EnchantmentPredicate(
+                                                    lookup.getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VOIDING),
+                                                    IntRange.atLeast(1)
+                                                )
+                                            ))
+                                        )
+                                    .build()
                                 )
-                            .build()
+                            )
                         )
-                    )
-                );
-            });
+                    );
+                });
+            }
         });
-                    // new ItemPredicate(
-                    //     Optional.empty(),
-                    //     new IntRange(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()),
-                    //     null,
-                    //     Map.of(
-                            
-                    //         new EnchantmentPredicate(
-                    //             lookup.getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VOIDING),
-                    //             new IntRange(Optional.of(1), Optional.empty(), Optional.empty(), Optional.empty())
-                    //         )
-                    //     )
-                    // )
     }
 }

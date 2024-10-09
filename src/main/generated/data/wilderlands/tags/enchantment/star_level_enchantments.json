@@ -25,7 +25,27 @@
       "required": false
     },
     {
+      "id": "wilderlands:molten",
+      "required": false
+    },
+    {
       "id": "wilderlands:prospector",
+      "required": false
+    },
+    {
+      "id": "wilderlands:voiding",
+      "required": false
+    },
+    {
+      "id": "wilderlands:amphibious",
+      "required": false
+    },
+    {
+      "id": "wilderlands:dextrous",
+      "required": false
+    },
+    {
+      "id": "wilderlands:springy",
       "required": false
     }
   ]
