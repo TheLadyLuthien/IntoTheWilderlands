@@ -39,6 +39,9 @@ public class ModEnchantments
     @EnchantmentLevel(Level.A)
     public static final RegistryKey<Enchantment> PROSPECTOR = keyOf(Wilderlands.id("prospector"));
     
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> VOIDING = keyOf(Wilderlands.id("voiding"));
+    
     public static final MapCodec<Freeze> FREEZE_EFFECT = registerEntityEffect(Wilderlands.id("freeze"), Freeze.CODEC);
     public static final MapCodec<StrengthenEffect> STRENTHEN_EFFECT = registerEntityEffect(Wilderlands.id("strengthen"), StrengthenEffect.CODEC);
 

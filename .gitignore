@@ -1,5 +1,6 @@
 # Gradle
 .gradle/
+.settings/
 build/
 out/
 classes/

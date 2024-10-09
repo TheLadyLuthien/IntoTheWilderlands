@@ -1,5 +1,9 @@
 package com.skadoosh.wilderlands.events;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.lumberjack.LumberjackEvent;
 import com.skadoosh.wilderlands.misc.BeheadingEntry;
@@ -19,6 +23,13 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.condition.MatchToolLootCondition;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.predicate.NumberRange;
+import net.minecraft.predicate.NumberRange.IntRange;
+import net.minecraft.predicate.item.EnchantmentPredicate;
+import net.minecraft.predicate.item.ItemPredicate;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.ItemScatterer;
@@ -69,8 +80,36 @@ public final class ModEvents
 
         PlayerBlockBreakEvents.BEFORE.register(new LumberjackEvent());
 
-        // LootTableEvents.MODIFY.register((lootTableKey, builder, source, lookup) -> {
-        //     builder.
-        // });
+        LootTableEvents.MODIFY.register((lootTableKey, builder, source, lookup) -> {
+            builder.modifyPools(e -> {
+                e.conditionally(
+                    new MatchToolLootCondition(
+                        Optional.of(
+                            ItemPredicate.Builder.create()
+                                .method_58179(
+                                    new EnchantmentPredicate(
+                                        lookup.getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VOIDING),
+                                        null
+                                    ),
+                                    null
+                                )
+                            .build()
+                        )
+                    )
+                );
+            });
+        });
+                    // new ItemPredicate(
+                    //     Optional.empty(),
+                    //     new IntRange(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()),
+                    //     null,
+                    //     Map.of(
+                            
+                    //         new EnchantmentPredicate(
+                    //             lookup.getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VOIDING),
+                    //             new IntRange(Optional.of(1), Optional.empty(), Optional.empty(), Optional.empty())
+                    //         )
+                    //     )
+                    // )
     }
 }
