@@ -41,6 +41,7 @@
     "mixin": "wilderlands.mixins.json",
     "cardinal-components": [
         "wilderlands:named_keystone_data",
+        "wilderlands:lift",
         "wilderlands:lumberjack"
     ]
 }

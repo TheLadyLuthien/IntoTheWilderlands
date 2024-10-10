@@ -19,6 +19,10 @@
     {
       "id": "wilderlands:prospector",
       "required": false
+    },
+    {
+      "id": "wilderlands:lift",
+      "required": false
     }
   ]
 }

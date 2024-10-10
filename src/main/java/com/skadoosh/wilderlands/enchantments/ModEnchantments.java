@@ -51,6 +51,9 @@ public class ModEnchantments
     @EnchantmentLevel(Level.B)
     public static final RegistryKey<Enchantment> DEXTROUS = keyOf(Wilderlands.id("dextrous"));
     
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> LIFT = keyOf(Wilderlands.id("lift"));
+    
     @EnchantmentLevel(Level.B)
     public static final RegistryKey<Enchantment> SPRINGY = keyOf(Wilderlands.id("springy"));
     

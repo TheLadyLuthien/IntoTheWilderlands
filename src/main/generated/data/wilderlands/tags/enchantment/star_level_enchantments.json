@@ -45,6 +45,10 @@
       "required": false
     },
     {
+      "id": "wilderlands:lift",
+      "required": false
+    },
+    {
       "id": "wilderlands:springy",
       "required": false
     }

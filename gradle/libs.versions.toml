@@ -20,13 +20,14 @@ quilted_fabric_api_deprecated = { module = "org.quiltmc.quilted-fabric-api:quilt
 
 cca-base = { module = "org.ladysnake.cardinal-components-api:cardinal-components-base", version.ref = "cca" }
 cca-world = { module = "org.ladysnake.cardinal-components-api:cardinal-components-world", version.ref = "cca" }
+cca-entity = { module = "org.ladysnake.cardinal-components-api:cardinal-components-entity", version.ref = "cca" }
 
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
 
 quilted_fabric_api = ["quilted_fabric_api", "quilted_fabric_api_deprecated"]
-cca = [ "cca-base", "cca-world" ]
+cca = [ "cca-base", "cca-world", "cca-entity" ]
 
 [plugins]
 quilt_loom = { id = "org.quiltmc.loom", version.ref = "quilt_loom" }

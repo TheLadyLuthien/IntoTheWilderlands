@@ -6,6 +6,7 @@ import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.Freeze;
 import com.skadoosh.wilderlands.enchantments.effects.StrengthenEffect;
 
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
@@ -288,6 +289,17 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
             .withExclusiveSet(B_LEVEL)
         );
 
+        register(entries, ModEnchantments.LIFT, 
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+                    3,
+                    EquipmentSlotGroup.FEET
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
+
         register(entries, ModEnchantments.SPRINGY, 
             Enchantment.builder(
                 createDefaultProperties(
@@ -301,7 +313,7 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                 new EnchantmentAttribute(
                     ModEnchantments.SPRINGY.getValue(),
                     EntityAttributes.GENERIC_JUMP_STRENGTH,
-                    LevelBasedValue.linear(1.8f, 0.2f),
+                    LevelBasedValue.linear(0.1f, 0.2f),
                     Operation.ADD_MULTIPLIED_BASE
                 )
             )
