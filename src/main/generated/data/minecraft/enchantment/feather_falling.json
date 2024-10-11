@@ -25,7 +25,7 @@
       }
     ]
   },
-  "exclusive_set": "#wilderlands:a_level_enchantments",
+  "exclusive_set": "#wilderlands:b_level_enchantments",
   "max_cost": {
     "base": 2,
     "per_level_above_first": 1

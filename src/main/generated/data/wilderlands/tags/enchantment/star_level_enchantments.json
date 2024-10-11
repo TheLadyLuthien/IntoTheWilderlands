@@ -51,6 +51,10 @@
     {
       "id": "wilderlands:springy",
       "required": false
+    },
+    {
+      "id": "wilderlands:dash",
+      "required": false
     }
   ]
 }

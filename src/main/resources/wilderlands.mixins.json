@@ -8,6 +8,7 @@
         "PistonBlockMixin",
         "ServerWorldMixin",
         "BlockMixin",
+        "LivingEntityMixin",
         "AbstractBlockMixin",
         "PistonHandlerMixin"
     ],

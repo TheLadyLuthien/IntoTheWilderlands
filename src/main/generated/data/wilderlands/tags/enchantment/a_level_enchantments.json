@@ -21,7 +21,15 @@
       "required": false
     },
     {
+      "id": "wilderlands:amphibious",
+      "required": false
+    },
+    {
       "id": "wilderlands:lift",
+      "required": false
+    },
+    {
+      "id": "wilderlands:dash",
       "required": false
     }
   ]

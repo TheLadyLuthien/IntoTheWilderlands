@@ -45,7 +45,7 @@ public class ModEnchantments
     @EnchantmentLevel(Level.B)
     public static final RegistryKey<Enchantment> VOIDING = keyOf(Wilderlands.id("voiding"));
     
-    @EnchantmentLevel(Level.B)
+    @EnchantmentLevel(Level.A)
     public static final RegistryKey<Enchantment> AMPHIBIOUS = keyOf(Wilderlands.id("amphibious"));
     
     @EnchantmentLevel(Level.B)
@@ -56,6 +56,12 @@ public class ModEnchantments
     
     @EnchantmentLevel(Level.B)
     public static final RegistryKey<Enchantment> SPRINGY = keyOf(Wilderlands.id("springy"));
+    
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> DASH = keyOf(Wilderlands.id("dash"));
+    
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> SLIDE = keyOf(Wilderlands.id("slide"));
     
     public static final MapCodec<Freeze> FREEZE_EFFECT = registerEntityEffect(Wilderlands.id("freeze"), Freeze.CODEC);
     public static final MapCodec<StrengthenEffect> STRENTHEN_EFFECT = registerEntityEffect(Wilderlands.id("strengthen"), StrengthenEffect.CODEC);

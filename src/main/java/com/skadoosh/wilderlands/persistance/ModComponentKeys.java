@@ -15,6 +15,7 @@ public final class ModComponentKeys implements WorldComponentInitializer, Entity
     public static final ComponentKey<NamedKeystoneData> NAMED_KEYSTONE_DATA = ComponentRegistry.getOrCreate(Wilderlands.id("named_keystone_data"), NamedKeystoneData.class);
     public static final ComponentKey<LumberjackComponent> LUMBERJACK = ComponentRegistry.getOrCreate(Wilderlands.id("lumberjack"), LumberjackComponent.class);
     public static final ComponentKey<LiftComponent> LIFT = ComponentRegistry.getOrCreate(Wilderlands.id("lift"), LiftComponent.class);
+    public static final ComponentKey<DashComponent> DASH = ComponentRegistry.getOrCreate(Wilderlands.id("dash"), DashComponent.class);
 
     @Override
     public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry)
@@ -27,6 +28,7 @@ public final class ModComponentKeys implements WorldComponentInitializer, Entity
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry)
     {
         registry.registerForPlayers(LIFT, LiftComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+        registry.registerForPlayers(DASH, DashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
     }
 
 

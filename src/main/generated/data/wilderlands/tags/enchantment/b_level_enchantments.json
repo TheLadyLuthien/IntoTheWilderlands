@@ -17,10 +17,6 @@
       "required": false
     },
     {
-      "id": "wilderlands:amphibious",
-      "required": false
-    },
-    {
       "id": "wilderlands:dextrous",
       "required": false
     },

@@ -237,7 +237,7 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                 DamageImmunity.INSTANCE,
                 DamageSourcePropertiesLootCondition.builder(DamageSourcePredicate.Builder.create().add(TagPredicate.expected(DamageTypeTags.IS_FALL)).add(TagPredicate.unexpected(DamageTypeTags.BYPASSES_INVULNERABILITY)))
             )
-            .withExclusiveSet(A_LEVEL)
+            .withExclusiveSet(B_LEVEL)
         );
 
         register(entries, ModEnchantments.AMPHIBIOUS, 
@@ -266,7 +266,7 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                     Operation.ADD_MULTIPLIED_TOTAL
                 )
             )
-            .withExclusiveSet(B_LEVEL)
+            .withExclusiveSet(A_LEVEL)
         );
 
         register(entries, ModEnchantments.DEXTROUS, 
@@ -319,5 +319,28 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
             )
             .withExclusiveSet(B_LEVEL)
         );
+
+        register(entries, ModEnchantments.DASH,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
+                    3,
+                    EquipmentSlotGroup.LEGS
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
+
+        register(entries, ModEnchantments.SLIDE,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.LEGS
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
+
     }
 }
