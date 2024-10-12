@@ -6,6 +6,7 @@ import org.ladysnake.cca.api.v3.entity.C2SSelfMessagingComponent;
 
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,7 +23,7 @@ public class DashComponent implements C2SSelfMessagingComponent, /* AutoSyncedCo
 {
     public static final int COOLDOWN = 15;
     public static final int FALL_DAMAGE_BUFFER = 10;
-    public static final float LAUNCH_STRENGTH = 2.5f;
+    public static final float LAUNCH_STRENGTH = 1.9f;
 
     private final PlayerEntity player;
 

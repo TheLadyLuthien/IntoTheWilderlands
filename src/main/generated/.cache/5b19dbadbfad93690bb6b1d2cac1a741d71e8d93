@@ -1,13 +1,14 @@
-// 1.21	2024-10-11T19:05:50.675267	Into The Wilderlands/Wilderlands - Enchantment Generator
+// 1.21	2024-10-12T19:26:44.282188	Into The Wilderlands/Wilderlands - Enchantment Generator
 dee10f5c299a968f201d43c99852dae851566851 data/wilderlands/enchantment/prospector.json
 9fed03b9b8216236287bfce2703626e716a21762 data/wilderlands/enchantment/dextrous.json
+61f65f2e075b3875cf91e4fbfb751f245603e736 data/wilderlands/enchantment/slide.json
 398fa6395a51ba489f83f244817c5990b535645e data/wilderlands/enchantment/lumberjack.json
 a134f5bfcee5510a43a3facde5182a6d7680c868 data/wilderlands/enchantment/molten.json
-f8ca82df1763914631005e55c76a9b8951be9dcc data/wilderlands/enchantment/lift.json
 3ed40d60579db4528f1a898c0d4f50a3e1d7db36 data/wilderlands/enchantment/springy.json
+f8ca82df1763914631005e55c76a9b8951be9dcc data/wilderlands/enchantment/lift.json
 cfa2aa0e48faf44cbc1d791242efddf9ad518ae6 data/minecraft/enchantment/silk_touch.json
+d5ae180abfcfdb4f690286a5615a6033ee5619c4 data/wilderlands/enchantment/vampiric.json
 8d71f57cc4ee87f3bca2dcd1085ee4989d964f5d data/wilderlands/enchantment/lifelinked.json
-e7d81426296d8f1d1102bf5b829e4bf47f9dd18e data/wilderlands/enchantment/vampiric.json
 0110eb6997c3be6f358c99a8c747de22cdc4b58c data/wilderlands/enchantment/voiding.json
 6d204a7e928063531484b1d1598762bfe76705a6 data/wilderlands/enchantment/amphibious.json
 e955d0acc08a2a8fe65eec01ef0c7df27ae0590d data/wilderlands/enchantment/dash.json

@@ -8,12 +8,8 @@
       {
         "affected": "attacker",
         "effect": {
-          "type": "wilderlands:freeze",
-          "duration": {
-            "type": "minecraft:linear",
-            "base": 10.0,
-            "per_level_above_first": 5.0
-          }
+          "type": "wilderlands:lifesteal",
+          "percent": 0.5
         },
         "enchanted": "attacker"
       }

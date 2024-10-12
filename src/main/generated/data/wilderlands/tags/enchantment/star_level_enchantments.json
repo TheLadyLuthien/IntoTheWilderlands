@@ -55,6 +55,10 @@
     {
       "id": "wilderlands:dash",
       "required": false
+    },
+    {
+      "id": "wilderlands:slide",
+      "required": false
     }
   ]
 }

@@ -4,6 +4,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.Freeze;
+import com.skadoosh.wilderlands.enchantments.effects.Lifesteal;
 import com.skadoosh.wilderlands.enchantments.effects.StrengthenEffect;
 
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -102,7 +103,7 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                 EnchantmentEffectComponentTypes.POST_ATTACK, // when to trigger
                 EnchantmentEffectTarget.ATTACKER, // when who holds it
                 EnchantmentEffectTarget.ATTACKER, // who gets affected
-                new Freeze(LevelBasedValue.linear(10, 5))
+                new Lifesteal(LevelBasedValue.constant(0.5f))
             )
             .withExclusiveSet(B_LEVEL)
         );
@@ -253,7 +254,7 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                 new EnchantmentAttribute(
                     ModEnchantments.AMPHIBIOUS.getValue(),
                     EntityAttributes.GENERIC_WATER_MOVEMENT_EFFICIENCY,
-                    LevelBasedValue.linear(1f, 0.1f),
+                    LevelBasedValue.linear(1.3f, 0.2f),
                     Operation.ADD_VALUE
                 )
             )

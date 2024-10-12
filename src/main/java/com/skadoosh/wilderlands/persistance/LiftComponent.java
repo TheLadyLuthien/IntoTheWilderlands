@@ -31,7 +31,6 @@ public class LiftComponent implements C2SSelfMessagingComponent, /* AutoSyncedCo
     public static final int FALL_DAMAGE_BUFFER = 15;
     public static final float JUMP_STRENGTH = 0.52f;
 
-
     private final PlayerEntity player;
 
     private int cooldown = 0;
