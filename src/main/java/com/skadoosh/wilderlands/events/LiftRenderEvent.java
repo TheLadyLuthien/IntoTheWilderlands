@@ -25,7 +25,6 @@ public class LiftRenderEvent implements HudRenderCallback
         ModComponentKeys.LIFT.maybeGet(MinecraftClient.getInstance().cameraEntity).ifPresent(liftComponent -> {
             if (liftComponent.hasEnchantment())
             {
-                // int jumpsLeft = galeComponent.getJumpsRemaining();
                 if (liftComponent.shouldRenderIcon())
                 {
                     RenderSystem.enableBlend();
@@ -33,7 +32,7 @@ public class LiftRenderEvent implements HudRenderCallback
                     if (liftComponent.getCooldown() > 0)
                     {
                         drawContext.drawGuiTexture(BACKGROUND, x, y, 9, 9);
-                        drawContext.drawGuiTexture(PROGRESS, 9, 9, 0, 0, x, y, 9, 9 - (int)((liftComponent.getCooldown() / (float)LiftComponent.COOLDOWN) * 9));
+                        drawContext.drawGuiTexture(PROGRESS, 9, 9, 0, 0, x, y, 9, (int)((liftComponent.getCooldown() / (float)LiftComponent.COOLDOWN) * 9));
                     }
                     else
                     {

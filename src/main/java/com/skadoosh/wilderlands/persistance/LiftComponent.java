@@ -2,6 +2,7 @@ package com.skadoosh.wilderlands.persistance;
 
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 import org.ladysnake.cca.api.v3.entity.C2SSelfMessagingComponent;
 
@@ -24,10 +25,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.registry.HolderLookup.Provider;
 
-public class LiftComponent implements C2SSelfMessagingComponent, /* AutoSyncedComponent, */ ClientTickingComponent
+public class LiftComponent implements C2SSelfMessagingComponent, /* AutoSyncedComponent, */ ServerTickingComponent, ClientTickingComponent
 {
     public static final int COOLDOWN = 5;
+    public static final int FALL_DAMAGE_BUFFER = 15;
     public static final float JUMP_STRENGTH = 0.52f;
+
 
     private final PlayerEntity player;
 
@@ -100,15 +103,15 @@ public class LiftComponent implements C2SSelfMessagingComponent, /* AutoSyncedCo
     {
         if (player.isOnGround() || player.isClimbing())
         {
-            cooldown = 0;
+            // cooldown = 0;
             jumpsRemaining = getEnchantmentLevel();
         }
-        else
+        // else
+        // {
+        // }
+        if (cooldown > 0)
         {
-            if (cooldown > 0)
-            {
-                cooldown--;
-            }
+            cooldown--;
         }
     }
 
@@ -137,6 +140,21 @@ public class LiftComponent implements C2SSelfMessagingComponent, /* AutoSyncedCo
     public void handleC2SMessage(RegistryByteBuf buf)
     {
         player.resetFallDistance();
+        cooldown = COOLDOWN;
         ((ServerWorld)(player.getWorld())).spawnParticles(ParticleTypes.GUST, player.getX(), player.getY(), player.getZ(), jumpsRemaining, 1.0f, 1.0f, 1.0f, 1.25f);
+    }
+
+    @Override
+    public void serverTick()
+    {
+        if (cooldown > -FALL_DAMAGE_BUFFER)
+        {
+            cooldown--;
+        }
+    }
+
+    public boolean isFalldamageImmune()
+    {
+        return cooldown > -FALL_DAMAGE_BUFFER;
     }
 }
