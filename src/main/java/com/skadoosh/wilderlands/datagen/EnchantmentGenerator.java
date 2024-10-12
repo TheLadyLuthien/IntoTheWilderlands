@@ -343,5 +343,16 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
             .withExclusiveSet(A_LEVEL)
         );
 
+        register(entries, ModEnchantments.ADRENALINE,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.LEGS
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
+        );
+
     }
 }

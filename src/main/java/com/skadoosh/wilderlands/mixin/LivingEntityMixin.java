@@ -26,16 +26,68 @@ import net.minecraft.util.math.Vec3d;
 public class LivingEntityMixin
 {
     // @Inject(method = "handleFrictionAndCalculateMovement", at = @At("HEAD"))
-    @ModifyVariable(method = "handleFrictionAndCalculateMovement", at = @At("HEAD"), ordinal = 0, argsOnly = true)
-    private float handleFrictionAndCalculateMovement(float slipperiness)
+    // @ModifyVariable(method = "handleFrictionAndCalculateMovement", at = @At("HEAD"), ordinal = 0,
+    // argsOnly = true)
+    // private float handleFrictionAndCalculateMovement(float slipperiness)
+    // {
+    // LivingEntity e = ((LivingEntity)((Object)this));
+    // int level =
+    // EnchantmentHelper.getHighestEquippedLevel(e.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.SLIDE),
+    // e);
+    // float slip = ((level > 0) && e.isSneaking()) ? 1 : slipperiness;
+
+    // return slip;
+    // // origional.call(movementInput, ((level > 0) && e.isSneaking()) ? 1 : slipperiness);
+    // }
+
+    @Inject(method = "hasNoDrag", at = @At("HEAD"), cancellable = true)
+    private void hasNoDrag(CallbackInfoReturnable<Boolean> ci)
     {
         LivingEntity e = ((LivingEntity)((Object)this));
-        int level = EnchantmentHelper.getHighestEquippedLevel(e.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.SLIDE), e);
-        float slip = ((level > 0) && e.isSneaking()) ? 1 : slipperiness;
-
-        return slip;
-        // origional.call(movementInput, ((level > 0) && e.isSneaking()) ? 1 : slipperiness);
+        if (e.isSneaking())
+        {
+            int level = EnchantmentHelper.getHighestEquippedLevel(e.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.SLIDE), e);
+            if (level > 0)
+            {
+                ci.setReturnValue(true);
+                ci.cancel();
+                return;
+            }
+        }
     }
+
+    @Inject(method = "getMovementSpeed()F", at = @At("RETURN"), cancellable = true)
+    private void injected(CallbackInfoReturnable<Float> cir)
+    {
+        LivingEntity e = ((LivingEntity)((Object)this));
+        int level = EnchantmentHelper.getHighestEquippedLevel(e.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.ADRENALINE), e);
+
+        if (level > 0)
+        {
+            float boost = (1 - (e.getHealth() / e.getMaxHealth())) * ModEnchantments.ADRENALINE_MAX_SPEED_BOOST;
+    
+            cir.setReturnValue(cir.getReturnValue() + boost);
+            cir.cancel();
+        }
+    }
+
+    // @Inject(method = "hasNoDrag", at = @At("HEAD"), cancellable = true)
+    // private void hasNoDrag(CallbackInfoReturnable<Boolean> ci)
+    // {
+    // LivingEntity e = ((LivingEntity)((Object)this));
+    // if (e.isSneaking())
+    // {
+    // int level =
+    // EnchantmentHelper.getHighestEquippedLevel(e.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.SLIDE),
+    // e);
+    // if (level > 0)
+    // {
+    // ci.setReturnValue(true);
+    // ci.cancel();
+    // return;
+    // }
+    // }
+    // }
 
     @Inject(method = "computeFallDamage", at = @At("HEAD"), cancellable = true)
     private void modifyFallDamage(float fallDistance, float damageMultiplier, CallbackInfoReturnable<Integer> ci)

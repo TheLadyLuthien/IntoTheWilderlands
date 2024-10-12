@@ -1,0 +1,21 @@
+{
+  "anvil_cost": 2,
+  "description": {
+    "translate": "enchantment.wilderlands.adrenaline"
+  },
+  "exclusive_set": "#wilderlands:b_level_enchantments",
+  "max_cost": {
+    "base": 2,
+    "per_level_above_first": 1
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 2,
+    "per_level_above_first": 0
+  },
+  "slots": [
+    "legs"
+  ],
+  "supported_items": "#minecraft:enchantable/leg_armor",
+  "weight": 10
+}

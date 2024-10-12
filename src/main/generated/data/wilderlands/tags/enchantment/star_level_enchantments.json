@@ -59,6 +59,10 @@
     {
       "id": "wilderlands:slide",
       "required": false
+    },
+    {
+      "id": "wilderlands:adrenaline",
+      "required": false
     }
   ]
 }

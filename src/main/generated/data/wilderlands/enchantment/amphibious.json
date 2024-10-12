@@ -8,8 +8,8 @@
       {
         "amount": {
           "type": "minecraft:linear",
-          "base": 1.0,
-          "per_level_above_first": 0.1
+          "base": 1.3,
+          "per_level_above_first": 0.2
         },
         "attribute": "minecraft:generic.water_movement_efficiency",
         "id": "wilderlands:amphibious",
