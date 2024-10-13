@@ -67,6 +67,10 @@
     {
       "id": "wilderlands:aerodnamic",
       "required": false
+    },
+    {
+      "id": "wilderlands:smoldering",
+      "required": false
     }
   ]
 }

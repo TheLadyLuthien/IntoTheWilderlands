@@ -365,5 +365,16 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
             .withExclusiveSet(A_LEVEL)
         );
 
+        register(entries, ModEnchantments.SMOLDERING,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.CHEST
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
+        );
+
     }
 }

@@ -46,8 +46,6 @@ public class Wilderlands implements ModInitializer
 
 
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(BeheadingReloadListener.ID, BeheadingReloadListener::new);
-
-        // LOGGER.info("Hello Quilt world from {}! Stay fresh!", mod.metadata().name());
     }
 
     public static Identifier id(String name)

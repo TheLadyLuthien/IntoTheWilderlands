@@ -6,8 +6,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.lumberjack.LumberjackEvent;
+import com.skadoosh.wilderlands.persistance.ModComponentKeys;
+import com.skadoosh.wilderlands.persistance.SmolderingComponent;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -15,8 +19,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.HolderLookup.RegistryLookup;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.World;
 
@@ -51,14 +57,37 @@ public abstract class PlayerEntityMixin extends LivingEntity
 	@Inject(method = "getAirSpeed", at = @At("HEAD"), cancellable = true)
 	protected void getAirSpeed(CallbackInfoReturnable<Float> cir)
 	{
-        PlayerEntity e = ((PlayerEntity)((Object)this));
+		PlayerEntity e = ((PlayerEntity)((Object)this));
 		RegistryLookup<Enchantment> lookup = e.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT);
 		int level = EnchantmentHelper.getHighestEquippedLevel(lookup.getHolderOrThrow(ModEnchantments.AERODYNAMIC), e);
-		
+
 		if (level > 0)
 		{
-			cir.setReturnValue((this.isSprinting() ? 0.025999999F : 0.02F) * (1 + ((float)level * 1.5f)));
+			cir.setReturnValue((this.isSprinting() ? 0.025999999F : 0.02F) * (1 + ((float)level * 1.8f)));
 			cir.cancel();
+		}
+	}
+
+	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+	public void damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir)
+	{
+		if (source.isTypeIn(DamageTypeTags.IS_FIRE))
+		{
+			SmolderingComponent smoldering = ModComponentKeys.SMOLDERING.get(this);
+
+			if (smoldering.hasEnchantment())
+			{
+				final float chargeAmount = amount * 0.25f;
+
+				if (smoldering.isServer())
+				{
+					smoldering.chargeBy(chargeAmount);
+				}
+
+				cir.setReturnValue(super.damage(source, chargeAmount));
+				cir.cancel();
+				return;
+			}
 		}
 	}
 }

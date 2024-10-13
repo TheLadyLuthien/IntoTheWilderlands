@@ -27,6 +27,10 @@
     {
       "id": "wilderlands:adrenaline",
       "required": false
+    },
+    {
+      "id": "wilderlands:smoldering",
+      "required": false
     }
   ]
 }

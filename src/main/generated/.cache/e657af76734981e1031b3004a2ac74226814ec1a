@@ -1,4 +1,4 @@
-// 1.21	2024-10-13T15:23:50.257136	Into The Wilderlands/Model Definitions
+// 1.21	2024-10-13T16:44:45.684649	Into The Wilderlands/Model Definitions
 a58977d57e9b2cc419a893216633b78f3d3b1850 assets/wilderlands/models/item/astral_forge_core.json
 d6cdfb3d07fe48bfc6faabfb02eedc35695ba8f7 assets/wilderlands/models/item/bifrost_key_5.json
 006f07a48b89ddc3716594727a37d0bf42122b8f assets/wilderlands/models/item/destroyer.json
@@ -7,5 +7,5 @@ ad78087b485e03db35d37d9c1ab15df8342ac92a assets/wilderlands/models/item/bifrost_
 9c5aaba980d382fba27f2080d5edacc3c6bbefe0 assets/wilderlands/models/item/bifrost_key_4.json
 6fa6c976dcc3f7992db8d61cfe53a8cac144b4bc assets/wilderlands/models/item/deployer.json
 e531610810abaed2066a09b7b5a12ed787bb3a0b assets/wilderlands/models/item/holotile.json
-916d018b13bfd2f8d63e060a2e6a46943ed83c76 assets/wilderlands/models/item/bifrost_key_2.json
 5d12aa705a1cbb4eb0e65c676aa4ff123bfb0ddf assets/wilderlands/models/item/bifrost_key_3.json
+916d018b13bfd2f8d63e060a2e6a46943ed83c76 assets/wilderlands/models/item/bifrost_key_2.json
