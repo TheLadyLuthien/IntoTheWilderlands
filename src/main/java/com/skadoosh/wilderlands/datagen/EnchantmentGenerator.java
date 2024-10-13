@@ -354,5 +354,16 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
             .withExclusiveSet(B_LEVEL)
         );
 
+        register(entries, ModEnchantments.AERODYNAMIC,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.CHEST
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
+
     }
 }

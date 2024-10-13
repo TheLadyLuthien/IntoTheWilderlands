@@ -66,8 +66,11 @@ public class ModEnchantments
     
     @EnchantmentLevel(Level.B)
     public static final RegistryKey<Enchantment> ADRENALINE = keyOf(Wilderlands.id("adrenaline"));
-    public static final float ADRENALINE_MAX_SPEED_BOOST = 1.6f;
-
+    public static final float ADRENALINE_MAX_SPEED_BOOST = 0.09f;
+    
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> AERODYNAMIC = keyOf(Wilderlands.id("aerodnamic"));
+    
     public static final MapCodec<Freeze> FREEZE_EFFECT = registerEntityEffect(Wilderlands.id("freeze"), Freeze.CODEC);
     public static final MapCodec<StrengthenEffect> STRENTHEN_EFFECT = registerEntityEffect(Wilderlands.id("strengthen"), StrengthenEffect.CODEC);
     public static final MapCodec<Lifesteal> LIFESTEAL = registerEntityEffect(Wilderlands.id("lifesteal"), Lifesteal.CODEC);

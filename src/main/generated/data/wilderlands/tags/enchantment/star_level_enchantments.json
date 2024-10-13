@@ -63,6 +63,10 @@
     {
       "id": "wilderlands:adrenaline",
       "required": false
+    },
+    {
+      "id": "wilderlands:aerodnamic",
+      "required": false
     }
   ]
 }

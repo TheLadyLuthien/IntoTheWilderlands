@@ -35,6 +35,10 @@
     {
       "id": "wilderlands:slide",
       "required": false
+    },
+    {
+      "id": "wilderlands:aerodnamic",
+      "required": false
     }
   ]
 }

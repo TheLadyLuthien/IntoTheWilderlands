@@ -6,13 +6,18 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.lumberjack.LumberjackEvent;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.HolderLookup.RegistryLookup;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.World;
 
 @Mixin(PlayerEntity.class)
@@ -23,7 +28,7 @@ public abstract class PlayerEntityMixin extends LivingEntity
 		super(entityType, world);
 	}
 
-	private static final int MAX_HEALTH = 60;
+	private static final int MAX_HEALTH = 80;
 
 	@Inject(method = "createAttributes", at = @At("HEAD"), cancellable = true)
 	private static void createAttributes(CallbackInfoReturnable<DefaultAttributeContainer.Builder> ci)
@@ -40,6 +45,20 @@ public abstract class PlayerEntityMixin extends LivingEntity
 		if (!handSwinging)
 		{
 			LumberjackEvent.ENTRIES.removeIf(entry -> entry.player() == (Object)this);
+		}
+	}
+
+	@Inject(method = "getAirSpeed", at = @At("HEAD"), cancellable = true)
+	protected void getAirSpeed(CallbackInfoReturnable<Float> cir)
+	{
+        PlayerEntity e = ((PlayerEntity)((Object)this));
+		RegistryLookup<Enchantment> lookup = e.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT);
+		int level = EnchantmentHelper.getHighestEquippedLevel(lookup.getHolderOrThrow(ModEnchantments.AERODYNAMIC), e);
+		
+		if (level > 0)
+		{
+			cir.setReturnValue((this.isSprinting() ? 0.025999999F : 0.02F) * (1 + ((float)level * 1.5f)));
+			cir.cancel();
 		}
 	}
 }
