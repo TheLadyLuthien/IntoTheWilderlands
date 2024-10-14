@@ -38,7 +38,7 @@
             }
         ]
     },
-    "accessWidener" : "modid.accesswidener",
+    "access_widener" : "wilderlands.accesswidener",
     "mixin": "wilderlands.mixins.json",
     "cardinal-components": [
         "wilderlands:named_keystone_data",

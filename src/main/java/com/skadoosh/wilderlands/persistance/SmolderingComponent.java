@@ -146,4 +146,11 @@ public class SmolderingComponent implements ServerTickingComponent, AutoSyncedCo
     {
         return charge / MAX_CHARGE;
     }
+
+    public boolean hasCharge()
+    {
+        return charge > 0;
+    }
+
+    
 }
