@@ -1,7 +1,7 @@
 # The latest versions are available at https://quiltmc.org/en/usage/latest-versions
 [versions]
 minecraft = "1.21"
-quilt_mappings = "1.21+build.5"
+quilt_mappings = "1.21+build.18"
 
 quilt_loom = "1.7.4"
 quilt_loader = "0.26.4-beta.1"

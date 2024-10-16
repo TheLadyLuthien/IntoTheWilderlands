@@ -73,9 +73,9 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
 
     // read NBT
     @Override
-    protected void method_11014(NbtCompound nbt, Provider lookupProvider)
+    public void readNbtImpl(NbtCompound nbt, Provider lookupProvider)
     {
-        super.method_11014(nbt, lookupProvider);
+        super.readNbtImpl(nbt, lookupProvider);
 
         destinationPos = new BlockPos(nbt.getInt("destX"), nbt.getInt("destY"), nbt.getInt("destZ"));
         keystonePos = new BlockPos(nbt.getInt("keystoneX"), nbt.getInt("keystoneY"), nbt.getInt("keystoneZ"));

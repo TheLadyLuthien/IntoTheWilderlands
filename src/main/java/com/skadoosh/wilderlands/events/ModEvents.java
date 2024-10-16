@@ -25,6 +25,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSubPredicateTypes;
 import net.minecraft.item.Items;
 import net.minecraft.loot.condition.InvertedLootCondition;
 import net.minecraft.loot.condition.MatchToolLootCondition;
@@ -36,7 +37,6 @@ import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.unmapped.C_idgyzprx;
 import net.minecraft.unmapped.C_loxplxmp;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
@@ -96,7 +96,7 @@ public final class ModEvents
                                 Optional.of(
                                     ItemPredicate.Builder.create()
                                         .method_58179(
-                                            C_idgyzprx.ENCHANTMENTS,
+                                            ItemSubPredicateTypes.ENCHANTMENTS,
                                             C_loxplxmp.C_zqrrydyv.method_58173(List.of(
                                                 new EnchantmentPredicate(
                                                     lookup.getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VOIDING),

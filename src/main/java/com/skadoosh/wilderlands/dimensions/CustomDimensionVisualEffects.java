@@ -78,16 +78,16 @@ public final class CustomDimensionVisualEffects
                 }
 
                 Matrix4f matrix4f = matrices.peek().getModel();
-                BufferBuilder bufferBuilder = tessellator.method_60827(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+                BufferBuilder bufferBuilder = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
 
                 final float count = 1;
                 final int color = 0xffffffff;
 
-                bufferBuilder.method_22918(matrix4f, -100.0F, -100.0F, -100.0F).method_22913(0.0F, 0.0F).method_39415(color);
-                bufferBuilder.method_22918(matrix4f, -100.0F, -100.0F, 100.0F).method_22913(0.0F, count).method_39415(color);
-                bufferBuilder.method_22918(matrix4f, 100.0F, -100.0F, 100.0F).method_22913(count, count).method_39415(color);
-                bufferBuilder.method_22918(matrix4f, 100.0F, -100.0F, -100.0F).method_22913(count, 0.0F).method_39415(color);
-                BufferRenderer.drawWithShader(bufferBuilder.method_60800());
+                bufferBuilder.xyz(matrix4f, -100.0F, -100.0F, -100.0F).uv0(0.0F, 0.0F).color(color);
+                bufferBuilder.xyz(matrix4f, -100.0F, -100.0F, 100.0F).uv0(0.0F, count).color(color);
+                bufferBuilder.xyz(matrix4f, 100.0F, -100.0F, 100.0F).uv0(count, count).color(color);
+                bufferBuilder.xyz(matrix4f, 100.0F, -100.0F, -100.0F).uv0(count, 0.0F).color(color);
+                BufferRenderer.drawWithShader(bufferBuilder.endOrThrow());
                 matrices.pop();
             }
 
