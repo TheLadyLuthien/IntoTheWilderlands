@@ -31,6 +31,10 @@
     {
       "id": "wilderlands:smoldering",
       "required": false
+    },
+    {
+      "id": "wilderlands:stonespined",
+      "required": false
     }
   ]
 }

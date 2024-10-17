@@ -10,6 +10,7 @@
         "BlockMixin",
         "LivingEntityMixin",
         "AbstractBlockMixin",
+        "MobEntityMixin",
         "PistonHandlerMixin"
     ],
     "client": [

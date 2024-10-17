@@ -17,18 +17,24 @@ import com.skadoosh.wilderlands.persistance.DashComponent;
 import com.skadoosh.wilderlands.persistance.LiftComponent;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
+import it.unimi.dsi.fastutil.doubles.DoubleDoubleImmutablePair;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.registry.HolderLookup.RegistryLookup;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.math.Vec3d;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin
 {
-    @WrapOperation(method = "travel", at = @At(value="INVOKE", target = "Lnet/minecraft/block/Block;getSlipperiness()F"))
+    @WrapOperation(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getSlipperiness()F"))
     private float removeFriction(Block block, Operation<Float> origional)
     {
         LivingEntity e = ((LivingEntity)((Object)this));
@@ -94,6 +100,38 @@ public class LivingEntityMixin
                 ci.cancel();
                 return;
             }
+        }
+    }
+
+    @WrapOperation(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;isTypeIn(Lnet/minecraft/registry/tag/TagKey;)Z", ordinal = 6))
+    private boolean takeKnockback(DamageSource source, TagKey<DamageType> tagKey, Operation<Boolean> origional)
+    {
+        LivingEntity e = ((LivingEntity)((Object)this));
+        if (source.getAttacker() != null && source.getAttacker() instanceof LivingEntity attacker
+                && EnchantmentHelper.getHighestEquippedLevel(e.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.STONESPINED), e) > 0)
+        {
+            double d = 0.0;
+            double g = 0.0;
+            Entity var13 = source.getSource();
+            if (var13 instanceof ProjectileEntity)
+            {
+                ProjectileEntity projectileEntity = (ProjectileEntity)var13;
+                DoubleDoubleImmutablePair doubleDoubleImmutablePair = projectileEntity.getHorizontalKnockback(e, source);
+                d = -doubleDoubleImmutablePair.leftDouble();
+                g = -doubleDoubleImmutablePair.rightDouble();
+            }
+            else if (source.getPosition() != null)
+            {
+                d = source.getPosition().getX() - e.getX();
+                g = source.getPosition().getZ() - e.getZ();
+            }
+
+            attacker.takeKnockback(0.4000000059604645, d, g);
+            return origional.call(source, tagKey) || true;
+        }
+        else
+        {
+            return origional.call(source, tagKey);
         }
     }
 }

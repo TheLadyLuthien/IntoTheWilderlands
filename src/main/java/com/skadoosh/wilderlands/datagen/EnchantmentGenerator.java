@@ -376,5 +376,16 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
             .withExclusiveSet(B_LEVEL)
         );
 
+        register(entries, ModEnchantments.STONESPINED,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.CHEST
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
+        );
+
     }
 }

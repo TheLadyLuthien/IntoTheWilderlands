@@ -6,6 +6,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
@@ -20,6 +22,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.HolderLookup.RegistryLookup;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -90,4 +93,17 @@ public abstract class PlayerEntityMixin extends LivingEntity
 			}
 		}
 	}
+
+	@WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;takeKnockback(DDD)V"))
+    public void tryAttack(LivingEntity target, double strength, double b, double c, Operation<Void> origional)
+    {
+        if (EnchantmentHelper.getHighestEquippedLevel(target.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.STONESPINED), target) > 0)
+        {
+            ((PlayerEntity)((Object)this)).takeKnockback(strength * 1.51, -b, -c);
+        }
+        else
+        {
+            origional.call(target, strength, b, c);
+        }
+    }
 }
