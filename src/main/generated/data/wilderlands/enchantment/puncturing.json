@@ -1,0 +1,37 @@
+{
+  "anvil_cost": 2,
+  "description": {
+    "translate": "enchantment.wilderlands.puncturing"
+  },
+  "effects": {
+    "minecraft:post_attack": [
+      {
+        "affected": "victim",
+        "effect": {
+          "type": "minecraft:apply_mob_effect",
+          "max_amplifier": 0.0,
+          "max_duration": 100.0,
+          "min_amplifier": 0.0,
+          "min_duration": 100.0,
+          "to_apply": "wilderlands:bleeding"
+        },
+        "enchanted": "attacker"
+      }
+    ]
+  },
+  "exclusive_set": "#wilderlands:b_level_enchantments",
+  "max_cost": {
+    "base": 2,
+    "per_level_above_first": 1
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 2,
+    "per_level_above_first": 0
+  },
+  "slots": [
+    "hand"
+  ],
+  "supported_items": "#minecraft:enchantable/trident",
+  "weight": 10
+}

@@ -39,6 +39,10 @@
     {
       "id": "wilderlands:illuminating",
       "required": false
+    },
+    {
+      "id": "wilderlands:puncturing",
+      "required": false
     }
   ]
 }

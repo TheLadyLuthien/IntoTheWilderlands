@@ -86,6 +86,12 @@ public class ModEnchantments
     @EnchantmentLevel(Level.B)
     public static final RegistryKey<Enchantment> ILLUMINTING = keyOf(Wilderlands.id("illuminating"));
     
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> SCOOPING = keyOf(Wilderlands.id("scooping"));
+    
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> PUNCTURING = keyOf(Wilderlands.id("puncturing"));
+    
     public static final MapCodec<Freeze> FREEZE_EFFECT = registerEntityEffect(Wilderlands.id("freeze"), Freeze.CODEC);
     public static final MapCodec<StrengthenEffect> STRENTHEN_EFFECT = registerEntityEffect(Wilderlands.id("strengthen"), StrengthenEffect.CODEC);
     public static final MapCodec<Lifesteal> LIFESTEAL = registerEntityEffect(Wilderlands.id("lifesteal"), Lifesteal.CODEC);

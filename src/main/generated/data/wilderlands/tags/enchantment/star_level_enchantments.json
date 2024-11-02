@@ -87,6 +87,14 @@
     {
       "id": "wilderlands:illuminating",
       "required": false
+    },
+    {
+      "id": "wilderlands:scooping",
+      "required": false
+    },
+    {
+      "id": "wilderlands:puncturing",
+      "required": false
     }
   ]
 }

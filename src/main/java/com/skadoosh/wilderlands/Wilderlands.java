@@ -10,6 +10,8 @@ import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.commands.ModCommands;
 import com.skadoosh.wilderlands.components.ModComponents;
+import com.skadoosh.wilderlands.damage.ModDamageTypes;
+import com.skadoosh.wilderlands.effects.ModEffects;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.events.ModEvents;
 import com.skadoosh.wilderlands.items.ModItems;
@@ -33,6 +35,8 @@ public class Wilderlands implements ModInitializer
         Cadmium.initialize();
         
         ModParticles.init();
+        ModDamageTypes.init();
+        ModEffects.init();
         ModEnchantments.init();
         ModScreenHandlers.init();
         ModBlocks.init();
@@ -43,7 +47,6 @@ public class Wilderlands implements ModInitializer
         ModItemGroups.register();
         ModEvents.register();
         ModCommands.register();
-
 
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(BeheadingReloadListener.ID, BeheadingReloadListener::new);
     }

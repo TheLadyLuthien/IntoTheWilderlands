@@ -47,6 +47,10 @@
     {
       "id": "wilderlands:veil",
       "required": false
+    },
+    {
+      "id": "wilderlands:scooping",
+      "required": false
     }
   ]
 }

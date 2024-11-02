@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -133,5 +134,17 @@ public class LivingEntityMixin
         {
             return origional.call(source, tagKey);
         }
+    }
+
+    @ModifyReturnValue(method = "getAttackDistanceScalingFactor", at = @At("RETURN"))
+    private double modifyDetectionRange(double original, Entity entity)
+    {
+        if (entity == null && entity instanceof LivingEntity livingEntity/*  || !entity.getType().isIn(ModEntityTypeTags.VEIL_IMMUNE) */)
+        {
+            var enchantment = livingEntity.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VEIL);
+            return (EnchantmentHelper.getHighestEquippedLevel(enchantment, livingEntity) > 0) ? original * 0.5 : original;
+            // EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MODIFY_DETECTION_RANGE, (LivingEntity)(Object)this, (float)original);
+        }
+        return original;
     }
 }
