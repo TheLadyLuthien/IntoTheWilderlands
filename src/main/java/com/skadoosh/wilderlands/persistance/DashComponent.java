@@ -111,9 +111,8 @@ public class DashComponent implements C2SSelfMessagingComponent, /* AutoSyncedCo
     {
         if (canUse())
         {
-            float f = player.getYaw() * ((float)Math.PI / 180);
-            float p = player.getPitch() * ((float)Math.PI / 180);
-            player.setVelocity((-MathHelper.sin(f) * LAUNCH_STRENGTH), (-MathHelper.sin(p) * LAUNCH_STRENGTH), (MathHelper.cos(f) * LAUNCH_STRENGTH));
+            var vec = player.getRotationVector().normalize();
+            player.setVelocity(vec.x * LAUNCH_STRENGTH, vec.y * LAUNCH_STRENGTH, vec.z * LAUNCH_STRENGTH);
             
             sendC2SMessage(buf -> {});
             
