@@ -8,8 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.lumberjack.LumberjackEvent;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
@@ -22,11 +21,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.HolderLookup.RegistryLookup;
-import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.world.World;
 
 @Mixin(PlayerEntity.class)
@@ -99,7 +97,8 @@ public abstract class PlayerEntityMixin extends LivingEntity
     {
         if (EnchantmentHelper.getHighestEquippedLevel(target.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.STONESPINED), target) > 0)
         {
-            ((PlayerEntity)((Object)this)).takeKnockback(strength * 1.51, -b, -c);
+			// PlayerEntity pe = ((PlayerEntity)((Object)this));
+			origional.call(this, strength * 5, -b, -c);
         }
         else
         {

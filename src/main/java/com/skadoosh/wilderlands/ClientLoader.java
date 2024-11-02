@@ -5,6 +5,7 @@ import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 
 import com.skadoosh.cadmium.Cadmium;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
+import com.skadoosh.wilderlands.events.CoyoteBiteEvent;
 import com.skadoosh.wilderlands.events.DashRenderEvent;
 import com.skadoosh.wilderlands.events.LiftRenderEvent;
 import com.skadoosh.wilderlands.items.ModItems;
@@ -13,6 +14,7 @@ import com.skadoosh.wilderlands.misc.BifrostHelper.KeyType;
 import com.skadoosh.wilderlands.screen.handler.ModScreenHandlers;
 
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
@@ -101,6 +103,7 @@ public class ClientLoader implements ClientModInitializer
 
         HudRenderCallback.EVENT.register(new LiftRenderEvent());
         HudRenderCallback.EVENT.register(new DashRenderEvent());
+        ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
 
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.HOLOTILE, RenderLayer.getTranslucent());
     }

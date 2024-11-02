@@ -103,7 +103,7 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                 EnchantmentEffectComponentTypes.POST_ATTACK, // when to trigger
                 EnchantmentEffectTarget.ATTACKER, // when who holds it
                 EnchantmentEffectTarget.ATTACKER, // who gets affected
-                new Lifesteal(LevelBasedValue.constant(0.5f))
+                new Lifesteal(LevelBasedValue.constant(0.2f))
             )
             .withExclusiveSet(B_LEVEL)
         );
@@ -387,5 +387,37 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
             .withExclusiveSet(B_LEVEL)
         );
 
+        register(entries, ModEnchantments.MASKING,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HEAD
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
+
+        register(entries, ModEnchantments.VEIL,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HEAD
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
+
+        register(entries, ModEnchantments.ILLUMINTING,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HEAD
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
+        );
     }
 }

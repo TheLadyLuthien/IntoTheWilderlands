@@ -35,6 +35,10 @@
     {
       "id": "wilderlands:stonespined",
       "required": false
+    },
+    {
+      "id": "wilderlands:illuminating",
+      "required": false
     }
   ]
 }

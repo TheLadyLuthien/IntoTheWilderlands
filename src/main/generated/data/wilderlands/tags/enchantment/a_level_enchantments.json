@@ -39,6 +39,14 @@
     {
       "id": "wilderlands:aerodnamic",
       "required": false
+    },
+    {
+      "id": "wilderlands:masking",
+      "required": false
+    },
+    {
+      "id": "wilderlands:veil",
+      "required": false
     }
   ]
 }

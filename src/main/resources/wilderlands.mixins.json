@@ -16,7 +16,11 @@
     "client": [
         "DimensionVisiualEffectsMixin",
         "WorldRendererMixin",
+        "LivingEntityRendererMixin",
+        "MinecraftClientMixin",
         "ClientPlayerEntityMixin",
+        "LightmapTextureManagerMixin",
+        "GameRendererMixin",
         "WorldRendererAccessor"
     ],
     "injectors": {

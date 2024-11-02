@@ -41,7 +41,7 @@ public class LivingEntityMixin
         int level = EnchantmentHelper.getHighestEquippedLevel(e.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.SLIDE), e);
 
         float f = origional.call(block);
-        return (e.isSneaking() && level > 0) ? 0.99999999999f : f;
+        return (e.isSneaking() && level > 0) ? 1f : f;
     }
 
     @Inject(method = "hasNoDrag", at = @At("HEAD"), cancellable = true)
@@ -126,7 +126,7 @@ public class LivingEntityMixin
                 g = source.getPosition().getZ() - e.getZ();
             }
 
-            attacker.takeKnockback(0.4000000059604645, d, g);
+            attacker.takeKnockback(0.4000000059604645, -d, -g);
             return origional.call(source, tagKey) || true;
         }
         else

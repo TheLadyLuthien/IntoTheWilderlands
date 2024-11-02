@@ -9,7 +9,7 @@
         "affected": "attacker",
         "effect": {
           "type": "wilderlands:lifesteal",
-          "percent": 0.5
+          "percent": 0.2
         },
         "enchanted": "attacker"
       }

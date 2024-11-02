@@ -75,6 +75,18 @@
     {
       "id": "wilderlands:stonespined",
       "required": false
+    },
+    {
+      "id": "wilderlands:masking",
+      "required": false
+    },
+    {
+      "id": "wilderlands:veil",
+      "required": false
+    },
+    {
+      "id": "wilderlands:illuminating",
+      "required": false
     }
   ]
 }
