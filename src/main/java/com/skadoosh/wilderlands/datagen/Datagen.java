@@ -5,8 +5,10 @@ import java.util.concurrent.CompletableFuture;
 
 import com.skadoosh.mcutils.datagen.AutoTranslate;
 import com.skadoosh.mcutils.datagen.ModelGenerator;
+import com.skadoosh.mcutils.datagen.NoKnockback;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
+import com.skadoosh.wilderlands.damage.ModDamageTypes;
 import com.skadoosh.wilderlands.enchantments.EnchantmentLevel;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.items.ModItems;
@@ -21,7 +23,9 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.data.server.tag.DamageTypeTagsProvider;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.HolderLookup.Provider;
@@ -30,6 +34,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
 
 public class Datagen implements DataGeneratorEntrypoint
 {
@@ -40,6 +45,7 @@ public class Datagen implements DataGeneratorEntrypoint
 
         pack.addProvider(BlockTagGenerator::new);
         pack.addProvider(EnchantmentTags::new);
+        pack.addProvider(DamageTypeTagGenerator::new);
         pack.addProvider(EnchantmentGenerator::new);
         pack.addProvider(ModelGenerator::new);
         pack.addProvider(EnglishLanguageProvider::new);
@@ -118,7 +124,7 @@ public class Datagen implements DataGeneratorEntrypoint
 
         public static final TagKey<Block> ORES = TagKey.of(RegistryKeys.BLOCK, Wilderlands.id("ores"));
         public static final TagKey<Block> VOIDABLE = TagKey.of(RegistryKeys.BLOCK, Wilderlands.id("voidable"));
-        public static final TagKey<Block> AUTOSMELTS = TagKey.of(RegistryKeys.BLOCK, Wilderlands.id("voidable"));
+        public static final TagKey<Block> AUTOSMELTS = TagKey.of(RegistryKeys.BLOCK, Wilderlands.id("autosmelts"));
 
         @Override
         protected void configure(Provider wrapperLookup)
@@ -149,6 +155,28 @@ public class Datagen implements DataGeneratorEntrypoint
             .add(Blocks.COBBLESTONE)
             .add(Blocks.WET_SPONGE)
             .add(Blocks.SAND);
+        }
+    }
+
+    public static class DamageTypeTagGenerator extends FabricTagProvider<DamageType>
+    {
+        public DamageTypeTagGenerator(FabricDataOutput output, CompletableFuture<Provider> completableFuture)
+        {
+            super(output, RegistryKeys.DAMAGE_TYPE, completableFuture);
+        }
+
+        public static final TagKey<DamageType> NO_KNOCKBACK = TagKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.ofDefault("no_knockback"));
+
+        @Override
+        @SuppressWarnings("unchecked")
+        protected void configure(Provider wrapperLookup)
+        {
+            var noKnockback = getOrCreateTagBuilder(NO_KNOCKBACK);
+            ArrayList<AnnotationHelper.ValueAnnotationPair<RegistryKey, NoKnockback>> noKnockbacks = AnnotationHelper.getFieldsWithAnnotation(NoKnockback.class, ModDamageTypes.class, RegistryKey.class);
+            for (var item : noKnockbacks)
+            {
+                noKnockback.addOptional(item.value);
+            }
         }
     }
 

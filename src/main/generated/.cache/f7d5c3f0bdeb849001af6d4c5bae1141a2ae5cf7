@@ -1,3 +1,4 @@
-// 1.21	2024-11-02T21:23:55.567746	Into The Wilderlands/Tags for minecraft:block
+// 1.21	2024-11-03T14:46:53.768501	Into The Wilderlands/Tags for minecraft:block
 3dd4df087b00f5d28a8b9fbc3e28bb8062a876b1 data/wilderlands/tags/block/ores.json
-c05e2b1b32dece0e06566caeda1cbc0bd8d53e1d data/wilderlands/tags/block/voidable.json
+965fafeee1a09059a88e3f8ee088b9b0c7c10081 data/wilderlands/tags/block/autosmelts.json
+35aa4b18d8dc077756e61ab0d68e441ded45f211 data/wilderlands/tags/block/voidable.json

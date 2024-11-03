@@ -10,9 +10,9 @@
         "effect": {
           "type": "minecraft:apply_mob_effect",
           "max_amplifier": 0.0,
-          "max_duration": 100.0,
+          "max_duration": 5.0,
           "min_amplifier": 0.0,
-          "min_duration": 100.0,
+          "min_duration": 5.0,
           "to_apply": "wilderlands:bleeding"
         },
         "enchanted": "attacker"

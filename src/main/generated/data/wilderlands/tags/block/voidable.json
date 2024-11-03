@@ -14,14 +14,6 @@
     },
     "minecraft:cobblestone",
     "minecraft:blackstone",
-    "minecraft:cobbled_deepslate",
-    {
-      "id": "#wilderlands:ores",
-      "required": false
-    },
-    "minecraft:stone",
-    "minecraft:cobblestone",
-    "minecraft:wet_sponge",
-    "minecraft:sand"
+    "minecraft:cobbled_deepslate"
   ]
 }

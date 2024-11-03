@@ -11,7 +11,7 @@
     ],
     "minecraft:trident_spin_attack_strength": {
       "type": "minecraft:add",
-      "value": 4.0
+      "value": 6.0
     }
   },
   "exclusive_set": "#wilderlands:a_level_enchantments",

@@ -471,7 +471,7 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
             .withExclusiveSet(A_LEVEL)
             .addSpecialEffect(
                 EnchantmentEffectComponentTypes.TRIDENT_SPIN_ATTACK_STRENGTH,
-                new AddValue(LevelBasedValue.constant(4))
+                new AddValue(LevelBasedValue.constant(6))
             )
             .addSpecialEffect(
                 EnchantmentEffectComponentTypes.TRIDENT_SOUND,
@@ -547,7 +547,6 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                     new LootCondition.Builder[]{
                         EntityPropertiesLootCondition.builder(EntityTarget.THIS, net.minecraft.predicate.entity.EntityPredicate.Builder.create().type(EntityType.TRIDENT)),
                         LocationCheckLootCondition.builder(net.minecraft.predicate.entity.LocationPredicate.Builder.create().method_60275(true)),
-                        BlockStatePropertyLootCondition.builder(Blocks.LIGHTNING_ROD)
                     }
                 )
             )
@@ -566,7 +565,7 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                 EnchantmentEffectComponentTypes.POST_ATTACK,
                 EnchantmentEffectTarget.ATTACKER,
                 EnchantmentEffectTarget.VICTIM,
-                new ApplyMobEffect(HolderSet.createDirect(new Holder[]{ModEffects.BLEEDING}), LevelBasedValue.constant(20 * 5), LevelBasedValue.constant(20 * 5), LevelBasedValue.constant(0), LevelBasedValue.constant(0))
+                new ApplyMobEffect(HolderSet.createDirect(new Holder[]{ModEffects.BLEEDING}), LevelBasedValue.constant(5), LevelBasedValue.constant(5), LevelBasedValue.constant(0), LevelBasedValue.constant(0))
             )
         );
     }

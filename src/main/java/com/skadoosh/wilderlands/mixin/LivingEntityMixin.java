@@ -13,6 +13,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.skadoosh.wilderlands.Wilderlands;
+import com.skadoosh.wilderlands.damage.ModDamageTypes;
+import com.skadoosh.wilderlands.effects.ModEffects;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.persistance.DashComponent;
 import com.skadoosh.wilderlands.persistance.LiftComponent;
@@ -26,6 +28,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.registry.HolderLookup.RegistryLookup;
 import net.minecraft.registry.tag.TagKey;
@@ -139,12 +142,28 @@ public class LivingEntityMixin
     @ModifyReturnValue(method = "getAttackDistanceScalingFactor", at = @At("RETURN"))
     private double modifyDetectionRange(double original, Entity entity)
     {
-        if (entity == null && entity instanceof LivingEntity livingEntity/*  || !entity.getType().isIn(ModEntityTypeTags.VEIL_IMMUNE) */)
+        if (entity == null && entity instanceof LivingEntity livingEntity/* || !entity.getType().isIn(ModEntityTypeTags.VEIL_IMMUNE) */)
         {
             var enchantment = livingEntity.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VEIL);
             return (EnchantmentHelper.getHighestEquippedLevel(enchantment, livingEntity) > 0) ? original * 0.5 : original;
-            // EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MODIFY_DETECTION_RANGE, (LivingEntity)(Object)this, (float)original);
+            // EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MODIFY_DETECTION_RANGE,
+            // (LivingEntity)(Object)this, (float)original);
         }
         return original;
+    }
+
+
+    @Inject(method = "damage", at = @At("HEAD"))
+    protected void onDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> ci)
+    {
+        LivingEntity e = ((LivingEntity)((Object)this));
+        if (!e.isInvulnerableTo(source) && !source.isType(ModDamageTypes.BLEEDING) && !e.getWorld().isClient)
+        {
+            if (e.hasStatusEffect(ModEffects.BLEEDING))
+            {
+                var effect = e.getStatusEffect(ModEffects.BLEEDING);
+                e.setStatusEffect(new StatusEffectInstance(ModEffects.BLEEDING, 20 * 5, effect.getAmplifier()), source.getSource());
+            }
+        }
     }
 }

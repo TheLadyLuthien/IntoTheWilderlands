@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "#wilderlands:ores",
+      "required": false
+    },
+    "minecraft:stone",
+    "minecraft:cobblestone",
+    "minecraft:wet_sponge",
+    "minecraft:sand"
+  ]
+}

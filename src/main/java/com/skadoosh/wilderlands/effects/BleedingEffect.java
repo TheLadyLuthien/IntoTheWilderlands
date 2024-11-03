@@ -13,14 +13,16 @@ public class BleedingEffect extends StatusEffect
 {
     public BleedingEffect()
     {
-        super(StatusEffectType.HARMFUL, 0x800000, ParticleTypes.DRIPPING_LAVA);
+        super(StatusEffectType.HARMFUL, 0x800000, ParticleTypes.FALLING_LAVA);
     }
 
     @Override
-    public void applyToEntity(LivingEntity entity, int amplifier)
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier)
     {
         DamageSource damageSource = new DamageSource(entity.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).getHolderOrThrow(ModDamageTypes.BLEEDING));
-        entity.damage(damageSource, 2 * (amplifier + 1));
+        entity.damage(damageSource, (amplifier + 1));
+
+        return true;
     }
 
     @Override
