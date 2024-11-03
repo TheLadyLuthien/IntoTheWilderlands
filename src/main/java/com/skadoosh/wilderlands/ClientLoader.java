@@ -5,13 +5,13 @@ import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 
 import com.skadoosh.cadmium.Cadmium;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
+import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.events.CoyoteBiteEvent;
 import com.skadoosh.wilderlands.events.DashRenderEvent;
 import com.skadoosh.wilderlands.events.LiftRenderEvent;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.misc.BifrostHelper;
 import com.skadoosh.wilderlands.misc.BifrostHelper.KeyType;
-import com.skadoosh.wilderlands.screen.handler.ModScreenHandlers;
 
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -19,7 +19,10 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -100,6 +103,18 @@ public class ClientLoader implements ClientModInitializer
                 return 0;
             }
         });
+
+        ModelPredicateProviderRegistry.register(Items.BOW, Identifier.ofDefault("pull"), (stack, world, entity, seed) -> {
+			if (entity == null) {
+				return 0.0F;
+			} else {
+                var enchantment = world.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.QUICKDRAW);
+                int level = EnchantmentHelper.getLevel(enchantment, stack);
+
+                float time = 20f / ((float)level + 1f);
+				return entity.getActiveItem() != stack ? 0.0F : (float)(stack.getUseTicks(entity) - entity.getItemUseTimeLeft()) / time;
+			}
+		});
 
         HudRenderCallback.EVENT.register(new LiftRenderEvent());
         HudRenderCallback.EVENT.register(new DashRenderEvent());

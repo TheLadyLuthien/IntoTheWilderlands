@@ -152,5 +152,18 @@ public class SmolderingComponent implements ServerTickingComponent, AutoSyncedCo
         return charge > 0;
     }
 
-    
+    public double expendCharge()
+    {
+        if (charge > 4.0)
+        {
+            charge -= 4.0;
+            return 4.0;
+        }
+        else
+        {
+            double val = charge;
+            charge = 0;
+            return val;
+        }
+    }
 }

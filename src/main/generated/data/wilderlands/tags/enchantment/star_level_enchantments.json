@@ -95,6 +95,18 @@
     {
       "id": "wilderlands:puncturing",
       "required": false
+    },
+    {
+      "id": "wilderlands:grasping",
+      "required": false
+    },
+    {
+      "id": "wilderlands:pinpoint",
+      "required": false
+    },
+    {
+      "id": "wilderlands:quickdraw",
+      "required": false
     }
   ]
 }

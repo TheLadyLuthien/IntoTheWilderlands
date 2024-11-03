@@ -43,6 +43,10 @@
     {
       "id": "wilderlands:puncturing",
       "required": false
+    },
+    {
+      "id": "wilderlands:quickdraw",
+      "required": false
     }
   ]
 }

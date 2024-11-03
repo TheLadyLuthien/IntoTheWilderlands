@@ -11,6 +11,10 @@
         "LivingEntityMixin",
         "AbstractBlockMixin",
         "MobEntityMixin",
+        "ProjectileEntityMixin",
+        "BowItemMixin",
+        "EnchantmentHelperMixin",
+        "PersistentProjectileEntityMixin",
         "PistonHandlerMixin"
     ],
     "client": [

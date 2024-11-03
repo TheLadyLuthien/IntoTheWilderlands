@@ -1,0 +1,41 @@
+{
+  "anvil_cost": 2,
+  "description": {
+    "translate": "enchantment.minecraft.quick_charge"
+  },
+  "effects": {
+    "minecraft:crossbow_charge_time": {
+      "type": "minecraft:add",
+      "value": -0.75
+    },
+    "minecraft:crossbow_charging_sounds": [
+      {
+        "end": "minecraft:item.crossbow.loading_end",
+        "start": "minecraft:item.crossbow.quick_charge_1"
+      },
+      {
+        "end": "minecraft:item.crossbow.loading_end",
+        "start": "minecraft:item.crossbow.quick_charge_2"
+      },
+      {
+        "end": "minecraft:item.crossbow.loading_end",
+        "start": "minecraft:item.crossbow.quick_charge_3"
+      }
+    ]
+  },
+  "exclusive_set": "#wilderlands:a_level_enchantments",
+  "max_cost": {
+    "base": 2,
+    "per_level_above_first": 1
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 2,
+    "per_level_above_first": 0
+  },
+  "slots": [
+    "hand"
+  ],
+  "supported_items": "#minecraft:enchantable/crossbow",
+  "weight": 10
+}

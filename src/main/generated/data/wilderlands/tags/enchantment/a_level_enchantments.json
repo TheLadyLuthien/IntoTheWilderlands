@@ -51,6 +51,14 @@
     {
       "id": "wilderlands:scooping",
       "required": false
+    },
+    {
+      "id": "wilderlands:grasping",
+      "required": false
+    },
+    {
+      "id": "wilderlands:pinpoint",
+      "required": false
     }
   ]
 }

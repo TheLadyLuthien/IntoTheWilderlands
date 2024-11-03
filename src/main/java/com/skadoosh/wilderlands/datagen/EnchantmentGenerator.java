@@ -1,7 +1,9 @@
 package com.skadoosh.wilderlands.datagen;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.effects.ModEffects;
@@ -28,6 +30,8 @@ import net.minecraft.enchantment.effect.EnchantmentAttribute;
 import net.minecraft.enchantment.effect.EnchantmentEffectTarget;
 import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
+import net.minecraft.enchantment.effect.Explode;
+import net.minecraft.enchantment.effect.Ignite;
 import net.minecraft.enchantment.effect.PlaySound;
 import net.minecraft.enchantment.effect.SetValue;
 import net.minecraft.enchantment.effect.SummonEntity;
@@ -37,27 +41,41 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.loot.condition.AllOfLootCondition;
 import net.minecraft.loot.condition.BlockStatePropertyLootCondition;
 import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
 import net.minecraft.loot.condition.EntityPropertiesLootCondition;
 import net.minecraft.loot.condition.LocationCheckLootCondition;
 import net.minecraft.loot.condition.LootCondition;
+import net.minecraft.loot.condition.MatchToolLootCondition;
 import net.minecraft.loot.condition.WeatherCheckLootCondition;
+import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContext.EntityTarget;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.TagPredicate;
 import net.minecraft.predicate.entity.DamageSourcePredicate;
+import net.minecraft.predicate.entity.EntityFlagsPredicate;
+import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.HolderSet;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.Holder;
 import net.minecraft.registry.HolderLookup.Provider;
 import net.minecraft.registry.HolderLookup.RegistryLookup;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.unmapped.C_rubkprmd;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.float_provider.ConstantFloatProvider;
+import net.minecraft.world.World;
 
 public class EnchantmentGenerator extends FabricDynamicRegistryProvider
 {
@@ -93,6 +111,23 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
         final var B_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.B_LEVEL);
         final var C_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.C_LEVEL);
         final var STAR_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.STAR_LEVEL);
+
+        register(entries, Enchantments.FIRE_ASPECT, 
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .addEffect(
+                EnchantmentEffectComponentTypes.POST_ATTACK, // when to trigger
+                EnchantmentEffectTarget.ATTACKER, // when who holds it
+                EnchantmentEffectTarget.VICTIM, // who gets affected
+                new Ignite(LevelBasedValue.linear(10, 5))
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
 
         register(entries, ModEnchantments.FROST_ASPECT, 
             Enchantment.builder(
@@ -566,6 +601,186 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                 EnchantmentEffectTarget.ATTACKER,
                 EnchantmentEffectTarget.VICTIM,
                 new ApplyMobEffect(HolderSet.createDirect(new Holder[]{ModEffects.BLEEDING}), LevelBasedValue.constant(5), LevelBasedValue.constant(5), LevelBasedValue.constant(0), LevelBasedValue.constant(0))
+            )
+        );
+
+        register(entries, Enchantments.PUNCH,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.BOW_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+            .addEffect(
+                EnchantmentEffectComponentTypes.KNOCKBACK,
+                new AddValue(LevelBasedValue.perLevel(2.0F)),
+                EntityPropertiesLootCondition.builder(LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.create().tagged(EntityTypeTags.ARROWS).build())
+            )
+        );
+
+        register(entries, ModEnchantments.GRASPING,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.BOW_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+            .addEffect(
+                EnchantmentEffectComponentTypes.KNOCKBACK,
+                new AddValue(LevelBasedValue.perLevel(-3.0F)),
+                EntityPropertiesLootCondition.builder(LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.create().tagged(EntityTypeTags.ARROWS).build())
+            )
+        );
+
+        register(entries, Enchantments.INFINITY,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.BOW_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
+            .addEffect(
+                EnchantmentEffectComponentTypes.AMMO_USE,
+                new SetValue(LevelBasedValue.constant(0.0F)),
+                MatchToolLootCondition.builder(ItemPredicate.Builder.create().items(Items.ARROW))
+            )
+        );
+
+        register(entries, ModEnchantments.PINPOINT,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.BOW_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+        );
+
+        register(entries, ModEnchantments.QUICKDRAW,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.BOW_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
+        );
+
+        register(entries, Enchantments.QUICK_CHARGE,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+            .addSpecialEffect(EnchantmentEffectComponentTypes.CROSSBOW_CHARGE_TIME, new AddValue(LevelBasedValue.constant(-0.75F)))
+            .addSpecialEffect(
+                EnchantmentEffectComponentTypes.CROSSBOW_CHARGING_SOUNDS,
+                List.of(
+                    new CrossbowItem.LoadingSounds(
+                        Optional.of(SoundEvents.ITEM_CROSSBOW_QUICK_CHARGE_1), Optional.empty(), Optional.of(SoundEvents.ITEM_CROSSBOW_LOADING_END)
+                    ),
+                    new CrossbowItem.LoadingSounds(
+                        Optional.of(SoundEvents.ITEM_CROSSBOW_QUICK_CHARGE_2), Optional.empty(), Optional.of(SoundEvents.ITEM_CROSSBOW_LOADING_END)
+                    ),
+                    new CrossbowItem.LoadingSounds(
+                        Optional.of(SoundEvents.ITEM_CROSSBOW_QUICK_CHARGE_3), Optional.empty(), Optional.of(SoundEvents.ITEM_CROSSBOW_LOADING_END)
+                    )
+                )
+            )
+        );
+
+        register(entries, Enchantments.PIERCING,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+            .addEffect(EnchantmentEffectComponentTypes.PROJECTILE_PIERCING, new AddValue(LevelBasedValue.constant(50.0F)))
+        );
+
+        register(entries, Enchantments.MULTISHOT,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
+            .addEffect(EnchantmentEffectComponentTypes.PROJECTILE_COUNT, new AddValue(LevelBasedValue.perLevel(4.0F)))
+            .addEffect(EnchantmentEffectComponentTypes.PROJECTILE_SPREAD, new AddValue(LevelBasedValue.perLevel(20.0F)))
+        );
+
+        register(entries, Enchantments.DENSITY,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.MACE_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+            .addEffect(EnchantmentEffectComponentTypes.SMASH_DAMAGE_PER_FALLEN_BLOCK, new AddValue(LevelBasedValue.constant(2f)))
+        );
+
+        register(entries, Enchantments.BREACH,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.MACE_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+            .addEffect(EnchantmentEffectComponentTypes.ARMOR_EFFECTIVENESS, new AddValue(LevelBasedValue.constant(-0.6F)))
+        );
+
+        register(entries, Enchantments.WIND_BURST,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.MACE_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(A_LEVEL)
+            .addEffect(
+                EnchantmentEffectComponentTypes.POST_ATTACK,
+                EnchantmentEffectTarget.ATTACKER,
+                EnchantmentEffectTarget.ATTACKER,
+                new Explode(
+                    false,
+                    Optional.empty(),
+                    Optional.of(LevelBasedValue.lookup(List.of(1.2F, 1.75F, 2.2F), LevelBasedValue.linear(1.5F, 0.35F))),
+                    registries.getLookupOrThrow(RegistryKeys.BLOCK).getTag(BlockTags.BLOCKS_WIND_CHARGE_EXPLOSIONS).map(Function.identity()),
+                    Vec3d.ZERO,
+                    LevelBasedValue.constant(3.5F),
+                    false,
+                    World.ExplosionSourceType.TRIGGER,
+                    ParticleTypes.GUST_EMITTER_SMALL,
+                    ParticleTypes.GUST_EMITTER_LARGE,
+                    SoundEvents.ENTITY_WIND_CHARGE_WIND_BURST
+                ),
+                EntityPropertiesLootCondition.builder(
+                    LootContext.EntityTarget.DIRECT_ATTACKER,
+                    EntityPredicate.Builder.create()
+                        .flags(EntityFlagsPredicate.Builder.create().method_59919(false))
+                        .method_59930(C_rubkprmd.method_60282(NumberRange.FloatRange.atLeast(1.5)))
+                )
             )
         );
     }
