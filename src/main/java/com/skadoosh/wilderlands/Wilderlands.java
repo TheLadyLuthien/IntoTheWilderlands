@@ -14,6 +14,7 @@ import com.skadoosh.wilderlands.damage.ModDamageTypes;
 import com.skadoosh.wilderlands.effects.ModEffects;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.events.ModEvents;
+import com.skadoosh.wilderlands.items.CrossbowProjectileBehaviors;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.items.itemGroup.ModItemGroups;
 import com.skadoosh.wilderlands.misc.BeheadingReloadListener;
@@ -47,6 +48,8 @@ public class Wilderlands implements ModInitializer
         ModItemGroups.register();
         ModEvents.register();
         ModCommands.register();
+
+        CrossbowProjectileBehaviors.init();
 
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(BeheadingReloadListener.ID, BeheadingReloadListener::new);
     }

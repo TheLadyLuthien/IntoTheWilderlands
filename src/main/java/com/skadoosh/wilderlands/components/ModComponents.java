@@ -17,6 +17,7 @@ public final class ModComponents
     // DataComponentType.builder().codec(NbtComponent.CODEC).packetCodec(NbtComponent.PACKET_CODEC).build();
     
     public static final DataComponentType<NbtComponent> BIFROST_KEY = register(Wilderlands.id("bifrost_key"), builder -> builder.codec(NbtComponent.CODEC).packetCodec(NbtComponent.PACKET_CODEC));
+    public static final DataComponentType<NbtComponent> CROSSBOW_PREFRENCE = register(Wilderlands.id("crossbow_prefrence"), builder -> builder.codec(NbtComponent.CODEC).packetCodec(NbtComponent.PACKET_CODEC));
 
     public static void init()
     {
