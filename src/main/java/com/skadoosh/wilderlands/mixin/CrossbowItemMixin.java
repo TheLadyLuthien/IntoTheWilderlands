@@ -1,8 +1,10 @@
 package com.skadoosh.wilderlands.mixin;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.Predicate;
 
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -11,14 +13,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.google.common.collect.Comparators;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.skadoosh.wilderlands.items.CrossbowProjectileBehavior;
+import com.skadoosh.wilderlands.items.crossbow.TriggeredCrossbowBehavior;
 
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ChargedProjectilesComponent;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 @Mixin(CrossbowItem.class)
@@ -61,5 +71,27 @@ public class CrossbowItemMixin
         cir.setReturnValue(CrossbowProjectileBehavior.getBehavior(arrow.getItem()).getProjectileEntity(world, entity, weapon, arrow, isCritical));
         cir.cancel();
         return;
+    }
+
+    @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/CrossbowItem;shootAll(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/item/ItemStack;FFLnet/minecraft/entity/LivingEntity;)V"), cancellable = true)
+    public void use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir, @Local LocalRef<ChargedProjectilesComponent> projectiles)
+    {
+        final ItemStack itemStack = user.getStackInHand(hand);
+        if (projectiles.get().getProjectiles().stream().map(proj -> CrossbowProjectileBehavior.getBehavior(proj.getItem())).anyMatch(beh -> beh instanceof TriggeredCrossbowBehavior))
+        {
+            for (ItemStack arrow : projectiles.get().getProjectiles())
+            {
+                if (CrossbowProjectileBehavior.getBehavior(arrow.getItem()) instanceof TriggeredCrossbowBehavior trigger)
+                {
+                    trigger.onTrigger(world, user, itemStack, arrow);
+                    itemStack.damageEquipment(trigger.getUseDamage(), user, LivingEntity.getHand(hand));
+                }
+            } 
+            
+            itemStack.set(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.DEFAULT);
+            cir.setReturnValue(TypedActionResult.consume(itemStack));
+            cir.cancel();
+            return;
+        }
     }
 }

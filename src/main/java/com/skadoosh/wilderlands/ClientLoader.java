@@ -19,6 +19,8 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ChargedProjectilesComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -115,6 +117,31 @@ public class ClientLoader implements ClientModInitializer
 				return entity.getActiveItem() != stack ? 0.0F : (float)(stack.getUseTicks(entity) - entity.getItemUseTimeLeft()) / time;
 			}
 		});
+
+        ModelPredicateProviderRegistry.register(Items.CROSSBOW, Wilderlands.id("blaze_rod"), (stack, world, entity, seed) -> {
+			ChargedProjectilesComponent chargedProjectilesComponent = stack.get(DataComponentTypes.CHARGED_PROJECTILES);
+			return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.BLAZE_ROD) ? 1.0F : 0.0F;
+		});
+
+        ModelPredicateProviderRegistry.register(Items.CROSSBOW, Wilderlands.id("echo_shard"), (stack, world, entity, seed) -> {
+			ChargedProjectilesComponent chargedProjectilesComponent = stack.get(DataComponentTypes.CHARGED_PROJECTILES);
+			return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.ECHO_SHARD) ? 1.0F : 0.0F;
+		});
+        
+        ModelPredicateProviderRegistry.register(Items.CROSSBOW, Wilderlands.id("potion"), (stack, world, entity, seed) -> {
+            ChargedProjectilesComponent chargedProjectilesComponent = stack.get(DataComponentTypes.CHARGED_PROJECTILES);
+			return chargedProjectilesComponent != null && (chargedProjectilesComponent.contains(Items.SPLASH_POTION) || chargedProjectilesComponent.contains(Items.LINGERING_POTION)) ? 1.0F : 0.0F;
+		});
+
+        ModelPredicateProviderRegistry.register(Items.CROSSBOW, Wilderlands.id("ender_pearl"), (stack, world, entity, seed) -> {
+            ChargedProjectilesComponent chargedProjectilesComponent = stack.get(DataComponentTypes.CHARGED_PROJECTILES);
+            return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.ENDER_PEARL) ? 1.0F : 0.0F;
+        });
+
+        ModelPredicateProviderRegistry.register(Items.CROSSBOW, Wilderlands.id("dragons_breath"), (stack, world, entity, seed) -> {
+            ChargedProjectilesComponent chargedProjectilesComponent = stack.get(DataComponentTypes.CHARGED_PROJECTILES);
+            return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.DRAGON_BREATH) ? 1.0F : 0.0F;
+        });
 
         HudRenderCallback.EVENT.register(new LiftRenderEvent());
         HudRenderCallback.EVENT.register(new DashRenderEvent());
