@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.function.Predicate;
 
 import com.skadoosh.wilderlands.components.ModComponents;
+import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.items.crossbow.ArrowCrossbowProjectileBehavior;
 
 import net.minecraft.component.type.NbtComponent;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -16,6 +18,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.HolderLookup.Provider;
 import net.minecraft.world.World;
 
@@ -100,6 +103,15 @@ public abstract class CrossbowProjectileBehavior
         }
     }
 
+    public void applyRecoil(LivingEntity user, ItemStack weapon)
+    {
+        if (user.isSneaking() || EnchantmentHelper.getLevel(user.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.RESILIENT), weapon) > 0)
+        {
+            return;
+        }
+        user.addVelocity(user.getRotationVector().normalize().multiply(-1 * getRecoil()));
+    }
+
     public int getUseDamage()
     {
         return 1;
@@ -108,6 +120,11 @@ public abstract class CrossbowProjectileBehavior
     public float getLaunchSpeed()
     {
         return 3.0f;
+    }
+
+    public float getRecoil()
+    {
+        return 0.3f;
     }
 
     public abstract ProjectileEntity getProjectileEntity(World world, LivingEntity entity, ItemStack weapon, ItemStack arrow, boolean isCritical);

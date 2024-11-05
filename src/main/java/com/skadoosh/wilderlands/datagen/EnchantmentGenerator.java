@@ -721,8 +721,19 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                 )
             )
             .withExclusiveSet(B_LEVEL)
-            .addEffect(EnchantmentEffectComponentTypes.PROJECTILE_COUNT, new AddValue(LevelBasedValue.perLevel(4.0F)))
-            .addEffect(EnchantmentEffectComponentTypes.PROJECTILE_SPREAD, new AddValue(LevelBasedValue.perLevel(20.0F)))
+            .addEffect(EnchantmentEffectComponentTypes.PROJECTILE_COUNT, new AddValue(LevelBasedValue.perLevel(2.0F)))
+            .addEffect(EnchantmentEffectComponentTypes.PROJECTILE_SPREAD, new AddValue(LevelBasedValue.perLevel(10.0F)))
+        );
+
+        register(entries, ModEnchantments.RESILIENT,
+            Enchantment.builder(
+                createDefaultProperties(
+                    itemLookup.getTagOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
+                    1,
+                    EquipmentSlotGroup.HAND
+                )
+            )
+            .withExclusiveSet(B_LEVEL)
         );
 
         register(entries, Enchantments.DENSITY,

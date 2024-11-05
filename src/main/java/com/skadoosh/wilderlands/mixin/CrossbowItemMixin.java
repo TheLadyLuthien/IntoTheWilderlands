@@ -68,7 +68,8 @@ public class CrossbowItemMixin
     @Inject(method = "getProjectile", at = @At("HEAD"), cancellable = true)
     protected void getProjectile(World world, LivingEntity entity, ItemStack weapon, ItemStack arrow, boolean isCritical, CallbackInfoReturnable<ProjectileEntity> cir)
     {
-        cir.setReturnValue(CrossbowProjectileBehavior.getBehavior(arrow.getItem()).getProjectileEntity(world, entity, weapon, arrow, isCritical));
+        CrossbowProjectileBehavior behavior = CrossbowProjectileBehavior.getBehavior(arrow.getItem());
+        cir.setReturnValue(behavior.getProjectileEntity(world, entity, weapon, arrow, isCritical));
         cir.cancel();
         return;
     }
@@ -76,20 +77,26 @@ public class CrossbowItemMixin
     @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/CrossbowItem;shootAll(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/item/ItemStack;FFLnet/minecraft/entity/LivingEntity;)V"), cancellable = true)
     public void use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir, @Local LocalRef<ChargedProjectilesComponent> projectiles)
     {
-        final ItemStack itemStack = user.getStackInHand(hand);
-        if (projectiles.get().getProjectiles().stream().map(proj -> CrossbowProjectileBehavior.getBehavior(proj.getItem())).anyMatch(beh -> beh instanceof TriggeredCrossbowBehavior))
+        final ItemStack weapon = user.getStackInHand(hand);
+
+        boolean hasTrigger = false;
+        for (ItemStack arrow : projectiles.get().getProjectiles())
         {
-            for (ItemStack arrow : projectiles.get().getProjectiles())
+            CrossbowProjectileBehavior behavior = CrossbowProjectileBehavior.getBehavior(arrow.getItem());
+            if (behavior instanceof TriggeredCrossbowBehavior trigger)
             {
-                if (CrossbowProjectileBehavior.getBehavior(arrow.getItem()) instanceof TriggeredCrossbowBehavior trigger)
-                {
-                    trigger.onTrigger(world, user, itemStack, arrow);
-                    itemStack.damageEquipment(trigger.getUseDamage(), user, LivingEntity.getHand(hand));
-                }
-            } 
-            
-            itemStack.set(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.DEFAULT);
-            cir.setReturnValue(TypedActionResult.consume(itemStack));
+                trigger.onTrigger(world, user, weapon, arrow);
+                weapon.damageEquipment(trigger.getUseDamage(), user, LivingEntity.getHand(hand));
+                hasTrigger = true;
+            }
+
+            behavior.applyRecoil(user, weapon);
+        } 
+
+        if (hasTrigger)
+        {
+            weapon.set(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.DEFAULT);
+            cir.setReturnValue(TypedActionResult.consume(weapon));
             cir.cancel();
             return;
         }

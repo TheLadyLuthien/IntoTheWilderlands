@@ -6,6 +6,7 @@ import com.skadoosh.wilderlands.items.crossbow.EnderPearlCrossbowProjectileBehav
 import com.skadoosh.wilderlands.items.crossbow.FireballCrossbowProjectileBehavior;
 import com.skadoosh.wilderlands.items.crossbow.FireworkCrossbowProjectileBehavior;
 import com.skadoosh.wilderlands.items.crossbow.PotionCrossbowProjectileBehavior;
+import com.skadoosh.wilderlands.items.crossbow.RecoilCrossbowProjectileBehavior;
 import com.skadoosh.wilderlands.items.crossbow.SonicBoomCrossbowProjectileBehavior;
 
 import net.minecraft.item.Item;
@@ -30,5 +31,6 @@ public class CrossbowProjectileBehaviors
         register(Items.SPLASH_POTION, new PotionCrossbowProjectileBehavior());
         register(Items.LINGERING_POTION, new PotionCrossbowProjectileBehavior());
         register(Items.DRAGON_BREATH, new DragonFireballCrossbowProjectileBehavior());
+        register(Items.BREEZE_ROD, new RecoilCrossbowProjectileBehavior(3.0f));
     }
 }

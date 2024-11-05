@@ -90,4 +90,10 @@ public class SonicBoomCrossbowProjectileBehavior extends TriggeredCrossbowBehavi
     {
         return 8;
     }
+
+    @Override
+    public float getRecoil()
+    {
+        return 0.5f;
+    }
 }

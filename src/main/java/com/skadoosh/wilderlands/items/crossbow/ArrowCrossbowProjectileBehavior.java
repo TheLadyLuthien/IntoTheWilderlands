@@ -32,4 +32,10 @@ public class ArrowCrossbowProjectileBehavior extends CrossbowProjectileBehavior
     {
         return 3.14f;
     }
+
+    @Override
+    public float getRecoil()
+    {
+        return 0;
+    }
 }

@@ -101,6 +101,9 @@ public class ModEnchantments
     @EnchantmentLevel(Level.B)
     public static final RegistryKey<Enchantment> QUICKDRAW = keyOf(Wilderlands.id("quickdraw"));
     
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> RESILIENT = keyOf(Wilderlands.id("resilient"));
+    
     public static final MapCodec<Freeze> FREEZE_EFFECT = registerEntityEffect(Wilderlands.id("freeze"), Freeze.CODEC);
     public static final MapCodec<StrengthenEffect> STRENTHEN_EFFECT = registerEntityEffect(Wilderlands.id("strengthen"), StrengthenEffect.CODEC);
     public static final MapCodec<Lifesteal> LIFESTEAL = registerEntityEffect(Wilderlands.id("lifesteal"), Lifesteal.CODEC);

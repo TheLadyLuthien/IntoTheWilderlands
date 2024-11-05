@@ -107,6 +107,10 @@
     {
       "id": "wilderlands:quickdraw",
       "required": false
+    },
+    {
+      "id": "wilderlands:resilient",
+      "required": false
     }
   ]
 }
