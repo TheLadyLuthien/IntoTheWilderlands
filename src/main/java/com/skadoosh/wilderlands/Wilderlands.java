@@ -13,6 +13,7 @@ import com.skadoosh.wilderlands.components.ModComponents;
 import com.skadoosh.wilderlands.damage.ModDamageTypes;
 import com.skadoosh.wilderlands.effects.ModEffects;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
+import com.skadoosh.wilderlands.entities.ModEntities;
 import com.skadoosh.wilderlands.events.ModEvents;
 import com.skadoosh.wilderlands.items.CrossbowProjectileBehaviors;
 import com.skadoosh.wilderlands.items.ModItems;
@@ -44,6 +45,7 @@ public class Wilderlands implements ModInitializer
         ModItems.init();
         ModComponents.init();
         ModBlockEntities.init();
+        ModEntities.init();
         
         ModItemGroups.register();
         ModEvents.register();

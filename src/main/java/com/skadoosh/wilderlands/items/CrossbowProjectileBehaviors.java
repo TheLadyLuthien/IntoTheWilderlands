@@ -8,6 +8,7 @@ import com.skadoosh.wilderlands.items.crossbow.FireworkCrossbowProjectileBehavio
 import com.skadoosh.wilderlands.items.crossbow.PotionCrossbowProjectileBehavior;
 import com.skadoosh.wilderlands.items.crossbow.RecoilCrossbowProjectileBehavior;
 import com.skadoosh.wilderlands.items.crossbow.SonicBoomCrossbowProjectileBehavior;
+import com.skadoosh.wilderlands.items.crossbow.TorchCrossbowProjectileBehavior;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -32,5 +33,6 @@ public class CrossbowProjectileBehaviors
         register(Items.LINGERING_POTION, new PotionCrossbowProjectileBehavior());
         register(Items.DRAGON_BREATH, new DragonFireballCrossbowProjectileBehavior());
         register(Items.BREEZE_ROD, new RecoilCrossbowProjectileBehavior(3.0f));
+        register(Items.TORCH, new TorchCrossbowProjectileBehavior());
     }
 }

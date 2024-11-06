@@ -6,6 +6,8 @@ import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 import com.skadoosh.cadmium.Cadmium;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
+import com.skadoosh.wilderlands.entities.ModEntities;
+import com.skadoosh.wilderlands.entities.render.TorchEntityRenderer;
 import com.skadoosh.wilderlands.events.CoyoteBiteEvent;
 import com.skadoosh.wilderlands.events.DashRenderEvent;
 import com.skadoosh.wilderlands.events.LiftRenderEvent;
@@ -16,6 +18,7 @@ import com.skadoosh.wilderlands.misc.BifrostHelper.KeyType;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
@@ -148,10 +151,17 @@ public class ClientLoader implements ClientModInitializer
             return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.BREEZE_ROD) ? 1.0F : 0.0F;
         });
 
+        ModelPredicateProviderRegistry.register(Items.CROSSBOW, Wilderlands.id("torch"), (stack, world, entity, seed) -> {
+            ChargedProjectilesComponent chargedProjectilesComponent = stack.get(DataComponentTypes.CHARGED_PROJECTILES);
+            return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.TORCH) ? 1.0F : 0.0F;
+        });
+
         HudRenderCallback.EVENT.register(new LiftRenderEvent());
         HudRenderCallback.EVENT.register(new DashRenderEvent());
         ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
 
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.HOLOTILE, RenderLayer.getTranslucent());
+    
+        EntityRendererRegistry.register(ModEntities.TORCH, TorchEntityRenderer::new);
     }
 }
