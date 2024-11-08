@@ -27,6 +27,7 @@
         "ClientPlayerEntityMixin",
         "LightmapTextureManagerMixin",
         "GameRendererMixin",
+        "AbstractClientPlayerEntityMixin",
         "WorldRendererAccessor"
     ],
     "injectors": {

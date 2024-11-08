@@ -5,7 +5,8 @@ import java.util.concurrent.CompletableFuture;
 
 import com.skadoosh.mcutils.datagen.AutoTranslate;
 import com.skadoosh.mcutils.datagen.ModelGenerator;
-import com.skadoosh.mcutils.datagen.NoKnockback;
+import com.skadoosh.mcutils.datagen.DamageTypeTag.VanillaDamageTags;
+import com.skadoosh.mcutils.datagen.DamageTypeTag;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.damage.ModDamageTypes;
@@ -165,17 +166,19 @@ public class Datagen implements DataGeneratorEntrypoint
             super(output, RegistryKeys.DAMAGE_TYPE, completableFuture);
         }
 
-        public static final TagKey<DamageType> NO_KNOCKBACK = TagKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.ofDefault("no_knockback"));
-
         @Override
         @SuppressWarnings("unchecked")
         protected void configure(Provider wrapperLookup)
         {
-            var noKnockback = getOrCreateTagBuilder(NO_KNOCKBACK);
-            ArrayList<AnnotationHelper.ValueAnnotationPair<RegistryKey, NoKnockback>> noKnockbacks = AnnotationHelper.getFieldsWithAnnotation(NoKnockback.class, ModDamageTypes.class, RegistryKey.class);
-            for (var item : noKnockbacks)
+            ArrayList<AnnotationHelper.ValueAnnotationPair<RegistryKey, DamageTypeTag>> pairs = AnnotationHelper.getFieldsWithAnnotation(DamageTypeTag.class, ModDamageTypes.class, RegistryKey.class);
+            for (var pair : pairs)
             {
-                noKnockback.addOptional(item.value);
+                for (VanillaDamageTags tag : pair.annotation.value())
+                {
+                    TagKey<DamageType> key = TagKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.ofDefault(tag.id));
+                    var builder = getOrCreateTagBuilder(key);
+                    builder.addOptional(pair.value);
+                }
             }
         }
     }

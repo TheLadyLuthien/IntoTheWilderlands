@@ -1,6 +1,7 @@
 package com.skadoosh.wilderlands.items;
 
 import com.skadoosh.wilderlands.items.crossbow.ArrowCrossbowProjectileBehavior;
+import com.skadoosh.wilderlands.items.crossbow.BrimstoneCrossbowProjectileBehavior;
 import com.skadoosh.wilderlands.items.crossbow.DragonFireballCrossbowProjectileBehavior;
 import com.skadoosh.wilderlands.items.crossbow.EnderPearlCrossbowProjectileBehavior;
 import com.skadoosh.wilderlands.items.crossbow.FireballCrossbowProjectileBehavior;
@@ -34,5 +35,6 @@ public class CrossbowProjectileBehaviors
         register(Items.DRAGON_BREATH, new DragonFireballCrossbowProjectileBehavior());
         register(Items.BREEZE_ROD, new RecoilCrossbowProjectileBehavior(3.0f));
         register(Items.TORCH, new TorchCrossbowProjectileBehavior());
+        register(ModItems.BRIMSTONE_CARTRIDGE, new BrimstoneCrossbowProjectileBehavior());
     }
 }

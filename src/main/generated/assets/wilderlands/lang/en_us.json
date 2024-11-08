@@ -10,6 +10,7 @@
   "block.wilderlands.holotile": "Holotile",
   "block.wilderlands.runic_keystone": "Runic Keystone",
   "item.wilderlands.bifrost_key": "Bifrost Key",
+  "item.wilderlands.brimstone_cartridge": "Brimstone Cartridge",
   "itemGroup.wilderlands.birfost": "Bifrost, The Rainbow Bridge",
   "tooltip.bifrost_key.title": "§3§lBifrost Key§r"
 }

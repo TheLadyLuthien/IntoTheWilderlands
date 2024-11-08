@@ -152,6 +152,13 @@
         {
             "predicate": {
                 "charged": 1,
+                "wilderlands:brimstone": 1
+            },
+            "model": "wilderlands:item/crossbow/brimstone"
+        },
+        {
+            "predicate": {
+                "charged": 1,
                 "wilderlands:breeze_rod": 1
             },
             "model": "wilderlands:item/crossbow/breeze_rod"
