@@ -12,6 +12,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -51,11 +52,11 @@ public abstract class CrossbowProjectileBehavior
         weapon.set(ModComponents.CROSSBOW_PREFRENCE, NbtComponent.of(comp)); 
     }
 
-    public static ItemStack getArrowItemStack(LivingEntity entity, ItemStack weapon)
+    public static ItemStack getArrowItemStack(final LivingEntity entity, ItemStack weapon)
     {
-        if (weapon.getItem() instanceof RangedWeaponItem item)
+        if (weapon.getItem() instanceof CrossbowItem item)
         {
-            Predicate<ItemStack> predicate = item.getProjectiles();
+            Predicate<ItemStack> predicate = item.getProjectiles().and(stack -> getBehavior(item).allowLoading(entity, weapon));
             DynamicRegistryManager provider = entity.getRegistryManager();
             
             ItemStack overrideItemStack = RangedWeaponItem.getHeldProjectile(entity, predicate);
@@ -125,6 +126,11 @@ public abstract class CrossbowProjectileBehavior
     public float getRecoil()
     {
         return 0.3f;
+    }
+
+    public boolean allowLoading(LivingEntity user, ItemStack crossbow)
+    {
+        return true;
     }
 
     public abstract ProjectileEntity getProjectileEntity(World world, LivingEntity entity, ItemStack weapon, ItemStack arrow, boolean isCritical);

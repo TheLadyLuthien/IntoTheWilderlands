@@ -2,6 +2,7 @@ package com.skadoosh.wilderlands.entities;
 
 import com.skadoosh.wilderlands.Wilderlands;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -13,11 +14,12 @@ import net.minecraft.util.Identifier;
 
 public class ModEntities
 {
-    public static EntityType<TorchEntity> TORCH = register("torch", EntityType.Builder.<TorchEntity>create(TorchEntity::new, SpawnGroup.MISC).setDimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()));
+    public static final EntityType<TorchEntity> TORCH = register("torch", EntityType.Builder.<TorchEntity>create(TorchEntity::new, SpawnGroup.MISC).setDimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()));
+    // public static final EntityType<MimicEntity> MIMIC = register("mimic", EntityType.Builder.<MimicEntity>create(MimicEntity::new, SpawnGroup.MONSTER).setDimensions(14, 14));
 
     public static void init()
     {
-
+        // FabricDefaultAttributeRegistry.register(MIMIC, MimicEntity.createAttributes());
     }
 
     @SuppressWarnings("unchecked")
