@@ -2,6 +2,7 @@ package com.skadoosh.wilderlands.items;
 
 import com.skadoosh.wilderlands.items.crossbow.ArrowCrossbowProjectileBehavior;
 import com.skadoosh.wilderlands.items.crossbow.BrimstoneCrossbowProjectileBehavior;
+import com.skadoosh.wilderlands.items.crossbow.BundleItemCrossbowBehavior;
 import com.skadoosh.wilderlands.items.crossbow.DragonFireballCrossbowProjectileBehavior;
 import com.skadoosh.wilderlands.items.crossbow.EnderPearlCrossbowProjectileBehavior;
 import com.skadoosh.wilderlands.items.crossbow.FireballCrossbowProjectileBehavior;
@@ -16,6 +17,7 @@ import net.minecraft.item.Items;
 
 public class CrossbowProjectileBehaviors
 {
+    private static final BundleItemCrossbowBehavior BUNDLE_BEJAVIOR = new BundleItemCrossbowBehavior();
     private static void register(Item item, CrossbowProjectileBehavior behavior)
     {
         CrossbowProjectileBehavior.register(item, behavior);
@@ -36,5 +38,6 @@ public class CrossbowProjectileBehaviors
         register(Items.BREEZE_ROD, new RecoilCrossbowProjectileBehavior(3.0f));
         register(Items.TORCH, new TorchCrossbowProjectileBehavior());
         register(ModItems.BRIMSTONE_CARTRIDGE, new BrimstoneCrossbowProjectileBehavior());
+        register(Items.BUNDLE, BUNDLE_BEJAVIOR);
     }
 }

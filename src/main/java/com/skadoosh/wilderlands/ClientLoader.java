@@ -22,6 +22,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ChargedProjectilesComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -161,6 +162,11 @@ public class ClientLoader implements ClientModInitializer
             return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(ModItems.BRIMSTONE_CARTRIDGE) ? 1.0F : 0.0F;
         });
 
+        ModelPredicateProviderRegistry.register(Items.CROSSBOW, Wilderlands.id("bundle"), (stack, world, entity, seed) -> {
+            ChargedProjectilesComponent chargedProjectilesComponent = stack.get(DataComponentTypes.CHARGED_PROJECTILES);
+            return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.BUNDLE) ? 1.0F : 0.0F;
+        });
+
         HudRenderCallback.EVENT.register(new LiftRenderEvent());
         HudRenderCallback.EVENT.register(new DashRenderEvent());
         ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
@@ -168,5 +174,6 @@ public class ClientLoader implements ClientModInitializer
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.HOLOTILE, RenderLayer.getTranslucent());
     
         EntityRendererRegistry.register(ModEntities.TORCH, TorchEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.BUNDLE, FlyingItemEntityRenderer::new);
     }
 }

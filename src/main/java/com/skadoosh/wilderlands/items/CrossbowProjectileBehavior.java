@@ -56,11 +56,11 @@ public abstract class CrossbowProjectileBehavior
     {
         if (weapon.getItem() instanceof CrossbowItem item)
         {
-            Predicate<ItemStack> predicate = item.getProjectiles().and(stack -> getBehavior(item).allowLoading(entity, weapon));
+            Predicate<ItemStack> predicate = item.getProjectiles().and(stack -> getBehavior(stack.getItem()).allowLoading(entity, weapon));
             DynamicRegistryManager provider = entity.getRegistryManager();
             
             ItemStack overrideItemStack = RangedWeaponItem.getHeldProjectile(entity, predicate);
-            if (!overrideItemStack.isEmpty())
+            if (!overrideItemStack.isEmpty() && predicate.test(overrideItemStack))
             {
                 setPrefrencItemStack(weapon, overrideItemStack, provider);
                 return overrideItemStack; 

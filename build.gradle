@@ -136,5 +136,16 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+		repositories {
+			maven {
+				name = 'skadoosh_maven'
+				url = "http://infinity.hadrianfinch.com:55121"
+				credentials {
+					username = project.publish_username
+					password = project.publish_password
+				}
+				allowInsecureProtocol = true
+			}
+		}
 	}
 }
