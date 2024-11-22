@@ -17,7 +17,19 @@
         "ExplosiveProjectileEntityMixin",
         "CrossbowItemMixin",
         "PersistentProjectileEntityMixin",
-        "PistonHandlerMixin"
+        "PistonHandlerMixin",
+        "ServerPlayerNetworkHandlerMixin",
+        "remove_vanilla_enchants.ingame.EnchantmentHelperMixin",
+        "remove_vanilla_enchants.ingame.EnchantRandomlyLootFunctionMixin",
+        "remove_vanilla_enchants.ingame.ItemEnchantmentsComponentBuilderMixin",
+        "remove_vanilla_enchants.ingame.SingleEnchantmentProviderMixin",
+        "remove_vanilla_enchants.internal.ItemGroupsMixin",
+        "remove_vanilla_enchants.internal.RegistryEntryReferenceArgumentTypeMixin",
+        "remove_vanilla_enchants.internal.RegistryEntryReferenceMixin",
+        "remove_vanilla_enchants.internal.RegistryMixin",
+        "remove_vanilla_enchants.internal.ResourceFinderMixin",
+        "remove_vanilla_enchants.internal.SimpleRegistryMixin",
+        "remove_vanilla_enchants.internal.TagGroupLoaderMixin"
     ],
     "client": [
         "DimensionVisiualEffectsMixin",
