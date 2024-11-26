@@ -62,6 +62,7 @@ import net.minecraft.predicate.entity.EntityFlagsPredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.HolderSet;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.Holder;
@@ -100,6 +101,16 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
         return Enchantment.createProperties(items, 10, maxLevel, Enchantment.cost(2), Enchantment.cost(2, 1), 2, slots);
     }
 
+    private static Enchantment.Properties createBlockingProperties()
+    {
+        return Enchantment.createProperties(HolderSet.createDirect(Holder.createDirect(Items.AIR)), 1, 1, Enchantment.cost(100), Enchantment.cost(100, 100), 100, new EquipmentSlotGroup[0]);
+    }
+
+    private static void blockEnchantment(Entries entries, RegistryKey<Enchantment> key)
+    {
+        entries.add(key, Enchantment.builder(createBlockingProperties()).build(key.getValue()), new ResourceCondition[0]);
+    }
+
     @Override
     protected void configure(Provider registries, Entries entries)
     {
@@ -111,6 +122,10 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
         final var B_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.B_LEVEL);
         final var C_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.C_LEVEL);
         final var STAR_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.STAR_LEVEL);
+
+        // itemLookup.getHolderOrThrow(Registries.ITEM.get);
+
+        
 
         register(entries, Enchantments.FIRE_ASPECT, 
             Enchantment.builder(

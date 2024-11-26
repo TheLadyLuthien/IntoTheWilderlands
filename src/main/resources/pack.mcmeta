@@ -1,0 +1,16 @@
+{
+    "pack": {
+      "description": {
+        "translate": "dataPack.remove_vanilla_enchants.description"
+      },
+      "pack_format": 41
+    }, 
+    "filter": {
+        "block": [
+            {
+                "namespace": "minecraft",
+                "path": "enchantment/"
+            }
+        ]
+    }
+}
