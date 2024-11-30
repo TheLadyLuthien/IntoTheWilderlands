@@ -28,8 +28,7 @@
         "ClientPlayerEntityMixin",
         "LightmapTextureManagerMixin",
         "GameRendererMixin",
-        "AbstractClientPlayerEntityMixin",
-        "WorldRendererAccessor"
+        "AbstractClientPlayerEntityMixin"
     ],
     "injectors": {
         "defaultRequire": 1

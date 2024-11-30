@@ -32,6 +32,11 @@ repositories {
             includeGroup "maven.modrinth"
         }
     }
+
+    maven {
+        name = 'BlameJared Maven (CrT / Bookshelf)'
+        url = 'https://maven.blamejared.com'
+    }
 }
 
 loom {
@@ -69,11 +74,15 @@ dependencies {
 	modImplementation libs.quilted.fabric.api
 	modImplementation "org.quiltmc:qsl:10.0.0-alpha.1+1.21"
 
+
 	modImplementation(libs.bundles.cca)
 
+	modImplementation(libs.veil) {
+        exclude group: "maven.modrinth"
+    }
 
 	// sodium
-	modRuntimeOnly "maven.modrinth:AANobbMI:dNHeFokL"
+	// modRuntimeOnly "maven.modrinth:AANobbMI:dNHeFokL"
 
 	// modImplementation libs.bundles.quilted.fabric.api // If you wish to use Fabric API's deprecated modules, you can replace the above line with this one
 }

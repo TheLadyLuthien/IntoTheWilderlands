@@ -8,6 +8,7 @@ quilt_loader = "0.26.4-beta.1"
 
 quilted_fabric_api = "11.0.0-alpha.3+0.100.7-1.21"
 cca = '6.1.1'
+veil = '1.0.0.25'
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -22,6 +23,7 @@ cca-base = { module = "org.ladysnake.cardinal-components-api:cardinal-components
 cca-world = { module = "org.ladysnake.cardinal-components-api:cardinal-components-world", version.ref = "cca" }
 cca-entity = { module = "org.ladysnake.cardinal-components-api:cardinal-components-entity", version.ref = "cca" }
 
+veil = { module = "foundry.veil:veil-fabric-1.21", version.ref = "veil" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
