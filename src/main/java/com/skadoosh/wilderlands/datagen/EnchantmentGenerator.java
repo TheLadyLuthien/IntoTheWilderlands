@@ -62,6 +62,7 @@ import net.minecraft.predicate.entity.EntityFlagsPredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.HolderSet;
+import net.minecraft.registry.HolderSet.NamedSet;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -72,6 +73,7 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.unmapped.C_rubkprmd;
 import net.minecraft.util.math.Vec3d;
@@ -101,15 +103,17 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
         return Enchantment.createProperties(items, 10, maxLevel, Enchantment.cost(2), Enchantment.cost(2, 1), 2, slots);
     }
 
-    private static Enchantment.Properties createBlockingProperties()
+    private static Enchantment.Properties createBlockingProperties(HolderSet<Item> items)
     {
-        return Enchantment.createProperties(HolderSet.createDirect(Holder.createDirect(Items.AIR)), 1, 1, Enchantment.cost(100), Enchantment.cost(100, 100), 100, new EquipmentSlotGroup[0]);
+        return Enchantment.createProperties(items, 1, 1, Enchantment.cost(100), Enchantment.cost(100, 100), 100, new EquipmentSlotGroup[0]);
     }
 
-    private static void blockEnchantment(Entries entries, RegistryKey<Enchantment> key)
+    private static void blockEnchantment(Entries entries, RegistryKey<Enchantment> key, NamedSet<Enchantment> starKey, HolderSet<Item> items)
     {
-        entries.add(key, Enchantment.builder(createBlockingProperties()).build(key.getValue()), new ResourceCondition[0]);
+        entries.add(key, Enchantment.builder(createBlockingProperties(items)).withExclusiveSet(starKey).build(key.getValue()), new ResourceCondition[0]);
     }
+
+    private static final TagKey<Item> BLOCKING_KEY = TagKey.of(RegistryKeys.ITEM, Wilderlands.id("none"));
 
     @Override
     protected void configure(Provider registries, Entries entries)
@@ -123,9 +127,11 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
         final var C_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.C_LEVEL);
         final var STAR_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.STAR_LEVEL);
 
-        // itemLookup.getHolderOrThrow(Registries.ITEM.get);
-
-        
+        final var blockingKey = itemLookup.getTagOrThrow(BLOCKING_KEY);
+        for (var key : ModEnchantments.TO_REMOVE)
+        {
+            blockEnchantment(entries, key, STAR_LEVEL, blockingKey);   
+        }
 
         register(entries, Enchantments.FIRE_ASPECT, 
             Enchantment.builder(

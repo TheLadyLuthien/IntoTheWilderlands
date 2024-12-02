@@ -9,12 +9,15 @@ import com.skadoosh.wilderlands.enchantments.effects.Lifesteal;
 import com.skadoosh.wilderlands.enchantments.effects.StrengthenEffect;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+
+import java.util.List;
 
 public class ModEnchantments
 {
@@ -107,19 +110,105 @@ public class ModEnchantments
     public static final MapCodec<Freeze> FREEZE_EFFECT = registerEntityEffect(Wilderlands.id("freeze"), Freeze.CODEC);
     public static final MapCodec<StrengthenEffect> STRENTHEN_EFFECT = registerEntityEffect(Wilderlands.id("strengthen"), StrengthenEffect.CODEC);
     public static final MapCodec<Lifesteal> LIFESTEAL = registerEntityEffect(Wilderlands.id("lifesteal"), Lifesteal.CODEC);
-
+    
     public static <T extends EnchantmentEntityEffect> MapCodec<T> registerEntityEffect(Identifier id, MapCodec<T> codec)
     {
         return Registry.register(Registries.ENCHANTMENT_ENTITY_EFFECT_TYPE, id, codec);
     }
-
+    
     private static RegistryKey<Enchantment> keyOf(Identifier id)
     {
         return RegistryKey.of(RegistryKeys.ENCHANTMENT, id);
     }
+    
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> FEATHER_FALLING = Enchantments.FEATHER_FALLING;
+    
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> FIRE_ASPECT = Enchantments.FIRE_ASPECT;
+    
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> PUNCH = Enchantments.PUNCH;
+    
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> INFINITY = Enchantments.INFINITY;
+    
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> LOYALTY = Enchantments.LOYALTY;
+    
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> RIPTIDE = Enchantments.RIPTIDE;
+    
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> CHANNELING = Enchantments.CHANNELING;
+    
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> MULTISHOT = Enchantments.MULTISHOT;
+    
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> QUICK_CHARGE = Enchantments.QUICK_CHARGE;
+    
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> PIERCING = Enchantments.PIERCING;
+    
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> DENSITY = Enchantments.DENSITY;
+    
+    @EnchantmentLevel(Level.A)
+    public static final RegistryKey<Enchantment> BREACH = Enchantments.BREACH;
+    
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> WIND_BURST = Enchantments.WIND_BURST;
+    
+    @EnchantmentLevel(Level.B)
+    public static final RegistryKey<Enchantment> SILK_TOUCH = Enchantments.SILK_TOUCH;
 
     public static void init()
     {
 
     }
+
+    public static final List<RegistryKey<Enchantment>> TO_REMOVE = List.of(
+        Enchantments.PROTECTION,
+        Enchantments.FIRE_PROTECTION,
+        // Enchantments.FEATHER_FALLING,
+        Enchantments.BLAST_PROTECTION,
+        Enchantments.PROJECTILE_PROTECTION,
+        Enchantments.RESPIRATION,
+        Enchantments.AQUA_AFFINITY,
+        Enchantments.THORNS,
+        Enchantments.DEPTH_STRIDER,
+        Enchantments.FROST_WALKER,
+        Enchantments.BINDING_CURSE,
+        Enchantments.SOUL_SPEED,
+        Enchantments.SWIFT_SNEAK,
+        Enchantments.SHARPNESS,
+        Enchantments.SMITE,
+        Enchantments.BANE_OF_ARTHROPODS,
+        Enchantments.KNOCKBACK,
+        // Enchantments.FIRE_ASPECT,
+        Enchantments.LOOTING,
+        Enchantments.SWEEPING_EDGE,
+        Enchantments.EFFICIENCY,
+        // Enchantments.SILK_TOUCH,
+        Enchantments.UNBREAKING,
+        Enchantments.FORTUNE,
+        Enchantments.POWER,
+        // Enchantments.PUNCH,
+        Enchantments.FLAME,
+        // Enchantments.INFINITY,
+        Enchantments.LUCK_OF_THE_SEA,
+        Enchantments.LURE,
+        // Enchantments.LOYALTY,
+        Enchantments.IMPALING,
+        // Enchantments.RIPTIDE,
+        // Enchantments.CHANNELING,
+        // Enchantments.MULTISHOT,
+        // Enchantments.QUICK_CHARGE,
+        // Enchantments.PIERCING,
+        // Enchantments.DENSITY,
+        // Enchantments.BREACH,
+        // Enchantments.WIND_BURST,
+        Enchantments.MENDING,
+        Enchantments.VANISHING_CURSE);
 }

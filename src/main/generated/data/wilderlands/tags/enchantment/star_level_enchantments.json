@@ -111,6 +111,62 @@
     {
       "id": "wilderlands:resilient",
       "required": false
+    },
+    {
+      "id": "minecraft:feather_falling",
+      "required": false
+    },
+    {
+      "id": "minecraft:fire_aspect",
+      "required": false
+    },
+    {
+      "id": "minecraft:punch",
+      "required": false
+    },
+    {
+      "id": "minecraft:infinity",
+      "required": false
+    },
+    {
+      "id": "minecraft:loyalty",
+      "required": false
+    },
+    {
+      "id": "minecraft:riptide",
+      "required": false
+    },
+    {
+      "id": "minecraft:channeling",
+      "required": false
+    },
+    {
+      "id": "minecraft:multishot",
+      "required": false
+    },
+    {
+      "id": "minecraft:quick_charge",
+      "required": false
+    },
+    {
+      "id": "minecraft:piercing",
+      "required": false
+    },
+    {
+      "id": "minecraft:density",
+      "required": false
+    },
+    {
+      "id": "minecraft:breach",
+      "required": false
+    },
+    {
+      "id": "minecraft:wind_burst",
+      "required": false
+    },
+    {
+      "id": "minecraft:silk_touch",
+      "required": false
     }
   ]
 }

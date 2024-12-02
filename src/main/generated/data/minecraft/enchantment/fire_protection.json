@@ -1,0 +1,19 @@
+{
+  "anvil_cost": 100,
+  "description": {
+    "translate": "enchantment.minecraft.fire_protection"
+  },
+  "exclusive_set": "#wilderlands:star_level_enchantments",
+  "max_cost": {
+    "base": 100,
+    "per_level_above_first": 100
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 100,
+    "per_level_above_first": 0
+  },
+  "slots": [],
+  "supported_items": "#wilderlands:none",
+  "weight": 1
+}
