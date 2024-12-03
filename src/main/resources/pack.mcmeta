@@ -3,7 +3,7 @@
       "description": {
         "translate": "dataPack.remove_vanilla_enchants.description"
       },
-      "pack_format": 41
+      "pack_format": 48
     }, 
     "filter": {
         "block": [

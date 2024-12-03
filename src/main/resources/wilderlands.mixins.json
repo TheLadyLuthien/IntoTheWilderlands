@@ -9,6 +9,7 @@
         "ServerWorldMixin",
         "BlockMixin",
         "LivingEntityMixin",
+        "EntityMixin",
         "AbstractBlockMixin",
         "MobEntityMixin",
         "ProjectileEntityMixin",
