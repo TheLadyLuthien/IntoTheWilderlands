@@ -6,7 +6,11 @@ quilt_mappings = "1.21+build.18"
 quilt_loom = "1.7.4"
 quilt_loader = "0.26.4-beta.1"
 
-quilted_fabric_api = "11.0.0-alpha.3+0.100.7-1.21"
+# quilted_fabric_api = "11.0.0-alpha.3+0.100.7-1.21"
+
+# fabric_loader="0.16.9"
+fabric_api="0.102.0+1.21"
+
 cca = '6.1.1'
 veil = '1.0.0.25'
 
@@ -15,9 +19,12 @@ minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_mappings" }
 quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
 
-quilted_fabric_api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted_fabric_api" }
-quilted_fabric_api_deprecated = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api-deprecated", version.ref = "quilted_fabric_api" }
+# quilted_fabric_api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted_fabric_api" }
+# quilted_fabric_api_deprecated = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api-deprecated", version.ref = "quilted_fabric_api" }
 
+
+# fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
+fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
 
 cca-base = { module = "org.ladysnake.cardinal-components-api:cardinal-components-base", version.ref = "cca" }
 cca-world = { module = "org.ladysnake.cardinal-components-api:cardinal-components-world", version.ref = "cca" }
@@ -28,7 +35,7 @@ veil = { module = "foundry.veil:veil-fabric-1.21", version.ref = "veil" }
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
 
-quilted_fabric_api = ["quilted_fabric_api", "quilted_fabric_api_deprecated"]
+# quilted_fabric_api = ["quilted_fabric_api", "quilted_fabric_api_deprecated"]
 cca = [ "cca-base", "cca-world", "cca-entity" ]
 
 [plugins]

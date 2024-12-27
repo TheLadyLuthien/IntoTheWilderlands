@@ -1,10 +1,10 @@
 package com.skadoosh.wilderlands.blockentities;
 
-import org.quiltmc.loader.api.minecraft.ClientOnly;
-
 import com.skadoosh.wilderlands.blocks.CarvedRunestoneBlock;
 import com.skadoosh.wilderlands.misc.ModParticles;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -95,7 +95,7 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
         }
     }
 
-    @ClientOnly
+    @Environment(EnvType.CLIENT)
     private static void playActiveParticles(ClientWorld world, BlockPos pos)
     {
         if (world.getTime() % 4 != 0)
@@ -113,7 +113,7 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
         // }
     }
 
-    @ClientOnly
+    @Environment(EnvType.CLIENT)
     private static void playBeamSwirlParticles(ClientWorld world, BlockPos pos)
     {
         final int count = 20;

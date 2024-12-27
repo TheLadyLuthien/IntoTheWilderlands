@@ -1,7 +1,7 @@
 package com.skadoosh.cadmium;
 
-import org.quiltmc.loader.api.minecraft.ClientOnly;
-
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.world.ClientWorld;
@@ -51,7 +51,7 @@ public final class Cadmium
 		// );
     }
 
-    @ClientOnly
+    @Environment(EnvType.CLIENT)
     public static void initializeClient()
     {
         ParticleBuilder.clientsideRegisterParticles();

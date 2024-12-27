@@ -1,6 +1,5 @@
 package com.skadoosh.wilderlands.mixin;
 
-import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 
-@ClientOnly
 @Mixin(AbstractClientPlayerEntity.class)
 public class AbstractClientPlayerEntityMixin
 {

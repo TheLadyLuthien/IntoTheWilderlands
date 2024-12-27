@@ -71,8 +71,12 @@ dependencies {
 
 	// QSL is not a complete API; You will need Quilted Fabric API to fill in the gaps.
 	// Quilted Fabric API will automatically pull in the correct QSL version.
-	modImplementation libs.quilted.fabric.api
-	modImplementation "org.quiltmc:qsl:10.0.0-alpha.1+1.21"
+	// modImplementation libs.quilted.fabric.api
+	// modImplementation "org.quiltmc:qsl:10.0.0-alpha.1+1.21"
+
+	
+	// modImplementation libs.fabric.loader
+	modImplementation libs.fabric.api
 
 
 	modImplementation(libs.bundles.cca)
@@ -121,7 +125,7 @@ java {
 
 project.configurations.configureEach {
     exclude(group: "net.fabricmc", module: "fabric-loader")
-    exclude(group: "net.fabricmc.fabric-api")
+    // exclude(group: "net.fabricmc.fabric-api")
 }
 
 // If you plan to use a different file for the license, don't forget to change the file name here!

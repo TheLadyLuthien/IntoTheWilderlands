@@ -2,10 +2,10 @@ package com.skadoosh.cadmium;
 
 import java.util.function.Supplier;
 
-import org.quiltmc.loader.api.minecraft.ClientOnly;
-
 import com.skadoosh.cadmium.AdvancedParticle.RenderType;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.particle.DefaultParticleType;
@@ -105,7 +105,7 @@ public class ParticleBuilder
         return particle;
     }
 
-    @ClientOnly
+    @Environment(EnvType.CLIENT)
     public static void clientsideRegisterParticles()
     {
         for (AdvancedParticle advancedParticle : Cadmium.retrieveAllParticles())

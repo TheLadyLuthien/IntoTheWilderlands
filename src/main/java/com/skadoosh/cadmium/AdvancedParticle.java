@@ -3,8 +3,9 @@ package com.skadoosh.cadmium;
 import java.util.function.Supplier;
 
 import org.joml.Vector3f;
-import org.quiltmc.loader.api.minecraft.ClientOnly;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.particle.BillboardParticle;
@@ -56,13 +57,13 @@ public class AdvancedParticle
         return vanillaParticleType;
     }
 
-    @ClientOnly
+    @Environment(EnvType.CLIENT)
     public Particle createVanillaParticle(DefaultParticleType arg0, ClientWorld arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, SpriteProvider spriteProvider)
     {
         return this.new SummonableParticle(arg1, arg2, arg3, arg4, arg5, arg6, arg7, spriteProvider);
     }
 
-    @ClientOnly
+    @Environment(EnvType.CLIENT)
     public Factory createParticleFactory(SpriteProvider spriteProvider)
     {
         return this.new Factory(spriteProvider);
@@ -75,19 +76,19 @@ public class AdvancedParticle
         });
     }
 
-    @ClientOnly
+    @Environment(EnvType.CLIENT)
     public void spawn(ClientWorld world, float x, float y, float z, float velX, float velY, float velZ)
     {
         doCreateParticle(world, x, y, z, velX, velY, velZ);
     }
 
-    @ClientOnly
+    @Environment(EnvType.CLIENT)
     public void doCreateParticle(ClientWorld world, float x, float y, float z, float velX, float velY, float velZ)
     {
         world.addParticle(vanillaParticleType, x, y, z, velX, velY, velZ);
     }
 
-    @ClientOnly
+    @Environment(EnvType.CLIENT)
     public class SummonableParticle extends SpriteBillboardParticle
     {
         protected final SpriteProvider spriteProvider;
@@ -171,7 +172,7 @@ public class AdvancedParticle
     }
 
 
-    @ClientOnly
+    @Environment(EnvType.CLIENT)
     public class Factory implements ParticleFactory<DefaultParticleType>
     {
         protected final SpriteProvider spriteProvider;

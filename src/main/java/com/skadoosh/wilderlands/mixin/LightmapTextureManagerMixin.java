@@ -1,6 +1,5 @@
 package com.skadoosh.wilderlands.mixin;
 
-import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +12,6 @@ import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.registry.RegistryKeys;
 
-@ClientOnly
 @Mixin(LightmapTextureManager.class)
 public class LightmapTextureManagerMixin
 {

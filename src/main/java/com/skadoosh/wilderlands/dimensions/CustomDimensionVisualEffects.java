@@ -1,7 +1,6 @@
 package com.skadoosh.wilderlands.dimensions;
 
 import org.joml.Matrix4f;
-import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -12,6 +11,9 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.mixin.WorldRendererAccessor;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.DimensionVisualEffects;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
@@ -22,7 +24,7 @@ import net.minecraft.util.math.Vec3d;
 
 public final class CustomDimensionVisualEffects
 {
-    @ClientOnly()
+    @Environment(EnvType.CLIENT)
     public static class AstralWastes extends DimensionVisualEffects implements CustomSkyRenderer
     {
         public static final Identifier identifier = Wilderlands.id("astral_wastes");
