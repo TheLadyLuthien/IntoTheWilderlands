@@ -14,12 +14,16 @@ import com.skadoosh.wilderlands.events.LiftRenderEvent;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.misc.BifrostHelper;
 import com.skadoosh.wilderlands.misc.BifrostHelper.KeyType;
+import com.skadoosh.wilderlands.screen.handler.ModScreenHandlers;
+import com.skadoosh.wilderlands.screen.renderer.AstralForgeCoreScreen;
 
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.minecraft.client.gui.screen.ingame.AnvilScreen;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
@@ -175,5 +179,7 @@ public class ClientLoader implements ClientModInitializer
     
         EntityRendererRegistry.register(ModEntities.TORCH, TorchEntityRenderer::new);
         EntityRendererRegistry.register(ModEntities.BUNDLE, FlyingItemEntityRenderer::new);
+    
+        HandledScreens.register(ModScreenHandlers.ASTRAL_FORGE_CORE_SCREEN_HANDLER_TYPE, AstralForgeCoreScreen::new);
     }
 }

@@ -27,6 +27,6 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
     @Override
     public Text getDisplayName()
     {
-        return Text.literal("tesan sakdjbn");
+        return Text.literal("Astral Forge");
     }
 }

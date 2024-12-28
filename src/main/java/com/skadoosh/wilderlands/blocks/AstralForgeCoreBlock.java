@@ -26,7 +26,7 @@ public class AstralForgeCoreBlock extends Block implements BlockEntityProvider
         else
         {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof BeaconBlockEntity afcBlockEntity)
+            if (blockEntity instanceof AstralForgeCoreBlockEntity afcBlockEntity)
             {
                 entity.openHandledScreen(afcBlockEntity);
             }
