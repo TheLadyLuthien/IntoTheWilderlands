@@ -149,6 +149,7 @@ public class AstralForgeCoreScreenHandler extends ScreenHandler
             if (opt.isPresent())
             {
                 opt.get().activate(baseSlot.getStack());
+                baseSlot.setStack(ItemStack.EMPTY);
             }
         });
 

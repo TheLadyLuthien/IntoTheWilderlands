@@ -1,11 +1,14 @@
 package com.skadoosh.wilderlands.blockentities;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.skadoosh.cadmium.animation.AnimationStep;
 import com.skadoosh.cadmium.animation.ParticleAnimation;
 import com.skadoosh.wilderlands.screen.handler.AstralForgeCoreScreenHandler;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -19,9 +22,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import static com.skadoosh.cadmium.animation.AnimatedValue.constant;
+import static com.skadoosh.cadmium.animation.AnimatedValue.linear;
+
 public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScreenHandlerFactory
 {
     public static final String FORGING_PLAYING = "forging_playing";
+
+    @Nullable
+    private ItemStack finishedItem = null;
 
     public AstralForgeCoreBlockEntity(BlockPos pos, BlockState state)
     {
@@ -41,9 +50,40 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
     }
 
     private final ParticleAnimation forgingAnimation = new ParticleAnimation(
-        AnimationStep.particle(10, ParticleTypes.ENCHANT, center().x, center().y + 0.6, center().z, 0, 0, 0, 5, 1),
-        AnimationStep.particle(30, ParticleTypes.ENCHANT, center().x, center().y + 1f, center().z, 0, 0, 0, 18, 4),
-        AnimationStep.particle(1, ParticleTypes.ENCHANTED_HIT, center().x, center().y + 1, center().z, 0, 0, 0, 8, 1)
+        AnimationStep.particle(
+            40,
+            ParticleTypes.ENCHANT,
+            constant(center().x),
+            linear(center().y + 0.6, center().y + 2.6),
+            constant(center().z),
+            constant(0), constant(0.02f), constant(0),
+            linear(1, 30), linear(1, 10)
+        ),
+        AnimationStep.delay(50),
+        AnimationStep.multi(3, 
+            AnimationStep.particle(
+                3,
+                ParticleTypes.ENCHANTED_HIT,
+                constant(center().x),
+                constant(center().y + 1.5),
+                constant(center().z),
+                constant(0), constant(0), constant(0),
+                constant(20), constant(1)
+            ),
+            AnimationStep.particle(
+                3,
+                ParticleTypes.LAVA,
+                constant(center().x),
+                constant(center().y + 1.5),
+                constant(center().z),
+                constant(0), constant(0), constant(0),
+                constant(1), constant(1)
+            )
+        ),
+        AnimationStep.event(world -> {
+            ItemEntity item = new ItemEntity(world, center().x, center().y + 1.5, center().z, finishedItem, 0, 0.4, 0);
+            world.spawnEntity(item);
+        })
     );
 
     public static void tick(World world, BlockPos pos, BlockState state, AstralForgeCoreBlockEntity blockEntity)
@@ -51,11 +91,11 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
         blockEntity.forgingAnimation.tick(world);
     }
 
-    // runs server and client side (hopefully)
+    // runs server side only
     public void activate(ItemStack result)
     {
         this.forgingAnimation.play();
-        // this.markDirty();
+        this.finishedItem = result;
     }
 
     public Vec3d center()
