@@ -1,12 +1,19 @@
 package com.skadoosh.wilderlands.blocks;
 
+import com.mojang.serialization.MapCodec;
 import com.skadoosh.wilderlands.blockentities.AstralForgeCoreBlockEntity;
+import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
@@ -14,7 +21,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class AstralForgeCoreBlock extends Block implements BlockEntityProvider
+public class AstralForgeCoreBlock extends BlockWithEntity
 {
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity entity, BlockHitResult hitResult)
@@ -44,5 +51,23 @@ public class AstralForgeCoreBlock extends Block implements BlockEntityProvider
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state)
     {
         return new AstralForgeCoreBlockEntity(pos, state);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type)
+    {
+        return BlockWithEntity.checkType(type, ModBlockEntities.ASTRAL_FORGE_CORE_BLCOK_ENTITY, AstralForgeCoreBlockEntity::tick);
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec()
+    {
+        return AbstractBlock.createCodec(AstralForgeCoreBlock::new);
+    }
+
+    @Override
+    protected BlockRenderType getRenderType(BlockState state)
+    {
+        return BlockRenderType.MODEL;
     }
 }
