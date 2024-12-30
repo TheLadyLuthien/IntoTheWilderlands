@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "wilderlands",
+	"version": "${version}",
+	"name": "IntoTheWilderlands",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/wilderlands/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.skadoosh.wilderlands.Wilderlands"
+		],
+		"client": [
+			"com.skadoosh.wilderlands.ClientLoader"
+		],
+		"fabric-datagen": [
+			"com.skadoosh.wilderlands.IntoTheWilderlandsDataGenerator"
+		],
+		"cardinal-components": [
+            "com.skadoosh.wilderlands.persistance.ModComponentKeys"
+        ]
+	},
+	"mixins": [
+		"wilderlands.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.9",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	},
+	"custom": {
+		"cardinal-components": [
+			"wilderlands:named_keystone_data",
+			"wilderlands:lift",
+			"wilderlands:dash",
+			"wilderlands:smoldering",
+			"wilderlands:lumberjack"
+		]
+	}
+}

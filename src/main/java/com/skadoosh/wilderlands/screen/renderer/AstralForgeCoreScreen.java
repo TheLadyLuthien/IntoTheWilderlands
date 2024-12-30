@@ -2,11 +2,11 @@ package com.skadoosh.wilderlands.screen.renderer;
 
 import java.util.List;
 
-import org.quiltmc.loader.api.minecraft.ClientOnly;
-
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.screen.handler.AstralForgeCoreScreenHandler;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.ingame.CyclingSlotBackground;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -16,7 +16,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-@ClientOnly
+@Environment(EnvType.CLIENT)
 public class AstralForgeCoreScreen extends HandledScreen<AstralForgeCoreScreenHandler>
 {
     private static final Identifier TEXTURE = Wilderlands.id("textures/gui/container/astral_forge_core.png");
