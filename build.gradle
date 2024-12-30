@@ -50,18 +50,16 @@ fabricApi {
 
 dependencies {
 	// To change the versions see the gradle.properties file
-	mappings variantOf(libs.quilt.mappings) { classifier 'intermediary-v2' }
-	
+	// minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	// mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	mappings variantOf(libs.quilt.mappings) { classifier 'intermediary-v2' }
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	// modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.102.0+1.21"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
-	// minecraft libs.minecraft
+	minecraft libs.minecraft
 	// Replace the above line with the block below if you want to use Mojang mappings as your primary mappings, falling back on QM for parameters and Javadocs
 	/*
 	mappings loom.layered {

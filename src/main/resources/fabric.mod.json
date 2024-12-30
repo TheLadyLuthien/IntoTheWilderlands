@@ -22,7 +22,7 @@
 			"com.skadoosh.wilderlands.ClientLoader"
 		],
 		"fabric-datagen": [
-			"com.skadoosh.wilderlands.IntoTheWilderlandsDataGenerator"
+			"com.skadoosh.wilderlands.datagen.Datagen"
 		],
 		"cardinal-components": [
             "com.skadoosh.wilderlands.persistance.ModComponentKeys"
