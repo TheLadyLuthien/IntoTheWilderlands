@@ -59,7 +59,7 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
             constant(0), constant(0.02f), constant(0),
             linear(1, 30), linear(1, 10)
         ),
-        AnimationStep.delay(50),
+        AnimationStep.delay(40),
         AnimationStep.multi(3, 
             AnimationStep.particle(
                 3,
