@@ -10,6 +10,7 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -19,6 +20,8 @@ import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class AstralForgeCoreBlock extends BlockWithEntity
@@ -69,5 +72,20 @@ public class AstralForgeCoreBlock extends BlockWithEntity
     protected BlockRenderType getRenderType(BlockState state)
     {
         return BlockRenderType.MODEL;
+    }
+
+    private static final VoxelShape BASE_CORE = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 6.0, 16.0);
+    private static final VoxelShape BASE_CORE_COLLISION = Block.createCuboidShape(2.0, 0.0, 2.0, 14.0, 19.0, 14.0);
+
+    @Override
+	protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context)
+    {
+        return BASE_CORE;
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context)
+    {
+        return BASE_CORE_COLLISION;
     }
 }

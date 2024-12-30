@@ -54,7 +54,7 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
             40,
             ParticleTypes.ENCHANT,
             constant(center().x),
-            linear(center().y + 0.6, center().y + 2.6),
+            linear(center().y + 0.7, center().y + 2.6),
             constant(center().z),
             constant(0), constant(0.02f), constant(0),
             linear(1, 30), linear(1, 10)
@@ -81,7 +81,7 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
             )
         ),
         AnimationStep.event(world -> {
-            ItemEntity item = new ItemEntity(world, center().x, center().y + 1.5, center().z, finishedItem, 0, 0.4, 0);
+            ItemEntity item = new ItemEntity(world, center().x, center().y + 1.5, center().z, finishedItem, 0, 0.3, 0);
             world.spawnEntity(item);
         })
     );
