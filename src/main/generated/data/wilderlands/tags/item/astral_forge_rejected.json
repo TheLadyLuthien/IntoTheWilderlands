@@ -1,0 +1,27 @@
+{
+  "values": [
+    "minecraft:ender_pearl",
+    "minecraft:ender_eye",
+    "minecraft:splash_potion",
+    "minecraft:potion",
+    "minecraft:lingering_potion",
+    "minecraft:wind_charge",
+    "minecraft:fire_charge",
+    "minecraft:experience_bottle",
+    "minecraft:egg",
+    "minecraft:end_crystal",
+    "minecraft:firework_rocket",
+    "minecraft:item_frame",
+    "minecraft:glow_item_frame",
+    "minecraft:lead",
+    "minecraft:minecart",
+    {
+      "id": "#minecraft:boats",
+      "required": false
+    },
+    {
+      "id": "#minecraft:arrows",
+      "required": false
+    }
+  ]
+}

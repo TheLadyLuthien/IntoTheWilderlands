@@ -45,6 +45,7 @@ public class Datagen implements DataGeneratorEntrypoint
         final FabricDataGenerator.Pack pack = generator.createPack();
 
         pack.addProvider(BlockTagGenerator::new);
+        pack.addProvider(ItemTagGenerator::new);
         pack.addProvider(EnchantmentTags::new);
         pack.addProvider(DamageTypeTagGenerator::new);
         pack.addProvider(EnchantmentGenerator::new);
@@ -156,6 +157,38 @@ public class Datagen implements DataGeneratorEntrypoint
             .add(Blocks.COBBLESTONE)
             .add(Blocks.WET_SPONGE)
             .add(Blocks.SAND);
+        }
+    }
+    public static class ItemTagGenerator extends FabricTagProvider.ItemTagProvider
+    {
+        public ItemTagGenerator(FabricDataOutput output, CompletableFuture<Provider> completableFuture)
+        {
+            super(output, completableFuture);
+        }
+
+        public static final TagKey<Item> ASTRAL_FORGE_REJECTED = TagKey.of(RegistryKeys.ITEM, Wilderlands.id("astral_forge_rejected"));
+
+        @Override
+        protected void configure(Provider wrapperLookup)
+        {
+            getOrCreateTagBuilder(ASTRAL_FORGE_REJECTED)
+            .add(Items.ENDER_PEARL)
+            .add(Items.ENDER_EYE)
+            .add(Items.SPLASH_POTION)
+            .add(Items.POTION)
+            .add(Items.LINGERING_POTION)
+            .add(Items.WIND_CHARGE)
+            .add(Items.FIRE_CHARGE)
+            .add(Items.EXPERIENCE_BOTTLE)
+            .add(Items.EGG)
+            .add(Items.END_CRYSTAL)
+            .add(Items.FIREWORK_ROCKET)
+            .add(Items.ITEM_FRAME)
+            .add(Items.GLOW_ITEM_FRAME)
+            .add(Items.LEAD)
+            .add(Items.MINECART)
+            .addOptionalTag(ItemTags.BOATS)
+            .addOptionalTag(ItemTags.ARROWS);
         }
     }
 
