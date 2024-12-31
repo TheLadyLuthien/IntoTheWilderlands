@@ -544,7 +544,7 @@ public final class BifrostHelper
         else
         {
             // mishap, downgrade
-            // AstralForgeEvent.apply(keyValues, forgeRoll, AstralForgeEvent.UPGRADE_EVENTS);
+            AstralForgeEvent.apply(keyValues, -forgeRoll, AstralForgeEvent.MISHAP_EVENTS);
         }
 
         baseType = keyValues.type;

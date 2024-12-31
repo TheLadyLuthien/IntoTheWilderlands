@@ -36,6 +36,7 @@ public abstract class AstralForgeEvent
     private static final KeyType[] keyTypeValues = KeyType.values();
 
     public static final Set<AstralForgeEvent> UPGRADE_EVENTS = createUpgrades();
+    public static final Set<AstralForgeEvent> MISHAP_EVENTS = createMishaps();
 
     public static void apply(KeyValues key, int points, Set<AstralForgeEvent> eventSet)
     {
@@ -79,7 +80,7 @@ public abstract class AstralForgeEvent
                 {
                     if (key.usesRemaining > 0)
                     {
-                        key.usesRemaining += 3;
+                        key.usesRemaining += (key.type.ordinal() + 1);
                     }
                 }
             },
@@ -102,8 +103,41 @@ public abstract class AstralForgeEvent
         );
     }
 
-    // public static AstralForgeEvent[] createMishaps()
-    // {
-        
-    // }
+    public static Set<AstralForgeEvent> createMishaps()
+    {
+        return Set.of(
+            new AstralForgeEvent(2) 
+            {
+                @Override
+                public void apply(KeyValues key)
+                {
+                    key.usesRemaining = Math.max(1, key.usesRemaining - (key.type.ordinal() + 1));
+                }
+            },
+            new AstralForgeEvent(8) 
+            {
+                @Override
+                public void apply(KeyValues key)
+                {
+                    key.usesRemaining = Math.max(1, key.usesRemaining / 2);
+                }
+            },
+            new AstralForgeEvent(10) 
+            {
+                @Override
+                public void apply(KeyValues key)
+                {
+                    key.type = keyTypeValues[Math.max(key.type.ordinal() - 1, 0)];
+                }
+            },
+            new AstralForgeEvent(20) 
+            {
+                @Override
+                public void apply(KeyValues key)
+                {
+                    key.type = keyTypeValues[Math.max(key.type.ordinal() - 2, 0)];
+                }
+            }
+        );
+    }
 }
