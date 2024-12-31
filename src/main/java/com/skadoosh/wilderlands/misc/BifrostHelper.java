@@ -1,12 +1,16 @@
 package com.skadoosh.wilderlands.misc;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 import java.util.regex.Matcher;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.skadoosh.wilderlands.blockentities.CarvedRunestoneBlockEntity;
 import com.skadoosh.wilderlands.components.ModComponents;
+import com.skadoosh.wilderlands.datagen.Datagen;
 import com.skadoosh.wilderlands.items.ModItems;
+import com.skadoosh.wilderlands.misc.AstralForgeEvent.KeyValues;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 import com.skadoosh.wilderlands.persistance.NamedKeystoneData;
 import com.skadoosh.wilderlands.persistance.NamedKeystoneData.KeystoneLocation;
@@ -21,6 +25,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
@@ -214,6 +219,55 @@ public final class BifrostHelper
         return (stack.getRarity().equals(Rarity.COMMON)) || stack.isOf(ModItems.BIFROST_KEY);
     }
 
+    @Nullable
+    public static <T> T pickRandomFromNonNulls(RandomGenerator rand, T a, T b)
+    {
+        if (a == null)
+        {
+            return b;
+        }
+        if (b == null)
+        {
+            return a;
+        }
+
+        // should both not be null by here
+        return rand.nextInt(2) == 0 ? a : b;
+    }
+
+    @Nullable
+    public static KeyType getKeyTypeFromReagent(ItemStack reagent)
+    {
+        KeyType type = null;
+
+        if (reagent.isIn(Datagen.ItemTagGenerator.ASTRAL_FORGE_TO_SINGLE_DESTINATION))
+        {
+            type = KeyType.TO_SINGLE_DESTINATION;
+        }
+
+        if (reagent.isIn(Datagen.ItemTagGenerator.ASTRAL_FORGE_TO_FROM_SINGLE_DESTINATION))
+        {
+            type = KeyType.TO_FROM_SINGLE_DESTINATION;
+        }
+
+        if (reagent.isIn(Datagen.ItemTagGenerator.ASTRAL_FORGE_TO_SINGLE_DIMENSION))
+        {
+            type = KeyType.TO_SINGLE_DIMENSION;
+        }
+
+        if (reagent.isIn(Datagen.ItemTagGenerator.ASTRAL_FORGE_WITHIN_CURRENT_DIMENSION))
+        {
+            type = KeyType.WITHIN_CURRENT_DIMENSION;
+        }
+
+        if (reagent.isIn(Datagen.ItemTagGenerator.ASTRAL_FORGE_UNIVERSAL))
+        {
+            type = KeyType.UNIVERSAL;
+        }
+
+        return type;
+    }
+
     public static void expendKeyIfNecessary(ItemStack stack, PlayerEntity player)
     {
         NbtCompound nbt = getKeyComponent(stack);
@@ -346,7 +400,7 @@ public final class BifrostHelper
         return getRandomSetElement(map.values(), world.getRandom());
     }
 
-    public static ItemStack processKeyForging(World world, ItemStack baseStack, ItemStack keyStack, ItemStack reagent1Stack, ItemStack reagent2Stack)
+    public static ItemStack processKeyForging(World world, ItemStack baseStack, ItemStack keyStack, final ItemStack reagent1Stack, final ItemStack reagent2Stack)
     {
         final ItemStack result = baseStack.copy();
 
@@ -357,56 +411,154 @@ public final class BifrostHelper
         String baseDimension = baseKey.getString(NBT_DIMENSION);
         String baseFixedDestination = baseKey.getString(NBT_KEYSTONE);
         
-        
-        NbtCompound key = getOrCreateKeyComponent(baseStack);
-
-        final KeyType keyType = getKeyType(key);
-        final int keyUsesRemaining = key.getInt(NBT_USES);
-        final String keyDimension = key.getString(NBT_DIMENSION);
-        final String keyFixedDestination = key.getString(NBT_KEYSTONE);
-
-        // if template key is better, update the base key
-        if (keyType.ordinal() > baseType.ordinal())
+        if (baseType == null)
         {
-            baseType = keyType;
+            baseType = KeyType.TO_SINGLE_DESTINATION;
         }
 
-        // add uses toghether (unless it is unlimited)
-        if ((baseUsesRemaining == -1) || (keyUsesRemaining == -1))
+        if (keyStack != null && !keyStack.isEmpty())
         {
-            baseUsesRemaining = -1;
+            NbtCompound key = getOrCreateKeyComponent(keyStack);
+    
+            final KeyType keyType = getKeyType(key);
+            final int keyUsesRemaining = key.getInt(NBT_USES);
+            final String keyDimension = key.getString(NBT_DIMENSION);
+            final String keyFixedDestination = key.getString(NBT_KEYSTONE);
+            
+            // add uses toghether (unless it is unlimited)
+            if ((baseUsesRemaining == -1) || (keyUsesRemaining == -1))
+            {
+                baseUsesRemaining = -1;
+            }
+            else
+            {
+                // in ordinal adjusted value units
+                int base = baseUsesRemaining * (baseType.ordinal() + 1);
+                int template = keyUsesRemaining * (keyType.ordinal() + 1);
+    
+                // devide by final ordinal later
+                baseUsesRemaining = base + template;
+            }
+
+            // if template key is better, update the base key
+            if (keyType.ordinal() > baseType.ordinal())
+            {
+                baseType = keyType;
+            }
+    
+            // override base dimension to template dimension, or overworld
+            if (keyDimension.isEmpty())
+            {
+                // default to overworld if no dimensions in either
+                baseDimension = "minecraft:overworld";
+            }
+            else
+            {
+                baseDimension = keyDimension;
+            }
+
+            // override base fixedDestination to template one, or random
+            if (keyFixedDestination.isEmpty())
+            {
+                // default to random if no dimensions in either
+                final String keystone = getRandomKeystoneName(world);
+                baseFixedDestination = keystone;
+            }
+            else
+            {
+                baseFixedDestination = keyFixedDestination;
+            }
         }
         else
         {
-            baseUsesRemaining += keyUsesRemaining;
+            if (baseDimension.isEmpty())
+            {
+                baseDimension = "minecraft:overworld";
+            }
+            if (baseUsesRemaining == 0)
+            {
+                baseUsesRemaining = 1;
+            }
+            if (baseFixedDestination.isEmpty())
+            {
+                baseFixedDestination = getRandomKeystoneName(world);
+            }
+
+            baseUsesRemaining = baseUsesRemaining * (baseType.ordinal() + 1);
         }
 
-        // override base dimension to template dimension, or overworld
-        if (keyDimension.isEmpty())
+        // Process Reagents
+        final KeyType reagent1KeyTypeOverride = (reagent1Stack != null && !reagent1Stack.isEmpty()) ? getKeyTypeFromReagent(reagent1Stack) : null;
+        final KeyType reagent2KeyTypeOverride = (reagent2Stack != null && !reagent2Stack.isEmpty()) ? getKeyTypeFromReagent(reagent2Stack) : null;
+
+        @Nullable
+        final KeyType overrideKeyType = pickRandomFromNonNulls(world.getRandom(), reagent1KeyTypeOverride, reagent2KeyTypeOverride);
+
+        if (overrideKeyType != null)
         {
-            // default to overworld if no dimensions in either
-            baseDimension = "minecraft:overworld";
+            baseType = overrideKeyType;
+        }
+
+
+        final int mishapScore = 10;
+        final int startingReagentScore = 20;
+        int reagentScore = startingReagentScore;
+
+        // base is 20
+        // max rarity is 4, so max from rarity is 32
+        // enchantments add 4, so max from from enchantments is 8
+        // using keys add 1, so max from from keys is 2
+        // total possible value is 62
+        for (ItemStack stack : List.of(reagent1Stack, reagent2Stack))
+        {
+            if (stack == null)
+            {
+                continue;
+            }
+
+            reagentScore += MathHelper.square(stack.getRarity().ordinal() + 1);
+            if (stack.hasEnchantments())
+            {
+                reagentScore += 4;
+            }
+
+            if (stack.isOf(ModItems.BIFROST_KEY))
+            {
+                reagentScore += 1;
+            }
+        }
+
+        // do the roll!
+        final int forgeRoll = world.getRandom().nextInt(reagentScore + mishapScore) - mishapScore;
+
+        final KeyValues keyValues = new KeyValues(baseType, baseUsesRemaining, baseDimension, baseFixedDestination);
+        if (forgeRoll > 0)
+        {
+            // sucess, upgrade
+            // but only upgrade if it was from the reagents
+            if (forgeRoll > startingReagentScore)
+            {
+                AstralForgeEvent.apply(keyValues, forgeRoll, AstralForgeEvent.UPGRADE_EVENTS);
+            }
         }
         else
         {
-            baseDimension = keyDimension;
+            // mishap, downgrade
+            // AstralForgeEvent.apply(keyValues, forgeRoll, AstralForgeEvent.UPGRADE_EVENTS);
         }
 
-        // override base fixedDestination to template one, or random
-        if (keyFixedDestination.isEmpty())
-        {
-            // default to random if no dimensions in either
-            final String keystone = getRandomKeystoneName(world);
-            baseFixedDestination = keystone;
-        }
-        else
-        {
-            baseFixedDestination = keyFixedDestination;
-        }
-
-
+        baseType = keyValues.type;
+        baseUsesRemaining = keyValues.usesRemaining;
+        baseDimension = keyValues.dimension;
+        baseFixedDestination = keyValues.fixedDestination;
 
         // build the final key
+        // convert to uses from ordinal adjusted use units
+        baseUsesRemaining /= (baseType.ordinal() + 1);
+
+        // min 1 use
+        baseUsesRemaining = Math.max(baseUsesRemaining, 1);
+
         buildKey(result)
         .type(baseType)
         .usesRemaining(baseUsesRemaining)

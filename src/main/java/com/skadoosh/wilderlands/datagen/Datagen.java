@@ -167,6 +167,13 @@ public class Datagen implements DataGeneratorEntrypoint
         }
 
         public static final TagKey<Item> ASTRAL_FORGE_REJECTED = TagKey.of(RegistryKeys.ITEM, Wilderlands.id("astral_forge_rejected"));
+        
+        public static final TagKey<Item> ASTRAL_FORGE_TO_SINGLE_DESTINATION = TagKey.of(RegistryKeys.ITEM, Wilderlands.id("astral_forge_to_single_destination"));
+        public static final TagKey<Item> ASTRAL_FORGE_TO_FROM_SINGLE_DESTINATION = TagKey.of(RegistryKeys.ITEM, Wilderlands.id("astral_forge_to_from_single_destination"));
+        public static final TagKey<Item> ASTRAL_FORGE_TO_SINGLE_DIMENSION = TagKey.of(RegistryKeys.ITEM, Wilderlands.id("astral_forge_to_single_dimension"));
+        public static final TagKey<Item> ASTRAL_FORGE_WITHIN_CURRENT_DIMENSION = TagKey.of(RegistryKeys.ITEM, Wilderlands.id("astral_forge_within_current_dimension"));
+        public static final TagKey<Item> ASTRAL_FORGE_UNIVERSAL = TagKey.of(RegistryKeys.ITEM, Wilderlands.id("astral_forge_universal"));
+
 
         @Override
         protected void configure(Provider wrapperLookup)
@@ -189,6 +196,25 @@ public class Datagen implements DataGeneratorEntrypoint
             .add(Items.MINECART)
             .addOptionalTag(ItemTags.BOATS)
             .addOptionalTag(ItemTags.ARROWS);
+
+            getOrCreateTagBuilder(ASTRAL_FORGE_TO_SINGLE_DESTINATION)
+            .add(Items.DIRT)
+            .add(Items.GRASS_BLOCK);
+
+            getOrCreateTagBuilder(ASTRAL_FORGE_TO_FROM_SINGLE_DESTINATION)
+            .add(Items.DIAMOND)
+            .add(Items.END_CRYSTAL);
+
+            getOrCreateTagBuilder(ASTRAL_FORGE_TO_SINGLE_DIMENSION)
+            .add(Items.BLAZE_ROD)
+            .add(Items.NAUTILUS_SHELL);
+
+            getOrCreateTagBuilder(ASTRAL_FORGE_WITHIN_CURRENT_DIMENSION)
+            .add(Items.ENCHANTED_GOLDEN_APPLE);
+
+            getOrCreateTagBuilder(ASTRAL_FORGE_UNIVERSAL)
+            .add(Items.DRAGON_EGG);
+
         }
     }
 
