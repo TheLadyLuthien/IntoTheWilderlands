@@ -143,13 +143,17 @@ public class AstralForgeCoreScreenHandler extends ScreenHandler
         }
 
         context.run((world, blockPos) -> {
-            // TODO: actually do calculations
+
+            final ItemStack result = BifrostHelper.processKeyForging(world, baseSlot.getStack(), keySlot.getStack(), reagent1Slot.getStack(), reagent2Slot.getStack());
 
             Optional<AstralForgeCoreBlockEntity> opt = world.getBlockEntity(blockPos, ModBlockEntities.ASTRAL_FORGE_CORE_BLCOK_ENTITY);
             if (opt.isPresent())
             {
-                opt.get().activate(baseSlot.getStack());
+                opt.get().activate(result);
                 baseSlot.setStack(ItemStack.EMPTY);
+                keySlot.setStack(ItemStack.EMPTY);
+                reagent1Slot.setStack(ItemStack.EMPTY);
+                reagent2Slot.setStack(ItemStack.EMPTY);
             }
         });
 

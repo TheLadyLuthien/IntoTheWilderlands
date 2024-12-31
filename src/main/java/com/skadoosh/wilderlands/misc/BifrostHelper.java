@@ -1,5 +1,7 @@
 package com.skadoosh.wilderlands.misc;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.regex.Matcher;
 
 import com.skadoosh.wilderlands.blockentities.CarvedRunestoneBlockEntity;
@@ -19,6 +21,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 public final class BifrostHelper
@@ -59,9 +62,21 @@ public final class BifrostHelper
             return this;
         }
 
+        public ChainBuilder dimension(String dim)
+        {
+            setKeyDimension(stack, dim);
+            return this;
+        }
+
         public ChainBuilder keystoneData(String name)
         {
             setKeyExtra(stack, desanitizeKeystoneName(name));
+            return this;
+        }
+
+        public ChainBuilder rawKeystoneData(String id)
+        {
+            setKeyExtra(stack, id);
             return this;
         }
     }
@@ -166,6 +181,14 @@ public final class BifrostHelper
     {
         NbtCompound nbt = getOrCreateKeyComponent(stack);
         nbt.putString(NBT_DIMENSION, dimension.toString());
+        updateStackNbt(stack, nbt);
+        return stack;
+    }
+
+    public static ItemStack setKeyDimension(ItemStack stack, String dimension)
+    {
+        NbtCompound nbt = getOrCreateKeyComponent(stack);
+        nbt.putString(NBT_DIMENSION, dimension);
         updateStackNbt(stack, nbt);
         return stack;
     }
@@ -303,5 +326,93 @@ public final class BifrostHelper
     public static String sanitizeKeystoneName(String name)
     {
         return name.replaceAll("§", Matcher.quoteReplacement("$"));
+    }
+
+    public static <E> E getRandomSetElement(Collection<E> set, RandomGenerator random)
+    {
+        return set.stream().skip(random.nextInt(set.size())).findFirst().orElse(null);
+    }
+
+    public static KeystoneLocation getRandomKeystone(World world)
+    {
+        final var map = ModComponentKeys.NAMED_KEYSTONE_DATA.get(world.getServer().getOverworld()).map;
+
+        return getRandomSetElement(map.keySet(), world.getRandom());
+    }
+    public static String getRandomKeystoneName(World world)
+    {
+        final var map = ModComponentKeys.NAMED_KEYSTONE_DATA.get(world.getServer().getOverworld()).map;
+
+        return getRandomSetElement(map.values(), world.getRandom());
+    }
+
+    public static ItemStack processKeyForging(World world, ItemStack baseStack, ItemStack keyStack, ItemStack reagent1Stack, ItemStack reagent2Stack)
+    {
+        final ItemStack result = baseStack.copy();
+
+        NbtCompound baseKey = getOrCreateKeyComponent(baseStack);
+
+        KeyType baseType = getKeyType(baseKey);
+        int baseUsesRemaining = baseKey.getInt(NBT_USES);
+        String baseDimension = baseKey.getString(NBT_DIMENSION);
+        String baseFixedDestination = baseKey.getString(NBT_KEYSTONE);
+        
+        
+        NbtCompound key = getOrCreateKeyComponent(baseStack);
+
+        final KeyType keyType = getKeyType(key);
+        final int keyUsesRemaining = key.getInt(NBT_USES);
+        final String keyDimension = key.getString(NBT_DIMENSION);
+        final String keyFixedDestination = key.getString(NBT_KEYSTONE);
+
+        // if template key is better, update the base key
+        if (keyType.ordinal() > baseType.ordinal())
+        {
+            baseType = keyType;
+        }
+
+        // add uses toghether (unless it is unlimited)
+        if ((baseUsesRemaining == -1) || (keyUsesRemaining == -1))
+        {
+            baseUsesRemaining = -1;
+        }
+        else
+        {
+            baseUsesRemaining += keyUsesRemaining;
+        }
+
+        // override base dimension to template dimension, or overworld
+        if (keyDimension.isEmpty())
+        {
+            // default to overworld if no dimensions in either
+            baseDimension = "minecraft:overworld";
+        }
+        else
+        {
+            baseDimension = keyDimension;
+        }
+
+        // override base fixedDestination to template one, or random
+        if (keyFixedDestination.isEmpty())
+        {
+            // default to random if no dimensions in either
+            final String keystone = getRandomKeystoneName(world);
+            baseFixedDestination = keystone;
+        }
+        else
+        {
+            baseFixedDestination = keyFixedDestination;
+        }
+
+
+
+        // build the final key
+        buildKey(result)
+        .type(baseType)
+        .usesRemaining(baseUsesRemaining)
+        .dimension(baseDimension)
+        .rawKeystoneData(baseFixedDestination);
+
+        return result;
     }
 }

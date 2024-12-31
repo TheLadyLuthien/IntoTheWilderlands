@@ -77,9 +77,9 @@ dependencies {
 
 	modImplementation(libs.bundles.cca)
 
-	modImplementation(libs.veil) {
-        exclude group: "maven.modrinth"
-    }
+	// modImplementation(libs.veil) {
+    //     exclude group: "maven.modrinth"
+    // }
 
 	// sodium
 	// modRuntimeOnly "maven.modrinth:AANobbMI:dNHeFokL"
