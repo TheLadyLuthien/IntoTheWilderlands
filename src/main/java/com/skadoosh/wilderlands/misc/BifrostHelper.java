@@ -400,7 +400,9 @@ public final class BifrostHelper
         return getRandomSetElement(map.values(), world.getRandom());
     }
 
-    public static ItemStack processKeyForging(World world, ItemStack baseStack, ItemStack keyStack, final ItemStack reagent1Stack, final ItemStack reagent2Stack)
+    public static record KeyForgingResult(ItemStack stack, int rollResult) {}
+
+    public static KeyForgingResult processKeyForging(World world, ItemStack baseStack, ItemStack keyStack, final ItemStack reagent1Stack, final ItemStack reagent2Stack)
     {
         final ItemStack result = baseStack.copy();
 
@@ -415,7 +417,7 @@ public final class BifrostHelper
         {
             baseType = KeyType.TO_SINGLE_DESTINATION;
         }
-
+  
         if (keyStack != null && !keyStack.isEmpty())
         {
             NbtCompound key = getOrCreateKeyComponent(keyStack);
@@ -565,6 +567,6 @@ public final class BifrostHelper
         .dimension(baseDimension)
         .rawKeystoneData(baseFixedDestination);
 
-        return result;
+        return new KeyForgingResult(result, forgeRoll);
     }
 }

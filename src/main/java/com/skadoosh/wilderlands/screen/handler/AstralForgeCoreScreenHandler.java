@@ -7,6 +7,7 @@ import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.components.ModComponents;
 import com.skadoosh.wilderlands.datagen.Datagen;
 import com.skadoosh.wilderlands.misc.BifrostHelper;
+import com.skadoosh.wilderlands.misc.BifrostHelper.KeyForgingResult;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
@@ -144,7 +145,7 @@ public class AstralForgeCoreScreenHandler extends ScreenHandler
 
         context.run((world, blockPos) -> {
 
-            final ItemStack result = BifrostHelper.processKeyForging(world, baseSlot.getStack(), keySlot.getStack(), reagent1Slot.getStack(), reagent2Slot.getStack());
+            final KeyForgingResult result = BifrostHelper.processKeyForging(world, baseSlot.getStack(), keySlot.getStack(), reagent1Slot.getStack(), reagent2Slot.getStack());
 
             Optional<AstralForgeCoreBlockEntity> opt = world.getBlockEntity(blockPos, ModBlockEntities.ASTRAL_FORGE_CORE_BLCOK_ENTITY);
             if (opt.isPresent())

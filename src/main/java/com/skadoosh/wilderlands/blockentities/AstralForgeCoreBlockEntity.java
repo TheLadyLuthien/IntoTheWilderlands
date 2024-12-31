@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.skadoosh.cadmium.animation.AnimationStep;
 import com.skadoosh.cadmium.animation.ParticleAnimation;
+import com.skadoosh.wilderlands.misc.BifrostHelper.KeyForgingResult;
 import com.skadoosh.wilderlands.screen.handler.AstralForgeCoreScreenHandler;
 
 import net.minecraft.block.BlockState;
@@ -30,7 +31,7 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
     public static final String FORGING_PLAYING = "forging_playing";
 
     @Nullable
-    private ItemStack finishedItem = null;
+    private KeyForgingResult result = null;
 
     public AstralForgeCoreBlockEntity(BlockPos pos, BlockState state)
     {
@@ -49,7 +50,7 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
         return Text.literal("Astral Forge");
     }
 
-    private final ParticleAnimation forgingAnimation = new ParticleAnimation(
+    private final ParticleAnimation forgingBasicAnimation = new ParticleAnimation(
         AnimationStep.particle(
             40,
             ParticleTypes.ENCHANT,
@@ -59,7 +60,7 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
             constant(0), constant(0.02f), constant(0),
             linear(1, 30), linear(1, 10)
         ),
-        AnimationStep.delay(40),
+        AnimationStep.delay(40),    
         AnimationStep.multi(3, 
             AnimationStep.particle(
                 3,
@@ -81,21 +82,70 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
             )
         ),
         AnimationStep.event(world -> {
-            ItemEntity item = new ItemEntity(world, center().x, center().y + 1.5, center().z, finishedItem, 0, 0.3, 0);
+            ItemEntity item = new ItemEntity(world, center().x, center().y + 1.5, center().z, result.stack(), 0, 0.3, 0);
+            world.spawnEntity(item);
+        })
+    );
+
+    private final ParticleAnimation forgingMishapAnimation = new ParticleAnimation(
+        AnimationStep.particle(
+            40,
+            ParticleTypes.ENCHANT,
+            constant(center().x),
+            linear(center().y + 0.7, center().y + 2.6),
+            constant(center().z),
+            constant(0), constant(0.02f), constant(0),
+            linear(1, 30), linear(1, 10)
+        ),
+        AnimationStep.delay(40),    
+        AnimationStep.multi(1, 
+            AnimationStep.particleRing(
+                1,
+                ParticleTypes.DRIPPING_LAVA,
+                constant(center().x),
+                constant(center().y + 1.5),
+                constant(center().z),
+                constant(3),
+                constant(16),
+                constant(0),
+                constant(3)
+            ),
+            AnimationStep.particleRing(
+                1,
+                ParticleTypes.DRIPPING_LAVA,
+                constant(center().x),
+                constant(center().y + 1.5),
+                constant(center().z),
+                constant(4),
+                constant(16),
+                constant(13),
+                constant(3)
+            )
+        ),
+        AnimationStep.event(world -> {
+            ItemEntity item = new ItemEntity(world, center().x, center().y + 1.5, center().z, result.stack(), 0, 0.3, 0);
             world.spawnEntity(item);
         })
     );
 
     public static void tick(World world, BlockPos pos, BlockState state, AstralForgeCoreBlockEntity blockEntity)
     {
-        blockEntity.forgingAnimation.tick(world);
+        blockEntity.forgingBasicAnimation.tick(world);
+        blockEntity.forgingMishapAnimation.tick(world);
     }
 
     // runs server side only
-    public void activate(ItemStack result)
+    public void activate(KeyForgingResult result)
     {
-        this.forgingAnimation.play();
-        this.finishedItem = result;
+        if (result.rollResult() > 0)
+        {
+            forgingBasicAnimation.play();
+        }
+        else
+        {
+            forgingMishapAnimation.play();
+        }
+        this.result = result;
     }
 
     public Vec3d center()
