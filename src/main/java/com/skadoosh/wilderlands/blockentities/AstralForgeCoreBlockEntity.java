@@ -122,6 +122,7 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
                 constant(3)
             )
         ),
+        AnimationStep.delay(40),    
         AnimationStep.event(world -> {
             ItemEntity item = new ItemEntity(world, center().x, center().y + 1.5, center().z, result.stack(), 0, 0.3, 0);
             world.spawnEntity(item);
@@ -137,7 +138,7 @@ public class AstralForgeCoreBlockEntity extends BlockEntity implements NamedScre
     // runs server side only
     public void activate(KeyForgingResult result)
     {
-        if (result.rollResult() > 0)
+        if (result.rollResult() >= 0)
         {
             forgingBasicAnimation.play();
         }

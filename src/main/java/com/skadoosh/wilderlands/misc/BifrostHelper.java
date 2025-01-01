@@ -19,8 +19,12 @@ import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.packet.s2c.play.SubtitleS2CPacket;
+import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.text.Texts;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -568,5 +572,11 @@ public final class BifrostHelper
         .rawKeystoneData(baseFixedDestination);
 
         return new KeyForgingResult(result, forgeRoll);
+    }
+
+    public static void showTitleToPlayer(ServerPlayerEntity player, String keystoneId)
+    {
+        player.networkHandler.send(new SubtitleS2CPacket(Text.literal(keystoneId)));
+        player.networkHandler.send(new TitleS2CPacket(Text.literal("")));
     }
 }

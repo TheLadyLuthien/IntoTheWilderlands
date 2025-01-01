@@ -9,6 +9,8 @@ import com.skadoosh.wilderlands.blockentities.CarvedRunestoneBlockEntity;
 import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.components.ModComponents;
 import com.skadoosh.wilderlands.misc.BifrostHelper;
+import com.skadoosh.wilderlands.persistance.ModComponentKeys;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -167,12 +169,19 @@ public class RunicKeystoneBlock extends Block
                 set.add(MovementFlag.X_ROT);
                 set.add(MovementFlag.Y_ROT);
 
+                final var map = ModComponentKeys.NAMED_KEYSTONE_DATA.get(world.getServer().getOverworld());
+                final String keystoneName = map.get(world.getRegistryKey().getValue(), blockEntity.getKeystonePos());
+
                 // teleport the user (do this last)
                 List<Entity> entities = world.getNonSpectatingEntities(Entity.class,
                         new Box(new Vec3d(origin.getX() - SEARCH_SIZE, origin.getY() - SEARCH_SIZE, origin.getZ() - SEARCH_SIZE), new Vec3d(origin.getX() + SEARCH_SIZE, origin.getY() + SEARCH_SIZE, origin.getZ() + SEARCH_SIZE)));
                 for (Entity entity : entities)
                 {
                     entity.teleport(serverWorld, blockEntity.getDestinationPos().getX() + 0.5, blockEntity.getDestinationPos().getY() + 1.0, blockEntity.getDestinationPos().getZ() + 0.5, set, entity.getYaw(), entity.getPitch());
+                    if (entity instanceof ServerPlayerEntity player)
+                    {
+                        BifrostHelper.showTitleToPlayer(player, keystoneName);
+                    }
                 }
             }
         }

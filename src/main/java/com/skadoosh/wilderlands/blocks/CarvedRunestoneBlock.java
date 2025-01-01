@@ -1,12 +1,15 @@
 package com.skadoosh.wilderlands.blocks;
 
+import com.mojang.serialization.MapCodec;
 import com.skadoosh.wilderlands.blockentities.CarvedRunestoneBlockEntity;
 import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -24,7 +27,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class CarvedRunestoneBlock extends Block implements BlockEntityProvider
+public class CarvedRunestoneBlock extends BlockWithEntity
 {
     public static final EnumProperty<Rotation> ROTATION = EnumProperty.of("runestone_rotation", Rotation.class);
     public static final BooleanProperty GLOWING = BooleanProperty.of("runestone_glowing");
@@ -118,15 +121,22 @@ public class CarvedRunestoneBlock extends Block implements BlockEntityProvider
         // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
         return BlockRenderType.MODEL;
     }
+    
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ModBlockEntities.CARVED_RUNESTONE_BLOCK_ENTITY, (world1, pos, state1, be) -> CarvedRunestoneBlockEntity.tick(world1, pos, state1, be));
+        return BlockWithEntity.checkType(type, ModBlockEntities.CARVED_RUNESTONE_BLOCK_ENTITY, CarvedRunestoneBlockEntity::tick);
     }
 
-    @SuppressWarnings("unchecked")
-    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> checkType(BlockEntityType<A> givenType, BlockEntityType<E> expectedType, BlockEntityTicker<? super E> ticker) {
-        return expectedType == givenType ? (BlockEntityTicker<A>)ticker : null;
-     }
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec()
+    {
+        return AbstractBlock.createCodec(CarvedRunestoneBlock::new);
+    }
+
+    // @SuppressWarnings("unchecked")
+    // protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> checkType(BlockEntityType<A> givenType, BlockEntityType<E> expectedType, BlockEntityTicker<? super E> ticker) {
+    //     return expectedType == givenType ? (BlockEntityTicker<A>)ticker : null;
+    // }
 
     // @Override
     // protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos)
