@@ -24,9 +24,13 @@ public final class ModItems
     @AutoTranslate("Bifrost Key")
     @AutoItemGroup(ModItemGroups.BIFROST)
     public static final Item BIFROST_KEY = register("bifrost_key", new Item(new Item.Settings().rarity(Rarity.RARE).component(ModComponents.BIFROST_KEY, NbtComponent.of(new NbtCompound()))));
-
+    
     @AutoTranslate("Brimstone Cartridge")
     public static final Item BRIMSTONE_CARTRIDGE = register("brimstone_cartridge", new Item(new Item.Settings()));
+    
+    @AutoTranslate("Wayfinder's Guide")
+    @AutoItemGroup(ModItemGroups.BIFROST)
+    public static final Item WAYFINDERS_GUIDE = register("wayfinders_guide", new WayfindersGuideItem(new Item.Settings()));
 
     public static void init()
     {

@@ -37,6 +37,11 @@ repositories {
         name = 'BlameJared Maven (CrT / Bookshelf)'
         url = 'https://maven.blamejared.com'
     }
+
+	maven {
+        name = "JourneyMap (Public)"
+        url = "https://jm.gserv.me/repository/maven-public/"
+    }
 }
 
 loom {
@@ -80,6 +85,9 @@ dependencies {
 	// modImplementation(libs.veil) {
     //     exclude group: "maven.modrinth"
     // }
+
+	modCompileOnlyApi "info.journeymap:journeymap-api-fabric:2.0.0-1.21-SNAPSHOT"
+	// modCompileOnlyApi group: 'info.journeymap', name: 'journeymap-api-fabric', version: "2.0.0-1.21.1-SNAPSHOT", changing: true
 
 	// sodium
 	// modRuntimeOnly "maven.modrinth:AANobbMI:dNHeFokL"

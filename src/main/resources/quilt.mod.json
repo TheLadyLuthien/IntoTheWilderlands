@@ -21,7 +21,10 @@
             "fabric-datagen": [
                 "com.skadoosh.wilderlands.datagen.Datagen"
             ],
-            "cardinal-components": "com.skadoosh.wilderlands.persistance.ModComponentKeys"
+            "cardinal-components": "com.skadoosh.wilderlands.persistance.ModComponentKeys",
+            "journeymap": [
+                "com.skadoosh.wilderlands.map.MapPlugin"
+            ]
         },
         "depends": [
             {
