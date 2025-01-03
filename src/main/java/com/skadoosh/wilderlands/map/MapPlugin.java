@@ -40,7 +40,7 @@ public class MapPlugin implements IClientPlugin
             waypoint.setIconResourceLoctaion(Wilderlands.id("textures/map/bifrost_circle.png"));
             waypoint.setIconTextureSize(32, 32);
             waypoint.setIconColor(0x00ffff);
-            // waypoint.setgroup
+            // waypoint.
 
             // Add or update
             jmApi.addWaypoint(Wilderlands.NAMESPACE, waypoint);
