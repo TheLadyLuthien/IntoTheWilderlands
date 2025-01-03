@@ -505,7 +505,6 @@ public final class BifrostHelper
             baseType = overrideKeyType;
         }
 
-
         final int mishapScore = 10;
         final int startingReagentScore = 20;
         int reagentScore = startingReagentScore;
