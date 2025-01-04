@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.skadoosh.wilderlands.datagen.Datagen;
+import com.skadoosh.wilderlands.datagen.tag.ModBlockTags;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.lumberjack.LumberjackEvent;
 
@@ -35,7 +35,7 @@ public class AbstractBlockMixin
         RegistryLookup<Enchantment> lookup = player.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT);
         if (EnchantmentHelper.getLevel(lookup.getHolderOrThrow(ModEnchantments.PROSPECTOR), player.getMainHandStack()) > 0)
         {
-            tag = Datagen.BlockTagGenerator.ORES;
+            tag = ModBlockTags.ORES;
         }
         else
         {

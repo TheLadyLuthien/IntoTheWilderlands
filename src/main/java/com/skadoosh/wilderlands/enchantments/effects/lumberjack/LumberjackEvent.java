@@ -18,7 +18,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import com.skadoosh.wilderlands.datagen.Datagen;
+import com.skadoosh.wilderlands.datagen.tag.ModBlockTags;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.persistance.LumberjackComponent;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
@@ -117,7 +117,7 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before
         }
 
         RegistryLookup<Enchantment> lookup = player.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT);
-        return ((EnchantmentHelper.getLevel(lookup.getHolderOrThrow(ModEnchantments.LUMBERJACK), stack) > 0) && state.isIn(BlockTags.LOGS)) || ((EnchantmentHelper.getLevel(lookup.getHolderOrThrow(ModEnchantments.PROSPECTOR), stack) > 0) && state.isIn(Datagen.BlockTagGenerator.ORES));
+        return ((EnchantmentHelper.getLevel(lookup.getHolderOrThrow(ModEnchantments.LUMBERJACK), stack) > 0) && state.isIn(BlockTags.LOGS)) || ((EnchantmentHelper.getLevel(lookup.getHolderOrThrow(ModEnchantments.PROSPECTOR), stack) > 0) && state.isIn(ModBlockTags.ORES));
     }
 
     public static boolean isValid(List<BlockPos> tree)

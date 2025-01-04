@@ -5,7 +5,7 @@ import java.util.Optional;
 import com.skadoosh.wilderlands.blockentities.AstralForgeCoreBlockEntity;
 import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.components.ModComponents;
-import com.skadoosh.wilderlands.datagen.Datagen;
+import com.skadoosh.wilderlands.datagen.tag.ModItemTags;
 import com.skadoosh.wilderlands.misc.BifrostHelper;
 import com.skadoosh.wilderlands.misc.BifrostHelper.KeyForgingResult;
 
@@ -48,7 +48,7 @@ public class AstralForgeCoreScreenHandler extends ScreenHandler
             @Override
             public boolean canInsert(ItemStack stack)
             {
-                return (!(stack.getItem() instanceof BlockItem)) && (!stack.isIn(Datagen.ItemTagGenerator.ASTRAL_FORGE_REJECTED));
+                return (!(stack.getItem() instanceof BlockItem)) && (!stack.isIn(ModItemTags.ASTRAL_FORGE_REJECTED));
             }
 
             @Override

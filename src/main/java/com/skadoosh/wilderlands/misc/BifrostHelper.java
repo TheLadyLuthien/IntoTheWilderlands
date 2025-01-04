@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.skadoosh.wilderlands.blockentities.CarvedRunestoneBlockEntity;
 import com.skadoosh.wilderlands.components.ModComponents;
-import com.skadoosh.wilderlands.datagen.Datagen;
+import com.skadoosh.wilderlands.datagen.tag.ModItemTags;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.misc.AstralForgeEvent.KeyValues;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
@@ -244,27 +244,27 @@ public final class BifrostHelper
     {
         KeyType type = null;
 
-        if (reagent.isIn(Datagen.ItemTagGenerator.ASTRAL_FORGE_TO_SINGLE_DESTINATION))
+        if (reagent.isIn(ModItemTags.ASTRAL_FORGE_TO_SINGLE_DESTINATION))
         {
             type = KeyType.TO_SINGLE_DESTINATION;
         }
 
-        if (reagent.isIn(Datagen.ItemTagGenerator.ASTRAL_FORGE_TO_FROM_SINGLE_DESTINATION))
+        if (reagent.isIn(ModItemTags.ASTRAL_FORGE_TO_FROM_SINGLE_DESTINATION))
         {
             type = KeyType.TO_FROM_SINGLE_DESTINATION;
         }
 
-        if (reagent.isIn(Datagen.ItemTagGenerator.ASTRAL_FORGE_TO_SINGLE_DIMENSION))
+        if (reagent.isIn(ModItemTags.ASTRAL_FORGE_TO_SINGLE_DIMENSION))
         {
             type = KeyType.TO_SINGLE_DIMENSION;
         }
 
-        if (reagent.isIn(Datagen.ItemTagGenerator.ASTRAL_FORGE_WITHIN_CURRENT_DIMENSION))
+        if (reagent.isIn(ModItemTags.ASTRAL_FORGE_WITHIN_CURRENT_DIMENSION))
         {
             type = KeyType.WITHIN_CURRENT_DIMENSION;
         }
 
-        if (reagent.isIn(Datagen.ItemTagGenerator.ASTRAL_FORGE_UNIVERSAL))
+        if (reagent.isIn(ModItemTags.ASTRAL_FORGE_UNIVERSAL))
         {
             type = KeyType.UNIVERSAL;
         }

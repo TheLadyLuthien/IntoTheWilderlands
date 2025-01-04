@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.skadoosh.wilderlands.datagen.Datagen;
+import com.skadoosh.wilderlands.datagen.tag.ModBlockTags;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -46,7 +46,7 @@ public class BlockMixin
         if ((EnchantmentHelper.getLevel(world.getRegistryManager().getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.MOLTEN), stack) > 0) && !original.isEmpty())
         {
             original = new ArrayList<>(original);
-            boolean smeltsSelf = state.isIn(Datagen.BlockTagGenerator.ORES);
+            boolean smeltsSelf = state.isIn(ModBlockTags.ORES);
             for (int i = 0; i < original.size(); i++)
             {
                 Pair<ItemStack, Float> smelted = getSmeltedStack(world, smeltsSelf ? new ItemStack(state.getBlock()) : original.get(i));

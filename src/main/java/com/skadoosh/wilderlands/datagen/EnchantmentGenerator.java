@@ -6,6 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import com.skadoosh.wilderlands.Wilderlands;
+import com.skadoosh.wilderlands.datagen.tag.ModEnchantmentTags;
 import com.skadoosh.wilderlands.effects.ModEffects;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.Freeze;
@@ -122,10 +123,10 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
         RegistryLookup<Enchantment> enchantLookup = registries.getLookupOrThrow(RegistryKeys.ENCHANTMENT);
         RegistryLookup<DamageType> damageTypeLookup = registries.getLookupOrThrow(RegistryKeys.DAMAGE_TYPE);
         
-        final var A_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.A_LEVEL);
-        final var B_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.B_LEVEL);
-        final var C_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.C_LEVEL);
-        final var STAR_LEVEL = enchantLookup.getTagOrThrow(Datagen.EnchantmentTags.STAR_LEVEL);
+        final var A_LEVEL = enchantLookup.getTagOrThrow(ModEnchantmentTags.A_LEVEL);
+        final var B_LEVEL = enchantLookup.getTagOrThrow(ModEnchantmentTags.B_LEVEL);
+        final var C_LEVEL = enchantLookup.getTagOrThrow(ModEnchantmentTags.C_LEVEL);
+        final var STAR_LEVEL = enchantLookup.getTagOrThrow(ModEnchantmentTags.STAR_LEVEL);
 
         final var blockingKey = itemLookup.getTagOrThrow(BLOCKING_KEY);
         for (var key : ModEnchantments.TO_REMOVE)

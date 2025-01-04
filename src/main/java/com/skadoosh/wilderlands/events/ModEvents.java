@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import com.skadoosh.wilderlands.datagen.Datagen;
+import com.skadoosh.wilderlands.datagen.tag.ModBlockTags;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.lumberjack.LumberjackEvent;
 import com.skadoosh.wilderlands.misc.BeheadingEntry;
@@ -87,7 +87,7 @@ public final class ModEvents
         PlayerBlockBreakEvents.BEFORE.register(new LumberjackEvent());
 
         LootTableEvents.MODIFY.register((lootTableKey, builder, source, lookup) -> {
-            if (lookup.getLookupOrThrow(RegistryKeys.BLOCK).getTagOrThrow(Datagen.BlockTagGenerator.VOIDABLE).stream().map(holder -> holder.value()).anyMatch(block -> (block.getLootTableId() == lootTableKey) && source.isBuiltin()))
+            if (lookup.getLookupOrThrow(RegistryKeys.BLOCK).getTagOrThrow(ModBlockTags.VOIDABLE).stream().map(holder -> holder.value()).anyMatch(block -> (block.getLootTableId() == lootTableKey) && source.isBuiltin()))
             {
                 builder.modifyPools(e -> {
                     e.conditionally(

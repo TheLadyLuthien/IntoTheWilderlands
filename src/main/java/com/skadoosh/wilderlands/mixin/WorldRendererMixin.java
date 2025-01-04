@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.mojang.blaze3d.vertex.VertexBuffer;
-import com.skadoosh.wilderlands.dimensions.CustomSkyRenderer;
+import com.skadoosh.wilderlands.dimension.CustomSkyRenderer;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;

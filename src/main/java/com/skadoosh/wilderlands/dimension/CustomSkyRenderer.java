@@ -1,4 +1,4 @@
-package com.skadoosh.wilderlands.dimensions;
+package com.skadoosh.wilderlands.dimension;
 
 import org.joml.Matrix4f;
 import org.quiltmc.loader.api.minecraft.ClientOnly;

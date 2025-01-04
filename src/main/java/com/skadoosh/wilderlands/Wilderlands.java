@@ -11,6 +11,8 @@ import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.commands.ModCommands;
 import com.skadoosh.wilderlands.components.ModComponents;
 import com.skadoosh.wilderlands.damage.ModDamageTypes;
+import com.skadoosh.wilderlands.dimension.ModDimensions;
+import com.skadoosh.wilderlands.dimension.biome.ModBiomes;
 import com.skadoosh.wilderlands.effects.ModEffects;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.entities.ModEntities;
@@ -44,6 +46,8 @@ public class Wilderlands implements ModInitializer
         ModBlocks.init();
         ModItems.init();
         ModComponents.init();
+        ModBiomes.init();
+        ModDimensions.init();
         ModBlockEntities.init();
         ModEntities.init();
         
