@@ -3,8 +3,8 @@ package com.skadoosh.wilderlands.datagen.tag;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
-import com.skadoosh.mcutils.datagen.DamageTypeTag;
-import com.skadoosh.mcutils.datagen.DamageTypeTag.VanillaDamageTags;
+import com.skadoosh.mcutils.datagen.annotations.DamageTypeTag;
+import com.skadoosh.mcutils.datagen.annotations.DamageTypeTag.VanillaDamageTags;
 import com.skadoosh.wilderlands.damage.ModDamageTypes;
 import com.skadoosh.wilderlands.misc.AnnotationHelper;
 import com.skadoosh.wilderlands.misc.AnnotationHelper.ValueAnnotationPair;

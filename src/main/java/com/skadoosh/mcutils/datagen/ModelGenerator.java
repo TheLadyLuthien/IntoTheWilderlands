@@ -2,6 +2,7 @@ package com.skadoosh.mcutils.datagen;
 
 import java.util.ArrayList;
 
+import com.skadoosh.mcutils.datagen.annotations.GenerateItemModel;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.items.ModItems;

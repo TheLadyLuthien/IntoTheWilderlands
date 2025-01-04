@@ -1,7 +1,7 @@
 package com.skadoosh.wilderlands.damage;
 
-import com.skadoosh.mcutils.datagen.DamageTypeTag;
-import com.skadoosh.mcutils.datagen.DamageTypeTag.VanillaDamageTags;
+import com.skadoosh.mcutils.datagen.annotations.DamageTypeTag;
+import com.skadoosh.mcutils.datagen.annotations.DamageTypeTag.VanillaDamageTags;
 import com.skadoosh.wilderlands.Wilderlands;
 
 import net.minecraft.entity.damage.DamageType;

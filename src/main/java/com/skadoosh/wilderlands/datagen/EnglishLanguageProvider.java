@@ -3,7 +3,7 @@ package com.skadoosh.wilderlands.datagen;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
-import com.skadoosh.mcutils.datagen.AutoTranslate;
+import com.skadoosh.mcutils.datagen.annotations.AutoTranslate;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.items.ModItems;

@@ -1,7 +1,7 @@
 package com.skadoosh.wilderlands.enchantments;
 
 import com.mojang.serialization.MapCodec;
-import com.skadoosh.mcutils.datagen.AutoTranslate;
+import com.skadoosh.mcutils.datagen.annotations.AutoTranslate;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.enchantments.EnchantmentLevel.Level;
 import com.skadoosh.wilderlands.enchantments.effects.Freeze;

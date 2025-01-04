@@ -1,7 +1,7 @@
 package com.skadoosh.wilderlands.blocks;
 
-import com.skadoosh.mcutils.datagen.AutoTranslate;
-import com.skadoosh.mcutils.datagen.GenerateItemModel;
+import com.skadoosh.mcutils.datagen.annotations.AutoTranslate;
+import com.skadoosh.mcutils.datagen.annotations.GenerateItemModel;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.items.itemGroup.AutoItemGroup;
