@@ -38,6 +38,11 @@ repositories {
         name = 'BlameJared Maven (CrT / Bookshelf)'
         url = 'https://maven.blamejared.com'
     }
+
+	maven {
+        name = "JourneyMap (Public)"
+        url = "https://jm.gserv.me/repository/maven-public/"
+    }
 	
 	maven { url = "https://maven.quiltmc.org/repository/release/" }
 }
@@ -86,7 +91,9 @@ dependencies {
 }
 
 fabricApi {
-    configureDataGeneration()
+    configureDataGeneration() {
+		client = true
+	}
 }
 
 processResources {

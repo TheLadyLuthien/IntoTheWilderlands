@@ -36,7 +36,7 @@ public class MapPlugin implements IClientPlugin
         try
         {
             waypoint = WaypointFactory.createClientWaypoint(Wilderlands.NAMESPACE, location, dimension, true);
-            waypoint.setColor(CommonColors.field_52312);
+            waypoint.setColor(CommonColors.BLUE);
             waypoint.setIconResourceLoctaion(Wilderlands.id("textures/map/bifrost_circle.png"));
             waypoint.setIconTextureSize(32, 32);
             waypoint.setIconColor(0x00ffff);
