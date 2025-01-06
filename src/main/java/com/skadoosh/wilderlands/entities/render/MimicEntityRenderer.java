@@ -37,7 +37,7 @@
 // import net.minecraft.util.math.Direction;
 // import net.minecraft.world.World;
 
-// @ClientOnly
+// @Environment(EnvType.Client)
 // public class MimicEntityRenderer extends MobEntityRenderer<MimicEntity, MimicEntityModel>
 // {
 //     public MimicEntityRenderer(EntityRendererFactory.Context ctx)

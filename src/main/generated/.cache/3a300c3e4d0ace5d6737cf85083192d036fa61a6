@@ -1,7 +1,0 @@
-// 1.21	2024-12-31T18:08:18.095235	Into The Wilderlands/Tags for minecraft:damage_type
-5a2e118d1aff732eb994e1f47da0d40fe3cfaee2 data/minecraft/tags/damage_type/bypasses_enchantments.json
-5a2e118d1aff732eb994e1f47da0d40fe3cfaee2 data/minecraft/tags/damage_type/bypasses_resistance.json
-5a2e118d1aff732eb994e1f47da0d40fe3cfaee2 data/minecraft/tags/damage_type/bypasses_armor.json
-41dcc3a52fdf20ed947c9841a75335bff5c23ef0 data/minecraft/tags/damage_type/no_knockback.json
-5a2e118d1aff732eb994e1f47da0d40fe3cfaee2 data/minecraft/tags/damage_type/bypasses_shield.json
-5a2e118d1aff732eb994e1f47da0d40fe3cfaee2 data/minecraft/tags/damage_type/bypasses_cooldown.json

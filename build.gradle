@@ -1,14 +1,14 @@
 plugins {
+	id 'fabric-loom' version '1.9-SNAPSHOT'
 	id 'maven-publish'
-	alias libs.plugins.quilt.loom
 }
+
+version = project.mod_version
+group = project.maven_group
 
 base {
 	archivesName = project.archives_base_name
 }
-
-version = "$project.version+${libs.versions.minecraft.get()}"
-group = project.maven_group
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.
@@ -16,7 +16,8 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
-    maven {
+	
+	maven {
         name = "Ladysnake Mods"
         url = "https://maven.ladysnake.org/releases"
 	}
@@ -37,34 +38,22 @@ repositories {
         name = 'BlameJared Maven (CrT / Bookshelf)'
         url = 'https://maven.blamejared.com'
     }
-
-	maven {
-        name = "JourneyMap (Public)"
-        url = "https://jm.gserv.me/repository/maven-public/"
-    }
+	
+	maven { url = "https://maven.quiltmc.org/repository/release/" }
 }
 
-loom {
-	// Loom and Loader both use this block in order to gather more information about your mod.
-	mods {
-		// This should match your mod id.
-		"wilderlands" {
-			// Tell Loom about each source set used by your mod here. This ensures that your mod's classes are properly transformed by Loader.
-			sourceSet("main")
-			// If you shade (directly include classes, not JiJ) a dependency into your mod, include it here using one of these methods:
-			// dependency("com.example.shadowedmod:1.2.3")
-			// configuration("exampleShadedConfigurationName")
-		}
-	}
-
-	accessWidenerPath = file("src/main/resources/wilderlands.accesswidener")
-}
-
-// All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
-// See https://docs.gradle.org/current/userguide/platforms.html for information on how version catalogs work.
 dependencies {
-	minecraft libs.minecraft
+	// To change the versions see the gradle.properties file
+	// minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	// mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	mappings variantOf(libs.quilt.mappings) { classifier 'intermediary-v2' }
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API. This is technically optional, but you probably want it anyway.
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+
+	minecraft libs.minecraft
 	// Replace the above line with the block below if you want to use Mojang mappings as your primary mappings, falling back on QM for parameters and Javadocs
 	/*
 	mappings loom.layered {
@@ -72,13 +61,14 @@ dependencies {
 		officialMojangMappings()
 	}
 	*/
-	modImplementation libs.quilt.loader
 
 	// QSL is not a complete API; You will need Quilted Fabric API to fill in the gaps.
 	// Quilted Fabric API will automatically pull in the correct QSL version.
-	modImplementation libs.quilted.fabric.api
-	modImplementation "org.quiltmc:qsl:10.0.0-alpha.1+1.21"
+	// modImplementation libs.quilted.fabric.api
+	// modImplementation "org.quiltmc:qsl:10.0.0-alpha.1+1.21"
 
+	
+	// modImplementation libs.fabric.loader
 
 	modImplementation(libs.bundles.cca)
 
@@ -100,49 +90,38 @@ fabricApi {
 }
 
 processResources {
-	inputs.properties 'version': version, 'group': project.group
+	inputs.property "version", project.version
 
-	filesMatching('quilt.mod.json') {
-		expand 'version': version, 'group': project.group
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.encoding = 'UTF-8'
-	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
 	it.options.release = 21
 }
 
 java {
-	// Still required by IDEs such as Eclipse and Visual Studio Code
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
-
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task if it is present.
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	// if it is present.
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	// If this mod is going to be a library, then it should also generate Javadocs in order to aid with development.
-	// Uncomment this line to generate them.
-	// withJavadocJar()
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
-project.configurations.configureEach {
-    exclude(group: "net.fabricmc", module: "fabric-loader")
-    exclude(group: "net.fabricmc.fabric-api")
-}
-
-// If you plan to use a different file for the license, don't forget to change the file name here!
 jar {
-	from('LICENSE.md') {
-		rename { "${it}_${base.archivesName.get()}" }
+	from("LICENSE") {
+		rename { "${it}_${project.base.archivesName.get()}"}
 	}
 }
 
-// Configure the maven publication
+// configure the maven publication
 publishing {
 	publications {
-		mavenJava(MavenPublication) {
+		create("mavenJava", MavenPublication) {
+			artifactId = project.archives_base_name
 			from components.java
 		}
 	}
@@ -153,16 +132,5 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
-		repositories {
-			maven {
-				name = 'skadoosh_maven'
-				url = "http://infinity.hadrianfinch.com:55121"
-				credentials {
-					username = project.publish_username
-					password = project.publish_password
-				}
-				allowInsecureProtocol = true
-			}
-		}
 	}
 }

@@ -1,7 +1,0 @@
-// 1.21	2024-12-31T18:08:18.095087	Into The Wilderlands/Tags for minecraft:item
-fdf0229f5dd8b82a9a07d37302c8eab1ed4ebeab data/wilderlands/tags/item/astral_forge_universal.json
-fc265d05caa0d363b0545d276b0928b9f7e1ed27 data/wilderlands/tags/item/astral_forge_to_single_destination.json
-034d70eae422a9a7323669b3b7c6c7423b5304e9 data/wilderlands/tags/item/astral_forge_rejected.json
-a8d3cded74fa9e35e69fdfba466d606a5ff31660 data/wilderlands/tags/item/astral_forge_to_from_single_destination.json
-193b269670ecf607580d014eb7dc897011bb9d07 data/wilderlands/tags/item/astral_forge_within_current_dimension.json
-879ec2a4a5a65edad6abdaf59c1e4352330390aa data/wilderlands/tags/item/astral_forge_to_single_dimension.json

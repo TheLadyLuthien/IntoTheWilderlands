@@ -581,7 +581,7 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                 ),
                 AllOfLootCondition.builder(
                     new LootCondition.Builder[]{
-                        LocationCheckLootCondition.builder(net.minecraft.predicate.entity.LocationPredicate.Builder.create().method_60275(true)),
+                        LocationCheckLootCondition.builder(net.minecraft.predicate.entity.LocationPredicate.Builder.create().canSeeSky(true)),
                     }
                 )
             )
@@ -603,7 +603,7 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider
                 AllOfLootCondition.builder(
                     new LootCondition.Builder[]{
                         EntityPropertiesLootCondition.builder(EntityTarget.THIS, net.minecraft.predicate.entity.EntityPredicate.Builder.create().type(EntityType.TRIDENT)),
-                        LocationCheckLootCondition.builder(net.minecraft.predicate.entity.LocationPredicate.Builder.create().method_60275(true)),
+                        LocationCheckLootCondition.builder(net.minecraft.predicate.entity.LocationPredicate.Builder.create().canSeeSky(true)),
                     }
                 )
             )

@@ -3,7 +3,6 @@ package com.skadoosh.wilderlands.persistance;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
-import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 

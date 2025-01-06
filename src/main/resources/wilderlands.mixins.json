@@ -1,9 +1,8 @@
 {
-    "required": true,
-    "minVersion": "0.8",
-    "package": "com.skadoosh.wilderlands.mixin",
-    "compatibilityLevel": "JAVA_17",
-    "mixins": [
+	"required": true,
+	"package": "com.skadoosh.wilderlands.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
         "PlayerEntityMixin",
         "PistonBlockMixin",
         "ServerWorldMixin",
@@ -31,7 +30,7 @@
         "GameRendererMixin",
         "AbstractClientPlayerEntityMixin"
     ],
-    "injectors": {
-        "defaultRequire": 1
-    }
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

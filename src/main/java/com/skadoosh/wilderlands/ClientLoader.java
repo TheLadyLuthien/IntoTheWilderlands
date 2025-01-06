@@ -1,8 +1,5 @@
 package com.skadoosh.wilderlands;
 
-import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
-
 import com.skadoosh.cadmium.Cadmium;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
@@ -17,6 +14,7 @@ import com.skadoosh.wilderlands.misc.BifrostHelper.KeyType;
 import com.skadoosh.wilderlands.screen.handler.ModScreenHandlers;
 import com.skadoosh.wilderlands.screen.renderer.AstralForgeCoreScreen;
 
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -39,7 +37,7 @@ import net.minecraft.util.Identifier;
 public class ClientLoader implements ClientModInitializer
 {
     @Override
-    public void onInitializeClient(ModContainer mod)
+    public void onInitializeClient()
     {
         Wilderlands.LOGGER.info("Wilderlands Client Loaded!");
         Cadmium.initializeClient();
@@ -99,6 +97,7 @@ public class ClientLoader implements ClientModInitializer
                 }
 
                 lines.add(1, Text.empty());
+                
             }
         });
 

@@ -1,19 +1,19 @@
 package com.skadoosh.wilderlands.events;
 
-import org.quiltmc.loader.api.minecraft.ClientOnly;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.persistance.LiftComponent;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.render.DeltaTracker;
 import net.minecraft.util.Identifier;
 
-@ClientOnly
+@Environment(EnvType.CLIENT)
 public class LiftRenderEvent implements HudRenderCallback
 {
     private static final Identifier BACKGROUND = Wilderlands.id("hud/lift_background");

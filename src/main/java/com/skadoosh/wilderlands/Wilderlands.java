@@ -1,7 +1,5 @@
 package com.skadoosh.wilderlands;
 
-import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +22,7 @@ import com.skadoosh.wilderlands.misc.BeheadingReloadListener;
 import com.skadoosh.wilderlands.misc.ModParticles;
 import com.skadoosh.wilderlands.screen.handler.ModScreenHandlers;
 
+import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -34,7 +33,7 @@ public class Wilderlands implements ModInitializer
     public static final String NAMESPACE = "wilderlands";
 
     @Override
-    public void onInitialize(ModContainer mod)
+    public void onInitialize()
     {
         Cadmium.initialize();
         

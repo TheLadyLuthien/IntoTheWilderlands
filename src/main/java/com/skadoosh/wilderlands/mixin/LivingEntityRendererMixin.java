@@ -1,6 +1,5 @@
 package com.skadoosh.wilderlands.mixin;
 
-import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
@@ -15,7 +14,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.RegistryKeys;
 
 @Mixin(LivingEntityRenderer.class)
-@ClientOnly
 public class LivingEntityRendererMixin
 {
     @Inject(method = "hasLabel", at = @At("HEAD"), cancellable = true)

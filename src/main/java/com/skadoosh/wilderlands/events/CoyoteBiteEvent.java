@@ -1,14 +1,14 @@
 
 package com.skadoosh.wilderlands.events;
 
-import org.quiltmc.loader.api.minecraft.ClientOnly;
-
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 
-@ClientOnly
+@Environment(EnvType.CLIENT)
 public class CoyoteBiteEvent implements ClientTickEvents.EndWorldTick
 {
     public static Entity target = null;
