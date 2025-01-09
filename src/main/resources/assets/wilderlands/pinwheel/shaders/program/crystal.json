@@ -1,4 +1,10 @@
 {
     "fragment": "wilderlands:crystal",
-    "vertex": "wilderlands:crystal"
+    "vertex": "wilderlands:crystal",
+    "textures": {
+    	"WorldBuffer": {
+    		"type": "framebuffer",
+    		"name": "minecraft:main"
+    	}
+    }
 }

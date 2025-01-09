@@ -1,5 +1,6 @@
 {
     "depth": true,
     "format": "RGB8",
-    "autoClear": false
+    "autoClear": false,
+    "name": "crystal"
 }

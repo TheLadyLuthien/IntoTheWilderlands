@@ -5,6 +5,7 @@ layout(location = 0) in vec3 Position;
 layout(location = 1) in vec4 Color;
 layout(location = 2) in vec2 UV0;
 layout(location = 3) in ivec2 UV2;
+layout(location = 4) in vec3 Normal;
 
 uniform sampler2D Sampler2;
 
@@ -17,6 +18,7 @@ uniform int FogShape;
 
 out float vertexDistance;
 out vec4 vertexColor;
+out vec3 worldNormal;
 out vec2 texCoord0;
 
 void main() {
@@ -25,4 +27,5 @@ void main() {
     vertexDistance = fog_distance(ModelViewMat, Position, FogShape);
     vertexColor = Color * minecraft_sample_lightmap(Sampler2, UV2);
     texCoord0 = UV0;
+    worldNormal = Normal;
 }

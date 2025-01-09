@@ -71,7 +71,7 @@ public class AstralForgeCoreBlock extends BlockWithEntity
     @Override
     protected BlockRenderType getRenderType(BlockState state)
     {
-        return BlockRenderType.MODEL;
+        return BlockRenderType.ANIMATED;
     }
 
     private static final VoxelShape BASE_CORE = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 6.0, 16.0);

@@ -1,6 +1,8 @@
 package com.skadoosh.wilderlands;
 
 import com.skadoosh.cadmium.Cadmium;
+import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
+import com.skadoosh.wilderlands.blockentities.render.AstralForgeCoreBlockEntityRenderer;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.entities.ModEntities;
@@ -24,6 +26,7 @@ import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ChargedProjectilesComponent;
@@ -178,7 +181,9 @@ public class ClientLoader implements ClientModInitializer
     
         EntityRendererRegistry.register(ModEntities.TORCH, TorchEntityRenderer::new);
         EntityRendererRegistry.register(ModEntities.BUNDLE, FlyingItemEntityRenderer::new);
-    
+
+        BlockEntityRendererFactories.register(ModBlockEntities.ASTRAL_FORGE_CORE_BLCOK_ENTITY, AstralForgeCoreBlockEntityRenderer::new);
+        
         HandledScreens.register(ModScreenHandlers.ASTRAL_FORGE_CORE_SCREEN_HANDLER_TYPE, AstralForgeCoreScreen::new);
     }
 }
