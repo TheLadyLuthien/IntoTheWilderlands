@@ -2,7 +2,7 @@
     "fragment": "wilderlands:crystal",
     "vertex": "wilderlands:crystal",
     "textures": {
-    	"ColorTexture": "wilderlands:textures/block/crystal.png",
-    	"NormalMap": "wilderlands:textures/block/crystal_normal_map.png"
+        "ColorTexture": "wilderlands:textures/block/crystal.png",
+        "NormalMap": "wilderlands:textures/block/crystal_normal_map.png"
     }
 }

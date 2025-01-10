@@ -111,9 +111,9 @@ public class AstralForgeCoreBlockEntityRenderer implements BlockEntityRenderer<A
         matrices.push();
 
         // matrices.scale(1, -1, 1);
+        matrices.translate(0.5, 1.5 + 0.375, 0.5);
         matrices.rotate(new Quaternionf().rotationX(MathHelper.RADIANS_PER_DEGREE * 180));
         matrices.rotate(new Quaternionf().rotationY(MathHelper.RADIANS_PER_DEGREE * 45));
-        matrices.translate(0.5, -1.5 - 0.375, 0.5);
         // matrices.mulPose(Axis.YN.rotationDegrees(facing.toYRot()));
         // matrices.translate(-0.5, -0.5, -0.5);
 
