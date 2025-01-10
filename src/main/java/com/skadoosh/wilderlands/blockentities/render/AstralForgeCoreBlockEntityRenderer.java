@@ -1,5 +1,7 @@
 package com.skadoosh.wilderlands.blockentities.render;
 
+import java.util.List;
+
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Quaternionf;
@@ -13,6 +15,7 @@ import com.mojang.blaze3d.glfw.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tessellator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
 import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
@@ -48,21 +51,36 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.BakedModelManager;
+import net.minecraft.client.render.model.BakedQuad;
+import net.minecraft.client.util.ColorUtil;
+import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.random.RandomGenerator;
 
 @Environment(EnvType.CLIENT)
 public class AstralForgeCoreBlockEntityRenderer implements BlockEntityRenderer<AstralForgeCoreBlockEntity>, NativeResource
 {
-    private static final Identifier CRYSTAL_FRAMEBUFFER = Wilderlands.id("crystal");
+    // private static final Identifier CRYSTAL_FRAMEBUFFER = Wilderlands.id("crystal");
+
+    // private static final ModelIdentifier MODEL = ModelIdentifier.inventory(Wilderlands.id("astral_forge_anvil"));
+    private final MinecraftClient client;
+    private final ModelPart modelPart = getTexturedModelData().createModel();
 
     // private static final ObjectSet<BlockPos> RENDER_POSITIONS = new ObjectArraySet<>();
 
     public AstralForgeCoreBlockEntityRenderer(BlockEntityRendererFactory.Context context)
-    {}
+    {
+        this.client = MinecraftClient.getInstance();
+    }
 
     @Override
     public void free()
@@ -91,24 +109,54 @@ public class AstralForgeCoreBlockEntityRenderer implements BlockEntityRenderer<A
         }
 
         matrices.push();
-        // matrices.translate(0.5, 0.5, 0.5);
-        matrices.translate(0, 0, 1.5);
+
+        // matrices.scale(1, -1, 1);
+        matrices.rotate(new Quaternionf().rotationX(MathHelper.RADIANS_PER_DEGREE * 180));
+        matrices.rotate(new Quaternionf().rotationY(MathHelper.RADIANS_PER_DEGREE * 45));
+        matrices.translate(0.5, -1.5 - 0.375, 0.5);
         // matrices.mulPose(Axis.YN.rotationDegrees(facing.toYRot()));
         // matrices.translate(-0.5, -0.5, -0.5);
 
-        Matrix4f pos = matrices.peek().getModel();
         BufferBuilder builder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL);
-        builder.xyz(pos, 0, 0, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv0(0.0F, 0.0F).uv2(light).normal(0, 0, 1);
-        builder.xyz(pos, 1, 0, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv0(1.0F, 0.0F).uv2(light).normal(0, 0, 1);
-        builder.xyz(pos, 1, 1, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv0(1.0F, 1.0F).uv2(light).normal(0, 0, 1);
-        builder.xyz(pos, 0, 1, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv0(0.0F, 1.0F).uv2(light).normal(0, 0, 1);
-
-        // RenderSystem.setShaderTexture(0, texture.getId());
+        modelPart.render(matrices, builder, light, overlay);
+        
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         renderLayer.draw(builder.endOrThrow());
-
+        
         matrices.pop();
     }
+
+    public static TexturedModelData getTexturedModelData() {
+		ModelData modelData = new ModelData();
+		ModelPartData modelPartData = modelData.getRoot();
+		ModelPartData bb_main = modelPartData.addChild("bb_main", ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, -2.0F, -6.0F, 8.0F, 2.0F, 12.0F, new Dilation(0.0F))
+		.uv(0, 0).cuboid(-2.0F, -7.0F, -5.0F, 4.0F, 5.0F, 10.0F, new Dilation(0.0F))
+		.uv(0, 0).cuboid(-2.5F, -12.0F, -13.0F, 5.0F, 2.0F, 6.0F, new Dilation(0.0F))
+		.uv(0, 0).cuboid(-5.0F, -13.0F, -7.0F, 10.0F, 6.0F, 16.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+		return TexturedModelData.of(modelData, 16, 16);
+	}
+
+    // private static void renderBakedModel(BakedModel model, int light, int overlay, MatrixStack matrices, VertexConsumer vertices) {
+	// 	RandomGenerator randomGenerator = RandomGenerator.createLegacy();
+	// 	long l = 42L;
+
+	// 	for (Direction direction : Direction.values()) {
+	// 		randomGenerator.setSeed(l);
+	// 		renderBakedQuads(matrices, vertices, model.getQuads(null, direction, randomGenerator), light, overlay);
+	// 	}
+
+	// 	randomGenerator.setSeed(l);
+	// 	renderBakedQuads(matrices, vertices, model.getQuads(null, null, randomGenerator), light, overlay);
+	// }
+
+    // private static void renderBakedQuads(MatrixStack matrices, VertexConsumer vertices, List<BakedQuad> quads, int light, int overlay) {
+	// 	MatrixStack.Entry entry = matrices.peek();
+
+	// 	for (BakedQuad bakedQuad : quads) {
+
+	// 		vertices.quad(entry, bakedQuad, 1, 1, 1, 1, light, overlay);
+	// 	}
+	// }
 
     // public static void renderLevel(ClientWorld world, Matrix4fc projection, DeltaTracker deltaTracker, CullFrustum frustum, Camera camera)
     // {

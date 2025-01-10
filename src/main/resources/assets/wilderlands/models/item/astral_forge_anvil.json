@@ -1,0 +1,69 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/template_anvil",
+	"textures": {
+		"1": "block/smithing_table_front",
+		"2": "block/smithing_table_side",
+		"3": "block/smithing_table_top",
+		"7": "block/blackstone",
+		"particle": "block/smithing_table_bottom"
+	},
+	"elements": [
+		{
+			"name": "Lower narrow portion",
+			"from": [4, 6, 2],
+			"to": [12, 8, 14],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 3, 8]},
+			"color": 0,
+			"faces": {
+				"north": {"uv": [4, 11, 12, 12], "texture": "#missing"},
+				"east": {"uv": [5, 3, 4, 13], "rotation": 270, "texture": "#missing"},
+				"south": {"uv": [4, 11, 12, 12], "texture": "#missing"},
+				"west": {"uv": [4, 3, 5, 13], "rotation": 90, "texture": "#missing"},
+				"up": {"uv": [4, 3, 12, 13], "rotation": 180, "texture": "#missing"}
+			}
+		},
+		{
+			"name": "Wider section beneath top portion",
+			"from": [6, 8, 3],
+			"to": [10, 13, 13],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 3, 8]},
+			"color": 9,
+			"faces": {
+				"north": {"uv": [6, 6, 10, 11], "texture": "#missing"},
+				"east": {"uv": [10, 4, 5, 12], "rotation": 270, "texture": "#missing"},
+				"south": {"uv": [6, 6, 10, 11], "texture": "#missing"},
+				"west": {"uv": [5, 4, 10, 12], "rotation": 90, "texture": "#missing"}
+			}
+		},
+		{
+			"name": "Wider section beneath top portion",
+			"from": [-2, 16, -1],
+			"to": [3, 18, 5],
+			"rotation": {"angle": 45, "axis": "y", "origin": [0, 0, 0]},
+			"color": 9,
+			"faces": {
+				"north": {"uv": [6, 6, 10, 11], "texture": "#missing"},
+				"east": {"uv": [10, 4, 5, 12], "rotation": 270, "texture": "#missing"},
+				"west": {"uv": [5, 4, 10, 12], "rotation": 90, "texture": "#missing"},
+				"up": {"uv": [5, 5, 10, 11], "texture": "#missing"},
+				"down": {"uv": [5, 5, 10, 11], "texture": "#missing"}
+			}
+		},
+		{
+			"name": "Anvil top",
+			"from": [3, 13, 1],
+			"to": [13, 19, 17],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 3, 8]},
+			"color": 0,
+			"faces": {
+				"north": {"uv": [3, 0, 13, 6], "texture": "#missing"},
+				"east": {"uv": [16, 0, 10, 16], "rotation": 270, "texture": "#missing"},
+				"south": {"uv": [3, 0, 13, 6], "texture": "#missing"},
+				"west": {"uv": [10, 0, 16, 16], "rotation": 90, "texture": "#missing"},
+				"up": {"uv": [3, 0, 13, 16], "rotation": 180, "texture": "#missing"},
+				"down": {"uv": [3, 0, 13, 16], "rotation": 180, "texture": "#missing"}
+			}
+		}
+	]
+}
