@@ -16,16 +16,18 @@ uniform mat4 ProjMat;
 uniform vec3 ChunkOffset;
 uniform int FogShape;
 
+
 out float vertexDistance;
-out vec4 vertexColor;
 out vec3 worldNormal;
 out vec2 texCoord0;
+
+// out vec4 vertexColor;
 
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
 
     vertexDistance = fog_distance(ModelViewMat, Position, FogShape);
-    vertexColor = Color * minecraft_sample_lightmap(Sampler2, UV2);
+    // vertexColor = Color * minecraft_sample_lightmap(Sampler2, UV2);
     texCoord0 = UV0;
     worldNormal = Normal;
 }
