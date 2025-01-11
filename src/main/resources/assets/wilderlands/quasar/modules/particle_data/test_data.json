@@ -1,0 +1,15 @@
+{
+    "render_style": "CUBE",
+    "init_modules": [
+    ],
+    "update_modules": [],
+    "collision_modules": [
+    ],
+    "forces": [
+    ],
+    "render_modules": [
+    ],
+    "face_velocity": false,
+    "velocity_stretch_factor": 2.0,
+    "should_collide": false
+}
