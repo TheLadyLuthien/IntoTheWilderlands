@@ -87,45 +87,29 @@ public class AstralForgeCoreBlockEntityRenderer implements BlockEntityRenderer<A
     public void free()
     {}
 
-    // @Override
-    // public void render(AstralForgeCoreBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay)
-    // {
-    //     if (VeilLevelPerspectiveRenderer.isRenderingPerspective())
-    //     {
-    //         return;
-    //     }
+    @Override
+    public void render(AstralForgeCoreBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay)
+    {
+        RenderLayer renderLayer = ModRenderLayers.crystal();
+        if (renderLayer == null)
+        {
+            return;
+        }
 
-    //     // BlockPos blockPos = blockEntity.getPos();
-    //     // RENDER_POSITIONS.add(blockPos.toImmutable());
+        matrices.push();
 
-    //     // MirrorTexture texture = TEXTURES.get(getKey(pos, facing));
-    //     // if (texture == null) {
-    //     // return;
-    //     // }
+        matrices.translate(0.5, 1.5 + 0.375, 0.5);
+        matrices.rotate(new Quaternionf().rotationX(MathHelper.RADIANS_PER_DEGREE * 180));
+        matrices.rotate(new Quaternionf().rotationY(MathHelper.RADIANS_PER_DEGREE * 45));
 
-    //     RenderLayer renderLayer = ModRenderLayers.crystal();
-    //     if (renderLayer == null)
-    //     {
-    //         return;
-    //     }
-
-    //     matrices.push();
-
-    //     // matrices.scale(1, -1, 1);
-    //     matrices.translate(0.5, 1.5 + 0.375, 0.5);
-    //     matrices.rotate(new Quaternionf().rotationX(MathHelper.RADIANS_PER_DEGREE * 180));
-    //     matrices.rotate(new Quaternionf().rotationY(MathHelper.RADIANS_PER_DEGREE * 45));
-    //     // matrices.mulPose(Axis.YN.rotationDegrees(facing.toYRot()));
-    //     // matrices.translate(-0.5, -0.5, -0.5);
-
-    //     BufferBuilder builder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL);
-    //     modelPart.render(matrices, builder, light, overlay);
+        BufferBuilder builder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL);
+        modelPart.render(matrices, builder, light, overlay);
         
-    //     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-    //     renderLayer.draw(builder.endOrThrow());
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        renderLayer.draw(builder.endOrThrow());
         
-    //     matrices.pop();
-    // }
+        matrices.pop();
+    }
 
     public static TexturedModelData getTexturedModelData() {
 		ModelData modelData = new ModelData();
@@ -139,30 +123,30 @@ public class AstralForgeCoreBlockEntityRenderer implements BlockEntityRenderer<A
 
 
     // testing render function
-    @Override
-    public void render(AstralForgeCoreBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay)
-    {
-        final RenderLayer renderLayer = ModRenderLayers.bifrostBeam();
-        if (renderLayer == null)
-        {
-            return;
-        }
+    // @Override
+    // public void render(AstralForgeCoreBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay)
+    // {
+    //     final RenderLayer renderLayer = ModRenderLayers.bifrostBeam();
+    //     if (renderLayer == null)
+    //     {
+    //         return;
+    //     }
 
-        matrices.push();
+    //     matrices.push();
 
-        // matrices.scale(1, -1, 1);
-        // matrices.translate(0.5, 1.5 + 0.375, 0.5);
-        // matrices.rotate(new Quaternionf().rotationX(MathHelper.RADIANS_PER_DEGREE * 180));
-        // matrices.rotate(new Quaternionf().rotationY(MathHelper.RADIANS_PER_DEGREE * 45));
-        // matrices.mulPose(Axis.YN.rotationDegrees(facing.toYRot()));
-        matrices.translate(2, 2, 0);
+    //     // matrices.scale(1, -1, 1);
+    //     // matrices.translate(0.5, 1.5 + 0.375, 0.5);
+    //     // matrices.rotate(new Quaternionf().rotationX(MathHelper.RADIANS_PER_DEGREE * 180));
+    //     // matrices.rotate(new Quaternionf().rotationY(MathHelper.RADIANS_PER_DEGREE * 45));
+    //     // matrices.mulPose(Axis.YN.rotationDegrees(facing.toYRot()));
+    //     matrices.translate(2, 2, 0);
         
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    //     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         
-        renderLayer.draw(CylenderRenderer.render(2.5f, 600, 64, matrices, light));
+    //     renderLayer.draw(CylenderRenderer.render(2.5f, 600, 64, matrices, light));
         
-        matrices.pop();
-    }
+    //     matrices.pop();
+    // }
 
     // private static void renderBakedModel(BakedModel model, int light, int overlay, MatrixStack matrices, VertexConsumer vertices) {
 	// 	RandomGenerator randomGenerator = RandomGenerator.createLegacy();
