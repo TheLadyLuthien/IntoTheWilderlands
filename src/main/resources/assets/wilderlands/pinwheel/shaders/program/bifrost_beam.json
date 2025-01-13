@@ -1,0 +1,8 @@
+{
+    "fragment": "wilderlands:bifrost_beam",
+    "vertex": "wilderlands:bifrost_beam",
+    "textures": {
+        "BifrostGradient": "wilderlands:textures/fx/bifrost_gradient.png",
+        "BifrostRainbow": "wilderlands:textures/fx/bifrost_rainbow.png"
+    }
+}

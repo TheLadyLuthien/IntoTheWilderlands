@@ -20,6 +20,7 @@ import java.util.function.BiFunction;
 public final class ModRenderLayers extends RenderLayer {
 
     private static final Identifier CRYSTAL = Wilderlands.id("crystal");
+    private static final Identifier BIFROST_BEAM = Wilderlands.id("bifrost_beam");
 
     // private static final BiFunction<Identifier, Boolean, RenderLayer> ENTITY_CUTOUT_NO_CULL = Util.memoize(((texture, outline) -> {
     //     RenderLayer.CompositeState compositeState = RenderLayer.CompositeState.builder()
@@ -47,6 +48,9 @@ public final class ModRenderLayers extends RenderLayer {
 
     public static @Nullable RenderLayer crystal() {
         return VeilRenderType.get(CRYSTAL);
+    }
+    public static @Nullable RenderLayer bifrostBeam() {
+        return VeilRenderType.get(BIFROST_BEAM);
     }
 
     // public static @Nullable RenderLayer heightmap(boolean tessellation) {

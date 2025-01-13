@@ -19,6 +19,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
 import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
+import com.skadoosh.mcutils.render.CylenderRenderer;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blockentities.AstralForgeCoreBlockEntity;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
@@ -86,45 +87,45 @@ public class AstralForgeCoreBlockEntityRenderer implements BlockEntityRenderer<A
     public void free()
     {}
 
-    @Override
-    public void render(AstralForgeCoreBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay)
-    {
-        if (VeilLevelPerspectiveRenderer.isRenderingPerspective())
-        {
-            return;
-        }
+    // @Override
+    // public void render(AstralForgeCoreBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay)
+    // {
+    //     if (VeilLevelPerspectiveRenderer.isRenderingPerspective())
+    //     {
+    //         return;
+    //     }
 
-        // BlockPos blockPos = blockEntity.getPos();
-        // RENDER_POSITIONS.add(blockPos.toImmutable());
+    //     // BlockPos blockPos = blockEntity.getPos();
+    //     // RENDER_POSITIONS.add(blockPos.toImmutable());
 
-        // MirrorTexture texture = TEXTURES.get(getKey(pos, facing));
-        // if (texture == null) {
-        // return;
-        // }
+    //     // MirrorTexture texture = TEXTURES.get(getKey(pos, facing));
+    //     // if (texture == null) {
+    //     // return;
+    //     // }
 
-        RenderLayer renderLayer = ModRenderLayers.crystal();
-        if (renderLayer == null)
-        {
-            return;
-        }
+    //     RenderLayer renderLayer = ModRenderLayers.crystal();
+    //     if (renderLayer == null)
+    //     {
+    //         return;
+    //     }
 
-        matrices.push();
+    //     matrices.push();
 
-        // matrices.scale(1, -1, 1);
-        matrices.translate(0.5, 1.5 + 0.375, 0.5);
-        matrices.rotate(new Quaternionf().rotationX(MathHelper.RADIANS_PER_DEGREE * 180));
-        matrices.rotate(new Quaternionf().rotationY(MathHelper.RADIANS_PER_DEGREE * 45));
-        // matrices.mulPose(Axis.YN.rotationDegrees(facing.toYRot()));
-        // matrices.translate(-0.5, -0.5, -0.5);
+    //     // matrices.scale(1, -1, 1);
+    //     matrices.translate(0.5, 1.5 + 0.375, 0.5);
+    //     matrices.rotate(new Quaternionf().rotationX(MathHelper.RADIANS_PER_DEGREE * 180));
+    //     matrices.rotate(new Quaternionf().rotationY(MathHelper.RADIANS_PER_DEGREE * 45));
+    //     // matrices.mulPose(Axis.YN.rotationDegrees(facing.toYRot()));
+    //     // matrices.translate(-0.5, -0.5, -0.5);
 
-        BufferBuilder builder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL);
-        modelPart.render(matrices, builder, light, overlay);
+    //     BufferBuilder builder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL);
+    //     modelPart.render(matrices, builder, light, overlay);
         
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        renderLayer.draw(builder.endOrThrow());
+    //     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    //     renderLayer.draw(builder.endOrThrow());
         
-        matrices.pop();
-    }
+    //     matrices.pop();
+    // }
 
     public static TexturedModelData getTexturedModelData() {
 		ModelData modelData = new ModelData();
@@ -135,6 +136,33 @@ public class AstralForgeCoreBlockEntityRenderer implements BlockEntityRenderer<A
 		.uv(0, 0).cuboid(-5.0F, -13.0F, -7.0F, 10.0F, 6.0F, 16.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 		return TexturedModelData.of(modelData, 16, 16);
 	}
+
+
+    // testing render function
+    @Override
+    public void render(AstralForgeCoreBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay)
+    {
+        final RenderLayer renderLayer = ModRenderLayers.bifrostBeam();
+        if (renderLayer == null)
+        {
+            return;
+        }
+
+        matrices.push();
+
+        // matrices.scale(1, -1, 1);
+        // matrices.translate(0.5, 1.5 + 0.375, 0.5);
+        // matrices.rotate(new Quaternionf().rotationX(MathHelper.RADIANS_PER_DEGREE * 180));
+        // matrices.rotate(new Quaternionf().rotationY(MathHelper.RADIANS_PER_DEGREE * 45));
+        // matrices.mulPose(Axis.YN.rotationDegrees(facing.toYRot()));
+        matrices.translate(2, 2, 0);
+        
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        
+        renderLayer.draw(CylenderRenderer.render(2.5f, 600, 64, matrices, light));
+        
+        matrices.pop();
+    }
 
     // private static void renderBakedModel(BakedModel model, int light, int overlay, MatrixStack matrices, VertexConsumer vertices) {
 	// 	RandomGenerator randomGenerator = RandomGenerator.createLegacy();

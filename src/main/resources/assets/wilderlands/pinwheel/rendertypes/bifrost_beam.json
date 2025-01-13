@@ -1,0 +1,21 @@
+{
+    "format": "POSITION_COLOR_TEX_LIGHTMAP",
+    "mode": "TRIANGLE_STRIP",
+    "bufferSize": "TRANSIENT",
+    "sort": true,
+    "affectsCrumbling": true,
+    "outline": true,
+    "layers": [
+        {
+            "type": "minecraft:transparency",
+            "mode": "translucent"
+        },
+        {
+            "type": "veil:shader",
+            "name": "wilderlands:bifrost_beam"
+        },
+        {
+            "type": "minecraft:lightmap"
+        }
+    ]
+}
