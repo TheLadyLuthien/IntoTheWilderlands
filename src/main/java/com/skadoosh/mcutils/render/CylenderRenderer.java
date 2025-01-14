@@ -1,6 +1,7 @@
 package com.skadoosh.mcutils.render;
 
 import org.joml.Matrix4f;
+import org.joml.Vector4f;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BuiltBuffer;
@@ -19,7 +20,7 @@ import net.minecraft.util.math.Vec3d;
 @Environment(EnvType.CLIENT)
 public final class CylenderRenderer
 {
-    public static BuiltBuffer render(float radius, float height, int divisions, MatrixStack matrices, int light)
+    public static BuiltBuffer render(float radius, float height, int divisions, MatrixStack matrices, int light, Vector4f vertexColor)
     {
         Entry entry = matrices.peek();
         Matrix4f pose = entry.getModel();
@@ -40,8 +41,8 @@ public final class CylenderRenderer
 
             // u = (1 - Math.abs((2 * u) - 1));
 
-            builder.xyz(pose, xOffset, 0, zOffset).color(1.0f, 1.0f, 1.0f, 1.0f).uv0(u, 0.0f).uv2(light).normal(entry, (float)normal.x, (float)normal.y, (float)normal.z);
-            builder.xyz(pose, xOffset, height, zOffset).color(1.0f, 1.0f, 1.0f, 1.0f).uv0(u, 1.0f).uv2(light).normal(entry, (float)normal.x, (float)normal.y, (float)normal.z);
+            builder.xyz(pose, xOffset, 0, zOffset).color(vertexColor.x, vertexColor.y, vertexColor.z, vertexColor.w).uv0(u, 0.0f).uv2(light).normal(entry, (float)normal.x, (float)normal.y, (float)normal.z);
+            builder.xyz(pose, xOffset, height, zOffset).color(vertexColor.x, vertexColor.y, vertexColor.z, vertexColor.w).uv0(u, 1.0f).uv2(light).normal(entry, (float)normal.x, (float)normal.y, (float)normal.z);
         }
 
         return builder.endOrThrow();

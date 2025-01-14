@@ -20,6 +20,7 @@ uniform int FogShape;
 out float vertexDistance;
 out vec3 worldNormal;
 out vec2 texCoord0;
+out float beamFullness;
 
 // out vec4 vertexColor;
 
@@ -30,5 +31,6 @@ void main() {
     // vertexColor = Color * minecraft_sample_lightmap(Sampler2, UV2);
     texCoord0 = UV0;
     worldNormal = Normal;
+    beamFullness = Color.x;
     // pos = Position;
 }

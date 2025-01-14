@@ -68,24 +68,20 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.random.RandomGenerator;
 
 @Environment(EnvType.CLIENT)
-public class AstralForgeCoreBlockEntityRenderer implements BlockEntityRenderer<AstralForgeCoreBlockEntity>, NativeResource
+public class AstralForgeCoreBlockEntityRenderer implements BlockEntityRenderer<AstralForgeCoreBlockEntity>
 {
     // private static final Identifier CRYSTAL_FRAMEBUFFER = Wilderlands.id("crystal");
 
     // private static final ModelIdentifier MODEL = ModelIdentifier.inventory(Wilderlands.id("astral_forge_anvil"));
-    private final MinecraftClient client;
+    // private final MinecraftClient client;
     private final ModelPart modelPart = getTexturedModelData().createModel();
-
     // private static final ObjectSet<BlockPos> RENDER_POSITIONS = new ObjectArraySet<>();
+
 
     public AstralForgeCoreBlockEntityRenderer(BlockEntityRendererFactory.Context context)
     {
-        this.client = MinecraftClient.getInstance();
+        // this.client = MinecraftClient.getInstance();
     }
-
-    @Override
-    public void free()
-    {}
 
     @Override
     public void render(AstralForgeCoreBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay)
@@ -120,93 +116,4 @@ public class AstralForgeCoreBlockEntityRenderer implements BlockEntityRenderer<A
 		.uv(0, 0).cuboid(-5.0F, -13.0F, -7.0F, 10.0F, 6.0F, 16.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 		return TexturedModelData.of(modelData, 16, 16);
 	}
-
-
-    // testing render function
-    // @Override
-    // public void render(AstralForgeCoreBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay)
-    // {
-    //     final RenderLayer renderLayer = ModRenderLayers.bifrostBeam();
-    //     if (renderLayer == null)
-    //     {
-    //         return;
-    //     }
-
-    //     matrices.push();
-
-    //     // matrices.scale(1, -1, 1);
-    //     // matrices.translate(0.5, 1.5 + 0.375, 0.5);
-    //     // matrices.rotate(new Quaternionf().rotationX(MathHelper.RADIANS_PER_DEGREE * 180));
-    //     // matrices.rotate(new Quaternionf().rotationY(MathHelper.RADIANS_PER_DEGREE * 45));
-    //     // matrices.mulPose(Axis.YN.rotationDegrees(facing.toYRot()));
-    //     matrices.translate(2, 2, 0);
-        
-    //     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        
-    //     renderLayer.draw(CylenderRenderer.render(2.5f, 600, 64, matrices, light));
-        
-    //     matrices.pop();
-    // }
-
-    // private static void renderBakedModel(BakedModel model, int light, int overlay, MatrixStack matrices, VertexConsumer vertices) {
-	// 	RandomGenerator randomGenerator = RandomGenerator.createLegacy();
-	// 	long l = 42L;
-
-	// 	for (Direction direction : Direction.values()) {
-	// 		randomGenerator.setSeed(l);
-	// 		renderBakedQuads(matrices, vertices, model.getQuads(null, direction, randomGenerator), light, overlay);
-	// 	}
-
-	// 	randomGenerator.setSeed(l);
-	// 	renderBakedQuads(matrices, vertices, model.getQuads(null, null, randomGenerator), light, overlay);
-	// }
-
-    // private static void renderBakedQuads(MatrixStack matrices, VertexConsumer vertices, List<BakedQuad> quads, int light, int overlay) {
-	// 	MatrixStack.Entry entry = matrices.peek();
-
-	// 	for (BakedQuad bakedQuad : quads) {
-
-	// 		vertices.quad(entry, bakedQuad, 1, 1, 1, 1, light, overlay);
-	// 	}
-	// }
-
-    // public static void renderLevel(ClientWorld world, Matrix4fc projection, DeltaTracker deltaTracker, CullFrustum frustum, Camera camera)
-    // {
-    //     if (VeilLevelPerspectiveRenderer.isRenderingPerspective() || !projection.isFinite())
-    //     {
-    //         return;
-    //     }
-
-    //     FramebufferManager framebufferManager = VeilRenderSystem.renderer().getFramebufferManager();
-    //     AdvancedFbo fbo = framebufferManager.getFramebuffer(CRYSTAL_FRAMEBUFFER);
-    //     if (fbo == null)
-    //     {
-    //         return;
-    //     }
-
-    //     Vector3dc cameraPos = frustum.getPosition();
-
-    //     // Vector3d renderPos = new Vector3d(pos.getX() + 0.5 - normal.getX() * 0.375, pos.getY() + 0.5 - normal.getY() * 0.375, pos.getZ() + 0.5 - normal.getZ() * 0.375);
-    //     // Vector3f offset = new Vector3f((float)(cameraPos.x() - renderPos.x), (float)(cameraPos.y() - renderPos.y), (float)(cameraPos.z() - renderPos.z));
-    //     // Vector4f plane = new Vector4f(normal.getX(), normal.getY(), normal.getZ(), -offset.dot(normal.getX(), normal.getY(), normal.getZ()));
-
-    //     Window window = MinecraftClient.getInstance().getWindow();
-    //     float aspect = (float)window.getWidth() / window.getHeight();
-    //     float fov = projection.perspectiveFov();
-    //     RENDER_PROJECTION.setPerspective(fov, aspect, 0.3F, RENDER_DISTANCE * 4);
-
-    //     offset.reflect(normal.getX(), normal.getY(), normal.getZ());
-    //     renderPos.add(offset);
-
-    //     Vector3f dir = camera.getLookVector().reflect(normal.getX(), normal.getY(), normal.getZ(), new Vector3f());
-    //     Vector3f up = camera.getUpVector().reflect(normal.getX(), normal.getY(), normal.getZ(), new Vector3f());
-
-    //     new Quaternionf().lookAlong(dir, up).transform(plane);
-
-    //     calculateObliqueMatrix(RENDER_PROJECTION, plane, RENDER_PROJECTION);
-
-        
-    //     // VeilLevelPerspectiveRenderer.render
-    //     // VeilLevelPerspectiveRenderer.render(fbo, RENDER_MODELVIEW, RENDER_PROJECTION, renderPos, VIEW.identity().lookAlong(dir, up), RENDER_DISTANCE, deltaTracker);
-    // }
 }

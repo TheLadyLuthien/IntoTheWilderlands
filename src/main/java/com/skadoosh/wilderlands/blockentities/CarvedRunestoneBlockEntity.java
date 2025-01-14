@@ -1,6 +1,10 @@
 package com.skadoosh.wilderlands.blockentities;
 
+import java.util.Optional;
+
 import com.skadoosh.wilderlands.blocks.CarvedRunestoneBlock;
+import com.skadoosh.wilderlands.blocks.ModBlocks;
+import com.skadoosh.wilderlands.misc.BifrostHelper;
 import com.skadoosh.wilderlands.misc.ModParticles;
 
 import net.fabricmc.api.EnvType;
@@ -14,11 +18,44 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import static com.skadoosh.wilderlands.blocks.RunicKeystoneBlock.SEARCH_SIZE;
+
 public class CarvedRunestoneBlockEntity extends BlockEntity
 {
+    private int ticks = 0;
+    public int getTicks()
+    {
+        return this.ticks;
+    }
+
     public CarvedRunestoneBlockEntity(BlockPos pos, BlockState state)
     {
         super(ModBlockEntities.CARVED_RUNESTONE_BLOCK_ENTITY, pos, state);
+
+        if (this.world.isClient)
+        {
+            searchAndAssignKeystone();
+        }
+    }
+
+    private void searchAndAssignKeystone()
+    {
+        for (int x = -SEARCH_SIZE; x <= SEARCH_SIZE; x++)
+        {
+            for (int y = -SEARCH_SIZE; y <= SEARCH_SIZE; y++)
+            {
+                for (int z = -SEARCH_SIZE; z <= SEARCH_SIZE; z++)
+                {
+                    BlockPos testPos = new BlockPos(this.getPos().getX() + x, this.getPos().getY() + y, this.getPos().getZ() + z);
+
+                    if (world.getBlockState(testPos).isOf(ModBlocks.RUNIC_KEYSTONE))
+                    {
+                        this.keystonePos = testPos;
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     private BlockPos destinationPos = new BlockPos(0, 100, 0);
@@ -93,6 +130,8 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
 
             // playBeamSwirlParticles((ClientWorld)world, be.keystonePos);
         }
+
+        be.ticks++;
     }
 
     @Environment(EnvType.CLIENT)

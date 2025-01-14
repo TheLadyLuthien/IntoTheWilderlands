@@ -3,6 +3,7 @@ package com.skadoosh.wilderlands;
 import com.skadoosh.cadmium.Cadmium;
 import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.blockentities.render.AstralForgeCoreBlockEntityRenderer;
+import com.skadoosh.wilderlands.blockentities.render.CarvedRunestoneBlockEntityRenderer;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.entities.ModEntities;
@@ -183,6 +184,7 @@ public class ClientLoader implements ClientModInitializer
         EntityRendererRegistry.register(ModEntities.BUNDLE, FlyingItemEntityRenderer::new);
 
         BlockEntityRendererFactories.register(ModBlockEntities.ASTRAL_FORGE_CORE_BLCOK_ENTITY, AstralForgeCoreBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(ModBlockEntities.CARVED_RUNESTONE_BLOCK_ENTITY, CarvedRunestoneBlockEntityRenderer::new);
         
         HandledScreens.register(ModScreenHandlers.ASTRAL_FORGE_CORE_SCREEN_HANDLER_TYPE, AstralForgeCoreScreen::new);
     }

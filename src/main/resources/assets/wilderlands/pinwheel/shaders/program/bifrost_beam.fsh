@@ -18,6 +18,8 @@ in float vertexDistance;
 in vec3 worldNormal;
 in vec2 texCoord0;
 
+in float beamFullness;
+
 out vec4 fragColor;
 
 vec4 calcEdgeGlow()
@@ -138,6 +140,33 @@ void main(){
 
     layer = calcEdgeGlow();
     color = blendOver(color, layer);
+
+    float beamFadeDist = 0.06;
+
+    if (texCoord0.y < (1.0 - beamFullness))
+    {
+        float val = map(texCoord0.y, (1.0 - beamFullness) - beamFadeDist, (1.0 - beamFullness), 0, 1);
+        color.a *= clamp(val, 0, 1);
+    }
+
+    // color = vec4(beamFullness, beamFullness, beamFullness, 1);
+    
+
+    /* 
+        1 ------------
+
+        ...
+
+
+      > 0.2 ----------
+
+        0.1 ----------
+    
+        0 ------------
+    
+     */
+
+
 
     // color = calcEdgeGlow();
 
