@@ -31,11 +31,6 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
     public CarvedRunestoneBlockEntity(BlockPos pos, BlockState state)
     {
         super(ModBlockEntities.CARVED_RUNESTONE_BLOCK_ENTITY, pos, state);
-
-        if (this.world.isClient)
-        {
-            searchAndAssignKeystone();
-        }
     }
 
     private void searchAndAssignKeystone()
@@ -128,6 +123,10 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
                 playActiveParticles((ClientWorld)world, pos);
             }
 
+            if (be.ticks == 0)
+            {
+                be.searchAndAssignKeystone();
+            }
             // playBeamSwirlParticles((ClientWorld)world, be.keystonePos);
         }
 

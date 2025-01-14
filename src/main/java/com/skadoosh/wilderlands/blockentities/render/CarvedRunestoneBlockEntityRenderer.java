@@ -47,15 +47,14 @@ public class CarvedRunestoneBlockEntityRenderer implements BlockEntityRenderer<C
 
         final Vector4f customData = new Vector4f(beamPercent, 0, 0, 0);
         
-        
         // matrices.scale(1, -1, 1);
         // matrices.rotate(new Quaternionf().rotationX(MathHelper.RADIANS_PER_DEGREE * 180));
         // matrices.rotate(new Quaternionf().rotationY(MathHelper.RADIANS_PER_DEGREE * 45));
         // matrices.mulPose(Axis.YN.rotationDegrees(facing.toYRot()));
-        matrices.translate(0, -1, 0);
         
         BlockPos difference = blockEntity.getKeystonePos().subtract(blockEntity.getPos());
         matrices.translate(difference.getX(), difference.getY(), difference.getZ());
+        matrices.translate(0.5, -1, 0.5);
         
         
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
