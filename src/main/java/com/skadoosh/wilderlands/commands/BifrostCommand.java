@@ -68,6 +68,13 @@ public class BifrostCommand
                                 .executes(contextx -> selectRunestone(contextx, IntegerArgumentType.getInteger(contextx, "radius")))
                             )
                         )
+                        .then(
+                            literal("play_animation")
+                            .executes(contextx -> {
+                                contextx.getSource().getServer().getWorld(RegistryKey.of(RegistryKeys.WORLD, selectedRunestoneWorld)).getBlockEntity(selectedRunestonePos, ModBlockEntities.CARVED_RUNESTONE_BLOCK_ENTITY).ifPresent(be -> be.setAnimationTick(0));
+                                return 0;
+                            })
+                        )
 
                         .then(
                             literal("destination")

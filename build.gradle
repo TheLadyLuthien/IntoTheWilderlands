@@ -85,7 +85,7 @@ dependencies {
 	// modCompileOnlyApi group: 'info.journeymap', name: 'journeymap-api-fabric', version: "2.0.0-1.21.1-SNAPSHOT", changing: true
 
 	// sodium
-	// modRuntimeOnly "maven.modrinth:sodium:EoNKHoLH"
+	modRuntimeOnly "maven.modrinth:sodium:EoNKHoLH"
 
 	// modImplementation libs.bundles.quilted.fabric.api // If you wish to use Fabric API's deprecated modules, you can replace the above line with this one
 }

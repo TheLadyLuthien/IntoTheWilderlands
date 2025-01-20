@@ -16,6 +16,7 @@ public class ModEntities
 {
     public static final EntityType<TorchEntity> TORCH = register("torch", EntityType.Builder.<TorchEntity>create(TorchEntity::new, SpawnGroup.MISC).setDimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()));
     public static final EntityType<BundleEntity> BUNDLE = register("bundle", EntityType.Builder.<BundleEntity>create(BundleEntity::new, SpawnGroup.MISC).setDimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()));
+    public static final EntityType<BifrostBeamEntity> BIFROST_BEAM = register("bifrost_beam", EntityType.Builder.<BifrostBeamEntity>create(BifrostBeamEntity::new, SpawnGroup.MISC).setDimensions(6, 6));
     // public static final EntityType<MimicEntity> MIMIC = register("mimic", EntityType.Builder.<MimicEntity>create(MimicEntity::new, SpawnGroup.MONSTER).setDimensions(14, 14));
 
     public static void init()

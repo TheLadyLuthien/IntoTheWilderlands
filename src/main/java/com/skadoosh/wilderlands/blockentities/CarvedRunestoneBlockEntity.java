@@ -1,12 +1,19 @@
 package com.skadoosh.wilderlands.blockentities;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.skadoosh.cadmium.animation.AnimationStep;
+import com.skadoosh.cadmium.animation.ParticleAnimation;
 import com.skadoosh.wilderlands.blocks.CarvedRunestoneBlock;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.misc.BifrostHelper;
 import com.skadoosh.wilderlands.misc.ModParticles;
 
+import foundry.veil.api.client.anim.Frame;
+import foundry.veil.api.client.anim.Keyframe;
+import foundry.veil.api.client.anim.Path;
+import foundry.veil.api.client.util.Easings.Easing;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -16,16 +23,22 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.HolderLookup.Provider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import static com.skadoosh.wilderlands.blocks.RunicKeystoneBlock.SEARCH_SIZE;
 
 public class CarvedRunestoneBlockEntity extends BlockEntity
 {
+    private int animationTick = 0;
     private int ticks = 0;
-    public int getTicks()
+    public int getAnimationTick()
     {
-        return this.ticks;
+        return this.animationTick;
+    }
+    public void setAnimationTick(int t)
+    {
+        this.animationTick = t;
     }
 
     public CarvedRunestoneBlockEntity(BlockPos pos, BlockState state)
@@ -130,6 +143,7 @@ public class CarvedRunestoneBlockEntity extends BlockEntity
             // playBeamSwirlParticles((ClientWorld)world, be.keystonePos);
         }
 
+        be.animationTick++;
         be.ticks++;
     }
 
