@@ -9,6 +9,7 @@ import com.skadoosh.mcutils.render.CylenderRenderer;
 import com.skadoosh.wilderlands.entities.BifrostBeamEntity;
 import com.skadoosh.wilderlands.veil.ModRenderLayers;
 
+import net.minecraft.client.render.Frustum;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -92,9 +93,15 @@ public class BifrostBeamEntityRenderer extends EntityRenderer<BifrostBeamEntity>
         
         // matrices.scale(1, 1, 1);
         // matrices.translate(0, 0, 0);
-        renderLayer.draw(generateMesh(matrices, light, customData));
+        // renderLayer.draw(generateMesh(matrices, light, customData));
         
         matrices.pop();
+    }
+
+    @Override
+    public boolean shouldRender(BifrostBeamEntity entity, Frustum frustum, double x, double y, double z)
+    {
+        return true;
     }
     
 }

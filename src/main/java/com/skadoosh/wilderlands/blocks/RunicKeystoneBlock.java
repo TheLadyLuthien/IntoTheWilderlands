@@ -8,8 +8,10 @@ import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blockentities.CarvedRunestoneBlockEntity;
 import com.skadoosh.wilderlands.blockentities.ModBlockEntities;
 import com.skadoosh.wilderlands.components.ModComponents;
+import com.skadoosh.wilderlands.entities.BifrostBeamEntity;
 import com.skadoosh.wilderlands.misc.BifrostHelper;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
+import com.skadoosh.wilderlands.persistance.NamedKeystoneData.KeystoneLocation;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -139,50 +141,37 @@ public class RunicKeystoneBlock extends Block
         world.setBlockState(origin, blockState.with(Properties.TRIGGERED, false));
     }
 
-    @SuppressWarnings("resource")
-    public static void trigger(World world, BlockPos origin, CarvedRunestoneBlockEntity blockEntity)
+    public static void trigger(World originWorld, BlockPos originKeystonePos, CarvedRunestoneBlockEntity blockEntity)
     {
-        Identifier identifier = Identifier.parse(blockEntity.getDestinationDimension());
-        RegistryKey<World> registryKey = RegistryKey.of(RegistryKeys.WORLD, identifier);
+        Identifier destinationWorldidentifier = Identifier.parse(blockEntity.getDestinationDimension());
+        RegistryKey<World> destinationWorldRegistryKey = RegistryKey.of(RegistryKeys.WORLD, destinationWorldidentifier);
 
-        if (!blockEntity.getWorld().isClient)
+        if (!originWorld.isClient)
         {
-            ServerWorld serverWorld = blockEntity.getWorld().getServer().getWorld(registryKey);
-            if (serverWorld == null)
+            ServerWorld destinationWorld = originWorld.getServer().getWorld(destinationWorldRegistryKey);
+            if (destinationWorld == null)
             {
                 Wilderlands.LOGGER.error("Carved runestone couldn't find target dimension");
             }
             else
             {
-                // TODO: play the particles & delay
+                // Chunk chunk = destinationWorld.getChunk(blockEntity.getDestinationPos());
+                // if (destinationWorld.isChunkLoaded(chunk.getPos().x, chunk.getPos().z))
+                // {
+                //     BifrostBeamEntity bifrostBeamEntity = new BifrostBeamEntity(destinationWorld, BifrostBeamEntity.DEFAULT_DURATION, new KeystoneLocation(originWorld.getRegistryKey().getValue(), originKeystonePos));
+                //     bifrostBeamEntity.setPos(blockEntity.getDestinationPos().getX(), blockEntity.getDestinationPos().getY(), blockEntity.getDestinationPos().getZ());
 
-                Chunk chunk = serverWorld.getChunk(blockEntity.getDestinationPos());
-                if (serverWorld.isChunkLoaded(chunk.getPos().x, chunk.getPos().z))
-                {
-                    // other end is loaded, play particles here too!
-                }
+                //     destinationWorld.spawnEntity(bifrostBeamEntity);
+                //     // other end is loaded, play particles here too!
+                // }
 
                 // deactivate
-                disable(origin, blockEntity.getWorld());
+                disable(originKeystonePos, originWorld);
 
-                EnumSet<MovementFlag> set = EnumSet.noneOf(MovementFlag.class);
-                set.add(MovementFlag.X_ROT);
-                set.add(MovementFlag.Y_ROT);
+                BifrostBeamEntity bifrostBeamEntity = new BifrostBeamEntity(originWorld, BifrostBeamEntity.DEFAULT_DURATION, new KeystoneLocation(destinationWorldidentifier, blockEntity.getDestinationPos()));
+                bifrostBeamEntity.setPos(originKeystonePos.getX(), originKeystonePos.getY(), originKeystonePos.getZ());
 
-                final var map = ModComponentKeys.NAMED_KEYSTONE_DATA.get(world.getServer().getOverworld());
-                final String keystoneName = map.get(world.getRegistryKey().getValue(), blockEntity.getKeystonePos());
-
-                // teleport the user (do this last)
-                List<Entity> entities = world.getNonSpectatingEntities(Entity.class,
-                        new Box(new Vec3d(origin.getX() - SEARCH_SIZE, origin.getY() - SEARCH_SIZE, origin.getZ() - SEARCH_SIZE), new Vec3d(origin.getX() + SEARCH_SIZE, origin.getY() + SEARCH_SIZE, origin.getZ() + SEARCH_SIZE)));
-                for (Entity entity : entities)
-                {
-                    entity.teleport(serverWorld, blockEntity.getDestinationPos().getX() + 0.5, blockEntity.getDestinationPos().getY() + 1.0, blockEntity.getDestinationPos().getZ() + 0.5, set, entity.getYaw(), entity.getPitch());
-                    if (entity instanceof ServerPlayerEntity player)
-                    {
-                        BifrostHelper.showTitleToPlayer(player, keystoneName);
-                    }
-                }
+                originWorld.spawnEntity(bifrostBeamEntity);
             }
         }
     }
