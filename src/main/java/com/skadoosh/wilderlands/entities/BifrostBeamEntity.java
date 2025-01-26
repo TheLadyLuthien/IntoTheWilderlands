@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.entities.render.BifrostBeamEntityRenderer;
 import com.skadoosh.wilderlands.misc.BifrostHelper;
+import com.skadoosh.wilderlands.misc.ModChunkTickets;
 import com.skadoosh.wilderlands.persistance.ModComponentKeys;
 import com.skadoosh.wilderlands.persistance.NamedKeystoneData.KeystoneLocation;
 
@@ -24,6 +25,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -38,9 +40,12 @@ public class BifrostBeamEntity extends Entity
     public static final String DESTINATION_WORLD = "world";
     public static final String HAS_TELEPORTED = "has_teleported";
 
-    public static final float TELEPORT_BOX_RADIUS = 6;
+    public static final int CHUNKLOADING_RADIUS = 3;
 
-    public static final int DEFAULT_DURATION = 4 * 20;
+    public static final float TELEPORT_BOX_RADIUS = 6;
+    
+    // public static final int TELEPORT_COOLDOWN = 5 * 20;
+    public static final int DEFAULT_DURATION = 6 * 20;
 
     private KeystoneLocation destination;
 
@@ -58,6 +63,11 @@ public class BifrostBeamEntity extends Entity
     public int getAnimationTicks()
     {
         return animationTicks;
+    }
+
+    private int getTeleportationTick()
+    {
+        return (int)((BifrostBeamEntityRenderer.IN_TIME * 20f) + ((float)duration / 2f));
     }
 
     @Override
@@ -78,6 +88,11 @@ public class BifrostBeamEntity extends Entity
         this.destination = destination;
         this.discardTime = calcDiscardTime();
         this.ignoreCameraFrustum = true;
+
+        if (world instanceof ServerWorld sw)
+        {
+            sw.getChunkManager().addTicket(ModChunkTickets.BIFROST, this.getChunkPos(), CHUNKLOADING_RADIUS, this.getChunkPos());
+        }
     }
 
     public BifrostBeamEntity(World world, int duration, KeystoneLocation destination)
@@ -139,7 +154,7 @@ public class BifrostBeamEntity extends Entity
     {
         super.tick();
 
-        if ((this.animationTicks >= duration) && !hasTeleported)
+        if ((this.animationTicks >= getTeleportationTick()) && !hasTeleported)
         {
             hasTeleported = true;
 
@@ -162,13 +177,14 @@ public class BifrostBeamEntity extends Entity
                     List<Entity> entities = serverWorld.getNonSpectatingEntities(Entity.class, teleportArea);
                     for (Entity entity : entities)
                     {
-                        if (entity instanceof BifrostBeamEntity)
+                        if (!canTeleportEntity(entity))
                         {
                             continue;
                         }
 
                         entity.teleport(destinationWorld, this.destination.position.getX() + 0.5, this.destination.position.getY() + 1.0, this.destination.position.getZ() + 0.5, set, entity.getYaw(), entity.getPitch());
-                       
+                        entity.setNetherPortalCooldown(this.duration);
+
                         if ((entity instanceof ServerPlayerEntity player) && (keystoneName != null))
                         {
                             BifrostHelper.showTitleToPlayer(player, keystoneName);
@@ -188,6 +204,11 @@ public class BifrostBeamEntity extends Entity
         }
 
         this.animationTicks++;
+    }
+
+    public static boolean canTeleportEntity(Entity entity)
+    {
+        return (!(entity instanceof BifrostBeamEntity) && !entity.hasNetherPortalCooldown());
     }
 
     @Override

@@ -19,6 +19,7 @@ import com.skadoosh.wilderlands.items.CrossbowProjectileBehaviors;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.items.itemGroup.ModItemGroups;
 import com.skadoosh.wilderlands.misc.BeheadingReloadListener;
+import com.skadoosh.wilderlands.misc.ModChunkTickets;
 import com.skadoosh.wilderlands.misc.ModParticles;
 import com.skadoosh.wilderlands.screen.handler.ModScreenHandlers;
 
@@ -38,6 +39,7 @@ public class Wilderlands implements ModInitializer
         Cadmium.initialize();
         
         ModParticles.init();
+        ModChunkTickets.init();
         ModDamageTypes.init();
         ModEffects.init();
         ModEnchantments.init();
