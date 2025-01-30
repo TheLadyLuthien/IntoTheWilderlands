@@ -1,0 +1,172 @@
+{
+  "values": [
+    {
+      "id": "wilderlands:frost_aspect",
+      "required": false
+    },
+    {
+      "id": "wilderlands:vampiric",
+      "required": false
+    },
+    {
+      "id": "wilderlands:lifelinked",
+      "required": false
+    },
+    {
+      "id": "wilderlands:butchering",
+      "required": false
+    },
+    {
+      "id": "wilderlands:lumberjack",
+      "required": false
+    },
+    {
+      "id": "wilderlands:beheading",
+      "required": false
+    },
+    {
+      "id": "wilderlands:molten",
+      "required": false
+    },
+    {
+      "id": "wilderlands:prospector",
+      "required": false
+    },
+    {
+      "id": "wilderlands:voiding",
+      "required": false
+    },
+    {
+      "id": "wilderlands:amphibious",
+      "required": false
+    },
+    {
+      "id": "wilderlands:dextrous",
+      "required": false
+    },
+    {
+      "id": "wilderlands:lift",
+      "required": false
+    },
+    {
+      "id": "wilderlands:springy",
+      "required": false
+    },
+    {
+      "id": "wilderlands:dash",
+      "required": false
+    },
+    {
+      "id": "wilderlands:slide",
+      "required": false
+    },
+    {
+      "id": "wilderlands:adrenaline",
+      "required": false
+    },
+    {
+      "id": "wilderlands:aerodnamic",
+      "required": false
+    },
+    {
+      "id": "wilderlands:smoldering",
+      "required": false
+    },
+    {
+      "id": "wilderlands:stonespined",
+      "required": false
+    },
+    {
+      "id": "wilderlands:masking",
+      "required": false
+    },
+    {
+      "id": "wilderlands:veil",
+      "required": false
+    },
+    {
+      "id": "wilderlands:illuminating",
+      "required": false
+    },
+    {
+      "id": "wilderlands:scooping",
+      "required": false
+    },
+    {
+      "id": "wilderlands:puncturing",
+      "required": false
+    },
+    {
+      "id": "wilderlands:grasping",
+      "required": false
+    },
+    {
+      "id": "wilderlands:pinpoint",
+      "required": false
+    },
+    {
+      "id": "wilderlands:quickdraw",
+      "required": false
+    },
+    {
+      "id": "wilderlands:resilient",
+      "required": false
+    },
+    {
+      "id": "minecraft:feather_falling",
+      "required": false
+    },
+    {
+      "id": "minecraft:fire_aspect",
+      "required": false
+    },
+    {
+      "id": "minecraft:punch",
+      "required": false
+    },
+    {
+      "id": "minecraft:infinity",
+      "required": false
+    },
+    {
+      "id": "minecraft:loyalty",
+      "required": false
+    },
+    {
+      "id": "minecraft:riptide",
+      "required": false
+    },
+    {
+      "id": "minecraft:channeling",
+      "required": false
+    },
+    {
+      "id": "minecraft:multishot",
+      "required": false
+    },
+    {
+      "id": "minecraft:quick_charge",
+      "required": false
+    },
+    {
+      "id": "minecraft:piercing",
+      "required": false
+    },
+    {
+      "id": "minecraft:density",
+      "required": false
+    },
+    {
+      "id": "minecraft:breach",
+      "required": false
+    },
+    {
+      "id": "minecraft:wind_burst",
+      "required": false
+    },
+    {
+      "id": "minecraft:silk_touch",
+      "required": false
+    }
+  ]
+}

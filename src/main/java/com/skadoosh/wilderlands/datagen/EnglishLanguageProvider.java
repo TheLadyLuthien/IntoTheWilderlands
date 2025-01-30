@@ -6,6 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import com.skadoosh.mcutils.datagen.annotations.AutoTranslate;
 import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blocks.ModBlocks;
+import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.items.itemGroup.ModItemGroups;
 import com.skadoosh.wilderlands.misc.AnnotationHelper;
@@ -15,8 +16,10 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider.TranslationBuilder;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.registry.HolderLookup.Provider;
+import net.minecraft.registry.RegistryKey;
 
 class EnglishLanguageProvider extends FabricLanguageProvider
 {
@@ -67,6 +70,12 @@ class EnglishLanguageProvider extends FabricLanguageProvider
         for (var itemGroupData : itemGroups)
         {
             tb.add(ModItemGroups.TRANSLATION_KEY_STUB + itemGroupData.value, itemGroupData.annotation.value());
+        }
+        
+        var enchantments = AnnotationHelper.getFieldsWithAnnotation(AutoTranslate.class, ModEnchantments.class, RegistryKey.class);
+        for (var enchantmentData : enchantments)
+        {
+            tb.addEnchantment(enchantmentData.value, enchantmentData.annotation.value());
         }
 
         // ArrayList<ValueAnnotationPair<RegistryKey, AutoTranslate>> enchantments = AnnotationHelper.getFieldsWithAnnotation(AutoTranslate.class, ModEnchantments.class, RegistryKey.class);

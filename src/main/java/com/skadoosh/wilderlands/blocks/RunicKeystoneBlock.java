@@ -160,7 +160,8 @@ public class RunicKeystoneBlock extends Block
                 {
                     BifrostBeamEntity bifrostBeamEntity = new BifrostBeamEntity(destinationWorld, BifrostBeamEntity.DEFAULT_DURATION, new KeystoneLocation(originWorld.getRegistryKey().getValue(), originKeystonePos));
                     bifrostBeamEntity.setPos(blockEntity.getDestinationPos().getX(), blockEntity.getDestinationPos().getY(), blockEntity.getDestinationPos().getZ());
-
+                    bifrostBeamEntity.createChunkTicket();
+                    
                     destinationWorld.spawnEntity(bifrostBeamEntity);
                     // other end is loaded, play particles here too!
                 }
@@ -173,6 +174,7 @@ public class RunicKeystoneBlock extends Block
 
                 BifrostBeamEntity bifrostBeamEntity = new BifrostBeamEntity(originWorld, BifrostBeamEntity.DEFAULT_DURATION, new KeystoneLocation(destinationWorldidentifier, blockEntity.getDestinationPos()));
                 bifrostBeamEntity.setPos(originKeystonePos.getX(), originKeystonePos.getY(), originKeystonePos.getZ());
+                bifrostBeamEntity.createChunkTicket();
 
                 originWorld.spawnEntity(bifrostBeamEntity);
             }

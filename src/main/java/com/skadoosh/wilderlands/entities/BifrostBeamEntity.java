@@ -88,11 +88,6 @@ public class BifrostBeamEntity extends Entity
         this.destination = destination;
         this.discardTime = calcDiscardTime();
         this.ignoreCameraFrustum = true;
-
-        if (world instanceof ServerWorld sw)
-        {
-            sw.getChunkManager().addTicket(ModChunkTickets.BIFROST, this.getChunkPos(), CHUNKLOADING_RADIUS, this.getChunkPos());
-        }
     }
 
     public BifrostBeamEntity(World world, int duration, KeystoneLocation destination)
@@ -104,6 +99,14 @@ public class BifrostBeamEntity extends Entity
     public SoundCategory getSoundCategory()
     {
         return SoundCategory.MASTER;
+    }
+
+    public void createChunkTicket()
+    {
+        if (this.getWorld() instanceof ServerWorld sw)
+        {
+            sw.getChunkManager().addTicket(ModChunkTickets.BIFROST, this.getChunkPos(), CHUNKLOADING_RADIUS, this.getChunkPos());
+        }
     }
 
     @Override

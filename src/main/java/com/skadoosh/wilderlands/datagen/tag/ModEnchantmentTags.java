@@ -15,6 +15,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.HolderLookup.Provider;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.registry.tag.TagKey;
 
 public class ModEnchantmentTags extends FabricTagProvider.EnchantmentTagProvider
@@ -39,6 +40,8 @@ public class ModEnchantmentTags extends FabricTagProvider.EnchantmentTagProvider
         final var b = getOrCreateTagBuilder(B_LEVEL);
         final var c = getOrCreateTagBuilder(C_LEVEL);
         final var star = getOrCreateTagBuilder(STAR_LEVEL);
+
+        final var inEnchantingTable = getOrCreateTagBuilder(EnchantmentTags.IN_ENCHANTING_TABLE);
 
         // a.add(ModEnchantments.FROST_ASPECT);
 
@@ -72,6 +75,7 @@ public class ModEnchantmentTags extends FabricTagProvider.EnchantmentTagProvider
             }
 
             star.addOptional(value);
+            inEnchantingTable.addOptional(value);
 
             // Wilderlands.LOGGER.info("Datagen'd Block " + blockData.annotation.value());
             // tb.add(blockData.value, blockData.annotation.value());
