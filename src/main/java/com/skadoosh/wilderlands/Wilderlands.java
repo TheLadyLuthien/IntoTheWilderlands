@@ -20,6 +20,7 @@ import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.items.itemGroup.ModItemGroups;
 import com.skadoosh.wilderlands.misc.BeheadingReloadListener;
 import com.skadoosh.wilderlands.misc.ModChunkTickets;
+import com.skadoosh.wilderlands.misc.ModLootConditionTypes;
 import com.skadoosh.wilderlands.misc.ModParticles;
 import com.skadoosh.wilderlands.screen.handler.ModScreenHandlers;
 
@@ -44,6 +45,7 @@ public class Wilderlands implements ModInitializer
         ModEffects.init();
         ModEnchantments.init();
         ModScreenHandlers.init();
+        ModLootConditionTypes.init();
         ModBlocks.init();
         ModItems.init();
         ModComponents.init();

@@ -9,6 +9,7 @@ import com.skadoosh.wilderlands.datagen.tag.ModBlockTags;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.lumberjack.LumberjackEvent;
 import com.skadoosh.wilderlands.misc.BeheadingEntry;
+import com.skadoosh.wilderlands.misc.BlockTagLootCondition;
 
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
@@ -27,6 +28,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSubPredicateTypes;
 import net.minecraft.item.Items;
+import net.minecraft.loot.condition.AllOfLootCondition;
 import net.minecraft.loot.condition.InvertedLootCondition;
 import net.minecraft.loot.condition.MatchToolLootCondition;
 import net.minecraft.loot.context.LootContextParameterSet;
@@ -87,26 +89,32 @@ public final class ModEvents
         PlayerBlockBreakEvents.BEFORE.register(new LumberjackEvent());
 
         LootTableEvents.MODIFY.register((lootTableKey, builder, source, lookup) -> {
-            if (lookup.getLookupOrThrow(RegistryKeys.BLOCK).getTagOrThrow(ModBlockTags.VOIDABLE).stream().map(holder -> holder.value()).anyMatch(block -> (block.getLootTableId() == lootTableKey) && source.isBuiltin()))
+            final var blockList = lookup.getLookupOrThrow(RegistryKeys.BLOCK).getTagOrThrow(ModBlockTags.VOIDABLE);
+            // if (Blocks.STONE.getLootTableId() == lootTableKey)
+            final var keyList = blockList.stream().map(holder -> holder.value().getLootTableId()).toList();
+            if (keyList.contains(lootTableKey));
             {
                 builder.modifyPools(e -> {
                     e.conditionally(
                         new InvertedLootCondition(
-                            new MatchToolLootCondition(
-                                Optional.of(
-                                    ItemPredicate.Builder.create()
-                                        .method_58179(
-                                            ItemSubPredicateTypes.ENCHANTMENTS,
-                                            C_loxplxmp.C_zqrrydyv.method_58173(List.of(
-                                                new EnchantmentPredicate(
-                                                    lookup.getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VOIDING),
-                                                    IntRange.atLeast(1)
-                                                )
-                                            ))
-                                        )
-                                    .build()
-                                )
-                            )
+                            AllOfLootCondition.create(List.of(
+                                new MatchToolLootCondition(
+                                    Optional.of(
+                                        ItemPredicate.Builder.create()
+                                            .method_58179(
+                                                ItemSubPredicateTypes.ENCHANTMENTS,
+                                                C_loxplxmp.C_zqrrydyv.method_58173(List.of(
+                                                    new EnchantmentPredicate(
+                                                        lookup.getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VOIDING),
+                                                        IntRange.atLeast(1)
+                                                    )
+                                                ))
+                                            )
+                                        .build()
+                                    )
+                                ),
+                                new BlockTagLootCondition(ModBlockTags.VOIDABLE)
+                            ))
                         )
                     );
                 });

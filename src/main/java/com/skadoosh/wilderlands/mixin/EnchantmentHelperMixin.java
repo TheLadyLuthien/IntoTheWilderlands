@@ -1,9 +1,6 @@
 package com.skadoosh.wilderlands.mixin;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -49,14 +46,14 @@ public class EnchantmentHelperMixin
     @Inject(method = "getPossibleLevelEntries", at = @At("HEAD"), cancellable = true)
     private static void getPossibleLevelEntries(int level, ItemStack stack, Stream<Holder<Enchantment>> possibleEnchantments, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir)
     {
-        Set<EnchantmentLevelEntry> list = new HashSet<>();
+        List<EnchantmentLevelEntry> list = Lists.<EnchantmentLevelEntry>newArrayList();
         boolean bl = stack.isOf(Items.BOOK);
         possibleEnchantments.filter(holder -> ((Enchantment)holder.value()).isPrimaryItem(stack) || bl).forEach(holder -> {
             Enchantment enchantment = (Enchantment)holder.value();
             list.add(new EnchantmentLevelEntry(holder, enchantment.getMaxLevel()));
         });
 
-        cir.setReturnValue(new ArrayList<>(list));
+        cir.setReturnValue(list);
         cir.cancel();
         return;
     }
