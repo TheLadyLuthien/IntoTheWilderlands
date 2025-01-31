@@ -89,36 +89,30 @@ public final class ModEvents
         PlayerBlockBreakEvents.BEFORE.register(new LumberjackEvent());
 
         LootTableEvents.MODIFY.register((lootTableKey, builder, source, lookup) -> {
-            final var blockList = lookup.getLookupOrThrow(RegistryKeys.BLOCK).getTagOrThrow(ModBlockTags.VOIDABLE);
-            // if (Blocks.STONE.getLootTableId() == lootTableKey)
-            final var keyList = blockList.stream().map(holder -> holder.value().getLootTableId()).toList();
-            if (keyList.contains(lootTableKey));
-            {
-                builder.modifyPools(e -> {
-                    e.conditionally(
-                        new InvertedLootCondition(
-                            AllOfLootCondition.create(List.of(
-                                new MatchToolLootCondition(
-                                    Optional.of(
-                                        ItemPredicate.Builder.create()
-                                            .method_58179(
-                                                ItemSubPredicateTypes.ENCHANTMENTS,
-                                                C_loxplxmp.C_zqrrydyv.method_58173(List.of(
-                                                    new EnchantmentPredicate(
-                                                        lookup.getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VOIDING),
-                                                        IntRange.atLeast(1)
-                                                    )
-                                                ))
-                                            )
-                                        .build()
-                                    )
-                                ),
-                                new BlockTagLootCondition(ModBlockTags.VOIDABLE)
-                            ))
-                        )
-                    );
-                });
-            }
+            builder.modifyPools(e -> {
+                e.conditionally(
+                    new InvertedLootCondition(
+                        AllOfLootCondition.create(List.of(
+                            new MatchToolLootCondition(
+                                Optional.of(
+                                    ItemPredicate.Builder.create()
+                                        .method_58179(
+                                            ItemSubPredicateTypes.ENCHANTMENTS,
+                                            C_loxplxmp.C_zqrrydyv.method_58173(List.of(
+                                                new EnchantmentPredicate(
+                                                    lookup.getLookupOrThrow(RegistryKeys.ENCHANTMENT).getHolderOrThrow(ModEnchantments.VOIDING),
+                                                    IntRange.atLeast(1)
+                                                )
+                                            ))
+                                        )
+                                    .build()
+                                )
+                            ),
+                            new BlockTagLootCondition(ModBlockTags.VOIDABLE)
+                        ))
+                    )
+                );
+            });
         });
     }
 }
