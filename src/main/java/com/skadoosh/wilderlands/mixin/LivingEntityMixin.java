@@ -3,16 +3,11 @@ package com.skadoosh.wilderlands.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.damage.ModDamageTypes;
 import com.skadoosh.wilderlands.effects.ModEffects;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
@@ -33,7 +28,6 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.registry.HolderLookup.RegistryLookup;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.math.Vec3d;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin

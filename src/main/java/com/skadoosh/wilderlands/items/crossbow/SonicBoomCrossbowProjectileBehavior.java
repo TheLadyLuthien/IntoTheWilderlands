@@ -5,12 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import com.skadoosh.wilderlands.items.CrossbowProjectileBehavior;
-
-import net.minecraft.entity.EntityAttachmentType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;

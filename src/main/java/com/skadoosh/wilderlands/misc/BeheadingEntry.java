@@ -3,7 +3,6 @@ package com.skadoosh.wilderlands.misc;
 import java.util.Map;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;

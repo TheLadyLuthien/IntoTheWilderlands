@@ -3,7 +3,6 @@ package com.skadoosh.wilderlands.entities.render;
 import org.joml.Vector4f;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BuiltBuffer;
 import com.skadoosh.mcutils.render.CylenderRenderer;
 import com.skadoosh.wilderlands.entities.BifrostBeamEntity;
@@ -16,8 +15,6 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 
 public class BifrostBeamEntityRenderer extends EntityRenderer<BifrostBeamEntity>
 {

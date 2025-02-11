@@ -1,10 +1,7 @@
 package com.skadoosh.wilderlands.dimension.biome;
 
 import net.minecraft.registry.BootstrapContext;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.biome.SpawnSettings;
 
 public class ModBiomes
 {

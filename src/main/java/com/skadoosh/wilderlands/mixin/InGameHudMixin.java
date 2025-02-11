@@ -1,20 +1,7 @@
 package com.skadoosh.wilderlands.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import com.skadoosh.wilderlands.Wilderlands;
-import com.skadoosh.wilderlands.persistance.ModComponentKeys;
-import com.skadoosh.wilderlands.persistance.SmolderingComponent;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.hud.in_game.InGameHud;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin

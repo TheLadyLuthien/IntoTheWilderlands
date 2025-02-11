@@ -7,8 +7,6 @@ import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.enchantments.EnchantmentLevel;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.misc.AnnotationHelper;
-import com.skadoosh.wilderlands.misc.AnnotationHelper.ValueAnnotationPair;
-
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.enchantment.Enchantment;

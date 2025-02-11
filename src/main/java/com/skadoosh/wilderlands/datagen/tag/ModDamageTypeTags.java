@@ -7,8 +7,6 @@ import com.skadoosh.mcutils.datagen.annotations.DamageTypeTag;
 import com.skadoosh.mcutils.datagen.annotations.DamageTypeTag.VanillaDamageTags;
 import com.skadoosh.wilderlands.damage.ModDamageTypes;
 import com.skadoosh.wilderlands.misc.AnnotationHelper;
-import com.skadoosh.wilderlands.misc.AnnotationHelper.ValueAnnotationPair;
-
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.entity.damage.DamageType;

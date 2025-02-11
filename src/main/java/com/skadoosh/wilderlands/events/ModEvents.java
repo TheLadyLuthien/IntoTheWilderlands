@@ -1,10 +1,7 @@
 package com.skadoosh.wilderlands.events;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-
 import com.skadoosh.wilderlands.datagen.tag.ModBlockTags;
 import com.skadoosh.wilderlands.enchantments.ModEnchantments;
 import com.skadoosh.wilderlands.enchantments.effects.lumberjack.LumberjackEvent;
@@ -16,7 +13,6 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents.StopSleeping;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.minecraft.block.Blocks;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ProfileComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -31,13 +27,9 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.condition.AllOfLootCondition;
 import net.minecraft.loot.condition.InvertedLootCondition;
 import net.minecraft.loot.condition.MatchToolLootCondition;
-import net.minecraft.loot.context.LootContextParameterSet;
-import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.NumberRange.IntRange;
 import net.minecraft.predicate.item.EnchantmentPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.unmapped.C_loxplxmp;
 import net.minecraft.util.ItemScatterer;
@@ -89,6 +81,8 @@ public final class ModEvents
         PlayerBlockBreakEvents.BEFORE.register(new LumberjackEvent());
 
         LootTableEvents.MODIFY.register((lootTableKey, builder, source, lookup) -> {
+            // if (builder)
+            // {
             builder.modifyPools(e -> {
                 e.conditionally(
                     new InvertedLootCondition(
@@ -113,6 +107,7 @@ public final class ModEvents
                     )
                 );
             });
+            // }
         });
     }
 }

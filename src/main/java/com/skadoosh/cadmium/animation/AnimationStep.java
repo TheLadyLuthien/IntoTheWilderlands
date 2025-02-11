@@ -1,13 +1,8 @@
 package com.skadoosh.cadmium.animation;
 
-import java.util.Arrays;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
 import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 

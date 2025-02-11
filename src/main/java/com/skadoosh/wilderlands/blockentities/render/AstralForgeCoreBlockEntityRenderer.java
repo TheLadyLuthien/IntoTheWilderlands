@@ -1,43 +1,16 @@
 package com.skadoosh.wilderlands.blockentities.render;
 
-import java.util.List;
-
-import org.joml.Matrix4f;
-import org.joml.Matrix4fc;
 import org.joml.Quaternionf;
-import org.joml.Vector3d;
-import org.joml.Vector3dc;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-import org.lwjgl.system.NativeResource;
-
-import com.mojang.blaze3d.glfw.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tessellator;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
-import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
-import com.skadoosh.mcutils.render.CylenderRenderer;
-import com.skadoosh.wilderlands.Wilderlands;
 import com.skadoosh.wilderlands.blockentities.AstralForgeCoreBlockEntity;
-import com.skadoosh.wilderlands.blocks.ModBlocks;
 import com.skadoosh.wilderlands.veil.ModRenderLayers;
 
-import foundry.veil.api.client.render.CullFrustum;
-import foundry.veil.api.client.render.VeilLevelPerspectiveRenderer;
-import foundry.veil.api.client.render.VeilRenderSystem;
-import foundry.veil.api.client.render.framebuffer.AdvancedFbo;
-import foundry.veil.api.client.render.framebuffer.FramebufferManager;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.objects.ObjectArraySet;
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.Dilation;
 import net.minecraft.client.model.ModelData;
 import net.minecraft.client.model.ModelPart;
@@ -45,27 +18,12 @@ import net.minecraft.client.model.ModelPartBuilder;
 import net.minecraft.client.model.ModelPartData;
 import net.minecraft.client.model.ModelTransform;
 import net.minecraft.client.model.TexturedModelData;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.DeltaTracker;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.BakedModelManager;
-import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.util.ColorUtil;
-import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.random.RandomGenerator;
 
 @Environment(EnvType.CLIENT)
 public class AstralForgeCoreBlockEntityRenderer implements BlockEntityRenderer<AstralForgeCoreBlockEntity>

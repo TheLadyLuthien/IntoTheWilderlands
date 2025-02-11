@@ -149,6 +149,8 @@ void main(){
         color.a *= clamp(val, 0, 1);
     }
 
+    // color.a = 0.5;
+
     // color = vec4(beamFullness, beamFullness, beamFullness, 1);
     
 
