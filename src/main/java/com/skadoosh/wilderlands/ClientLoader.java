@@ -173,6 +173,11 @@ public class ClientLoader implements ClientModInitializer
             return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.BUNDLE) ? 1.0F : 0.0F;
         });
 
+        ModelPredicateProviderRegistry.register(Items.CROSSBOW, Wilderlands.id("wither_skull"), (stack, world, entity, seed) -> {
+            ChargedProjectilesComponent chargedProjectilesComponent = stack.get(DataComponentTypes.CHARGED_PROJECTILES);
+            return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.WITHER_SKELETON_SKULL) ? 1.0F : 0.0F;
+        });
+
         HudRenderCallback.EVENT.register(new LiftRenderEvent());
         HudRenderCallback.EVENT.register(new DashRenderEvent());
         ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());

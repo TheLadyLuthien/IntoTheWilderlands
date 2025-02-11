@@ -169,6 +169,13 @@
                 "wilderlands:breeze_rod": 1
             },
             "model": "wilderlands:item/crossbow/breeze_rod"
+        },
+        {
+            "predicate": {
+                "charged": 1,
+                "wilderlands:wither_skull": 1
+            },
+            "model": "wilderlands:item/crossbow/wither_skull"
         }
     ]
 }

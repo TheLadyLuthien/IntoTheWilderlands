@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/crossbow",
+    "textures": {
+        "layer0": "wilderlands:item/crossbow/crossbow_wither_skull"
+    }
+}

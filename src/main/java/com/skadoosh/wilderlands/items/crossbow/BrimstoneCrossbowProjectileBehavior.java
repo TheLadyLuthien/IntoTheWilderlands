@@ -23,8 +23,8 @@ public class BrimstoneCrossbowProjectileBehavior extends TriggeredCrossbowBehavi
 {
     public static final float MAX_DISTANCE = 200.0f;
     public static final float BOX_RADIUS = 4.0f;
-    public static final float POINT_RADIUS = 0.5f;
-    public static final float STEP = 3.0f;
+    public static final float POINT_RADIUS = 1.5f;
+    public static final float STEP = 1.0f;
 
     public static final int DAMAGE = 26;
 
