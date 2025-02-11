@@ -22,6 +22,7 @@ import com.skadoosh.wilderlands.misc.BeheadingReloadListener;
 import com.skadoosh.wilderlands.misc.ModChunkTickets;
 import com.skadoosh.wilderlands.misc.ModLootConditionTypes;
 import com.skadoosh.wilderlands.misc.ModParticles;
+import com.skadoosh.wilderlands.networking.ModPackets;
 import com.skadoosh.wilderlands.screen.handler.ModScreenHandlers;
 
 import net.fabricmc.api.ModInitializer;
@@ -39,6 +40,7 @@ public class Wilderlands implements ModInitializer
     {
         Cadmium.initialize();
         
+        ModPackets.init();
         ModParticles.init();
         ModChunkTickets.init();
         ModDamageTypes.init();

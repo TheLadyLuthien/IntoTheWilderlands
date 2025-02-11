@@ -14,6 +14,7 @@ import com.skadoosh.wilderlands.events.LiftRenderEvent;
 import com.skadoosh.wilderlands.items.ModItems;
 import com.skadoosh.wilderlands.misc.BifrostHelper;
 import com.skadoosh.wilderlands.misc.BifrostHelper.KeyType;
+import com.skadoosh.wilderlands.networking.ModPackets;
 import com.skadoosh.wilderlands.screen.handler.ModScreenHandlers;
 import com.skadoosh.wilderlands.screen.renderer.AstralForgeCoreScreen;
 
@@ -42,6 +43,8 @@ public class ClientLoader implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
+        ModPackets.clientInit();
+
         Wilderlands.LOGGER.info("Wilderlands Client Loaded!");
         Cadmium.initializeClient();
 

@@ -23,7 +23,7 @@ public class WitherSkullCrossbowProjectileBehavior extends CrossbowProjectileBeh
     public ProjectileEntity getProjectileEntity(World world, LivingEntity entity, ItemStack weapon, ItemStack arrow, boolean isCritical)
     {
         var fbe = new WitherSkullEntity(world, entity, Vec3d.ZERO);
-        if (entity.getRandom().nextInt(3) == 1)
+        if (entity.getRandom().nextInt(10) == 1)
         {
             fbe.setCharged(true);
         }
