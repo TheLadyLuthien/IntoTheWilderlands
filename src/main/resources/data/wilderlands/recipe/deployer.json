@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "redstone",
+    "key": {
+        "#": {
+            "item": "minecraft:cobblestone"
+        },
+        "R": {
+            "item": "minecraft:redstone"
+        },
+        "X": {
+            "item": "minecraft:sculk_catalyst"
+        }
+    },
+    "pattern": [
+        "###",
+        "#X#",
+        "#R#"
+    ],
+    "result": {
+        "count": 1,
+        "id": "wilderlands:deployer"
+    }
+}

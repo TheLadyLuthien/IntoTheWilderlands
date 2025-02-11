@@ -13,7 +13,7 @@ public class TorchCrossbowProjectileBehavior extends CrossbowProjectileBehavior
     @Override
     public float getLaunchSpeed()
     {
-        return 2.1f;
+        return 4.1f;
     }
 
     @Override

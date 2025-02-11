@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "redstone",
+    "key": {
+        "G": {
+            "item": "minecraft:redstone"
+        },
+        "S": {
+            "item": "minecraft:tinted_glass"
+        }
+    },
+    "pattern": [
+        " S ",
+        "SGS",
+        " S "
+    ],
+    "result": {
+        "count": 4,
+        "id": "wilderlands:holotile"
+    }
+}

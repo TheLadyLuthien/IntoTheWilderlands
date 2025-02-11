@@ -30,14 +30,17 @@ public final class ModBlocks
     
     @GenerateItemModel
     @AutoTranslate("Deployer")
+    @AutoItemGroup(ModItemGroups.REDSTONE)
     public static final Block DEPLOYER = register("deployer", new DeployerBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER).pistonBehavior(PistonBehavior.NORMAL)), true);
     
     @GenerateItemModel
     @AutoTranslate("Destroyer")
+    @AutoItemGroup(ModItemGroups.REDSTONE)
     public static final Block DESTROYER = register("destroyer", new DestroyerBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER).pistonBehavior(PistonBehavior.NORMAL)), true);
     
     @GenerateItemModel
     @AutoTranslate("Holotile")
+    @AutoItemGroup(ModItemGroups.REDSTONE)
     public static final Block HOLOTILE = register("holotile", new HolotileBlock(AbstractBlock.Settings.copy(Blocks.TINTED_GLASS)), true);
     
     @GenerateItemModel

@@ -22,8 +22,9 @@ import net.minecraft.world.World;
 public class BrimstoneCrossbowProjectileBehavior extends TriggeredCrossbowBehavior
 {
     public static final float MAX_DISTANCE = 200.0f;
-    public static final float RADIUS = 0.35f;
-    public static final float STEP = 0.2f;
+    public static final float BOX_RADIUS = 4.0f;
+    public static final float POINT_RADIUS = 0.5f;
+    public static final float STEP = 3.0f;
 
     public static final int DAMAGE = 26;
 
@@ -47,19 +48,19 @@ public class BrimstoneCrossbowProjectileBehavior extends TriggeredCrossbowBehavi
 
             if (world instanceof ServerWorld sw)
             {
-                double dist = start.subtract(target.getEyePos()).length();
-                for (double j = 1; j < dist; j += 5)
-                {
-                    Vec3d vec3d4 = start.add(direction.multiply((double)j));
-                    // ModParticles.BRIMSTONE.spawn(sw, vec3d4.x, vec3d4.y, vec3d4.z, )
-                    sw.spawnParticles(ParticleTypes.EXPLOSION, vec3d4.x, vec3d4.y, vec3d4.z, 1, 0.0, 0.0, 0.0, 0.0);
-                }
+                // double dist = start.subtract(target.getEyePos()).length();
+                // for (double j = 1; j < dist; j += 5)
+                // {
+                //     Vec3d vec3d4 = start.add(direction.multiply((double)j));
+                //     // ModParticles.BRIMSTONE.spawn(sw, vec3d4.x, vec3d4.y, vec3d4.z, )
+                //     sw.spawnParticles(ParticleTypes.EXPLOSION, vec3d4.x, vec3d4.y, vec3d4.z, 1, 0.0, 0.0, 0.0, 0.0);
+                // }
 
                 Vec3d vec3d4 = target.getEyePos();
 
-                sw.spawnParticles(ParticleTypes.FLASH, vec3d4.x, vec3d4.y, vec3d4.z, 1, 0.0, 0.0, 0.0, 0.0);
-                sw.spawnParticles(new BlockStateParticleEffect(ParticleTypes.DUST_PILLAR, Blocks.REDSTONE_BLOCK.getDefaultState()), vec3d4.x, vec3d4.y, vec3d4.z, 4, 0.0, 0.0, 0.0, 0.0);
-                sw.spawnParticles(ParticleTypes.EXPLOSION_EMITTER, vec3d4.x, vec3d4.y, vec3d4.z, 2, 0.0, 0.0, 0.0, 0.0);
+                sw.spawnParticles(ParticleTypes.FLASH, vec3d4.x, vec3d4.y, vec3d4.z, 1, 0.0, 0.0, 0.0, 1.0);
+                sw.spawnParticles(new BlockStateParticleEffect(ParticleTypes.DUST_PILLAR, Blocks.REDSTONE_BLOCK.getDefaultState()), vec3d4.x, vec3d4.y, vec3d4.z, 4, 0.0, 0.0, 0.0, 1.0);
+                sw.spawnParticles(ParticleTypes.EXPLOSION_EMITTER, vec3d4.x, vec3d4.y, vec3d4.z, 2, 0.0, 0.0, 0.0, 1.0);
             }
             // if ()
             // {
@@ -82,10 +83,10 @@ public class BrimstoneCrossbowProjectileBehavior extends TriggeredCrossbowBehavi
             Vec3d point = start.add(direction.multiply(i));
 
             // Define a bounding box around the point with the cylinder's radius
-            Box boundingBox = new Box(point.subtract(RADIUS, RADIUS, RADIUS), point.add(RADIUS, RADIUS, RADIUS));
+            Box boundingBox = new Box(point.subtract(BOX_RADIUS, BOX_RADIUS, BOX_RADIUS), point.add(BOX_RADIUS, BOX_RADIUS, BOX_RADIUS));
 
             // Predicate to filter out entities within the radius cylinder around the ray
-            Predicate<LivingEntity> entityFilter = entity -> entity.getEyePos().squaredDistanceTo(point) <= RADIUS * RADIUS && entity != user;
+            Predicate<LivingEntity> entityFilter = entity -> entity.getEyePos().squaredDistanceTo(point) <= POINT_RADIUS * POINT_RADIUS && entity != user;
 
             // Find all entities within this bounding box and filter
             List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, boundingBox, entityFilter);

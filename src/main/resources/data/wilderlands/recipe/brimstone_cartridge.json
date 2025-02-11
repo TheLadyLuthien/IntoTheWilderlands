@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        {
+            "item": "minecraft:gunpowder"
+        },
+        {
+            "item": "minecraft:gunpowder"
+        },
+        {
+            "item": "minecraft:blaze_powder"
+        },
+        {
+            "item": "minecraft:redstone"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:glowstone_dust"
+        }
+    ],
+    "result": {
+        "count": 2,
+        "id": "wilderlands:brimstone_cartridge"
+    }
+}

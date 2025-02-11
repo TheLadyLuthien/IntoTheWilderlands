@@ -13,18 +13,27 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 
 public class ModItemGroups
 {
-    @AutoTranslate("Bifrost, The Rainbow Bridge")
+    @AutoTranslate("W. Bifrost, The Rainbow Bridge")
     public static final String BIFROST = "birfost";
+
+    @AutoTranslate("W. Misc")
+    public static final String WILDERLANDS_MISC = "wilderlands";
+
+    @AutoTranslate("W. Redstone")
+    public static final String REDSTONE = "redstone";
     
     public static void register()
     {
         register(BIFROST, ModItems.BIFROST_KEY);
+        register(WILDERLANDS_MISC, ModItems.BRIMSTONE_CARTRIDGE);
+        register(REDSTONE, Items.REDSTONE_TORCH);
     }
     
     private static void register(String id, Item icon)
